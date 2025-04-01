@@ -33,3 +33,6 @@
 
 .vscode
 .idea
+
+# platformio
+.pio
