@@ -1,0 +1,29 @@
+BasedOnStyle: LLVM
+IndentWidth: 4
+UseTab: Never
+
+# Variable Naming
+VariableCase: lower_snake_case
+ConstantCase: UPPER_CASE
+
+# Function Naming & Formatting
+FunctionCase: camelBack
+AllowShortFunctionsOnASingleLine: Empty
+AlwaysBreakAfterDefinitionReturnType: None
+
+# Classes & Structs Naming
+ClassCase: PascalCase
+StructCase: PascalCase
+
+# Instance Naming
+ClassInstanceCase: PascalCase
+StructInstanceCase: PascalCase
+
+# Braces
+BreakBeforeBraces: Attach
+
+# Formatting rules
+ColumnLimit: 100
+ReflowComments: true
+SortIncludes: true
+
