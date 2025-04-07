@@ -41,18 +41,18 @@
     [ "bb1:14t.e", "esp:47", "cyan", [ "v0" ] ],
     [ "bb1:15t.e", "esp:21", "orange", [ "v0" ] ],
     [ "bb1:17t.e", "bb1:bp.15", "red", [ "v0" ] ],
+    [ "bb1:25t.e", "bb1:bn.21", "black", [ "v0" ] ],
     [ "gas1:AOUT", "bb1:15t.a", "", [ "$bb" ] ],
     [ "gas1:DOUT", "bb1:14t.a", "", [ "$bb" ] ],
     [ "gas1:GND", "bb1:13t.a", "", [ "$bb" ] ],
     [ "gas1:VCC", "bb1:12t.a", "", [ "$bb" ] ],
+    [ "r1:1", "bb1:17t.c", "", [ "$bb" ] ],
+    [ "r1:2", "bb1:23t.c", "", [ "$bb" ] ],
     [ "dht1:VCC", "bb1:22t.a", "", [ "$bb" ] ],
     [ "dht1:SDA", "bb1:23t.a", "", [ "$bb" ] ],
     [ "dht1:NC", "bb1:24t.a", "", [ "$bb" ] ],
     [ "dht1:GND", "bb1:25t.a", "", [ "$bb" ] ],
-    [ "r1:1", "bb1:17t.c", "", [ "$bb" ] ],
-    [ "r1:2", "bb1:23t.c", "", [ "$bb" ] ],
-    [ "bb1:24t.e", "esp:20", "gold", [ "v0" ] ],
-    [ "bb1:25t.e", "bb1:bn.21", "black", [ "v0" ] ]
+    [ "bb1:23t.e", "esp:20", "green", [ "v0" ] ]
   ],
   "dependencies": {}
 }
