@@ -1,0 +1,69 @@
+@startuml sentinel
+
+' main.cpp simulated
+class Main {
+    -lte: LTEModule
+    -btManager: BluetoothManager
+    -gpsManager: GPSManager
+    -sensor: Sensor
+    -dataPacket: DataPacket
+}
+
+'LTE Module
+class LTEModule {
+    -modem: TinyGSM
+    -client: TinyGSMClient
+    +init(): void
+    +send(data: String): 
+}
+
+' BluetoothManager
+class BluetoothManager {
+    -receivedData: String
+    -pCharacteristic: BLECharacteristic*
+    +init(): void
+    +checkData(): string
+    +onWrite(pCharacteristic): void
+}
+
+' DataPacket struct
+class DataPacket {
+    +source: String
+    +payload: String
+}
+
+class GPSManager {
+    +init(): void
+    +enableGPS(): void
+    +disableGPS(): void
+    +getStatus(): bool
+}
+
+' Virtuell sensor class
+abstract Sensor {
+    +init(): void
+    +readData(): String
+}
+
+' Temperature Sensor Class 
+class TemperatureSensor {
+    -temperature: int16_t
+    +getTemperature: int16_t
+}
+
+' Gas sensor class
+class GasSensor {
+    -ppm: uint16_t
+    +getParticleValue: uint16_t
+}
+
+Sensor <|-- TemperatureSensor
+Sensor <|-- GasSensor
+
+Main --> LTEModule
+Main --> Sensor
+Main --> BluetoothManager
+Main --> GPSManager
+Main --> DataPacket
+
+@enduml
