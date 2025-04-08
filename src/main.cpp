@@ -8,7 +8,8 @@ void setup() {
 
 void loop() {
   // Add your main code here, to run repeatedly
-  Serial.println("Hello, ESP32!");
+  Serial.println("Hello, Alles!");
   delay(1000); // Wait for 1 second
   //Det här är en test kommentar
+  Serial.print("Chengjun");
 }
