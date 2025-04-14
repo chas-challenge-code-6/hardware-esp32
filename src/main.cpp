@@ -1,15 +1,41 @@
 #include <Arduino.h>
+#include <DHT.h>
+
+#define RED_PIN 16
+#define GREEN_PIN 15
+#define BLUE_PIN 7
+
+#define DHTPIN 20
+#define DHTTYPE DHT22
+
+DHT dht(DHTPIN, DHTTYPE);
 
 void setup() {
-  // Initialize serial communication at 115200 baud
   Serial.begin(115200);
-  // Add your setup code here
+
+  pinMode(RED_PIN, OUTPUT);
+  pinMode(GREEN_PIN, OUTPUT);
+  pinMode(BLUE_PIN, OUTPUT);
+
+  dht.begin();
+
+  analogWrite(RED_PIN, 255);
+  analogWrite(GREEN_PIN, 0);
+  analogWrite(BLUE_PIN, 0);
 }
 
 void loop() {
-  // Add your main code here, to run repeatedly
-  Serial.println("Hello, Alles!");
-  delay(1000); // Wait for 1 second
-  //Det här är en test kommentar
-  Serial.print("Chengjun");
+  float temperature = dht.readTemperature();
+
+  if (isnan(temperature))
+  {
+    Serial.println("Failed to read from DHT sensor");
+    return;
+  }
+
+  Serial.print("Temperature: ");
+  Serial.print(temperature);
+  Serial.println("C");
+
+  delay(1000);
 }
