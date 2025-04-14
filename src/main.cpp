@@ -10,32 +10,34 @@
 
 DHT dht(DHTPIN, DHTTYPE);
 
-void setup() {
-  Serial.begin(115200);
+void setup()
+{
+    Serial.begin(115200);
 
-  pinMode(RED_PIN, OUTPUT);
-  pinMode(GREEN_PIN, OUTPUT);
-  pinMode(BLUE_PIN, OUTPUT);
+    pinMode(RED_PIN, OUTPUT);
+    pinMode(GREEN_PIN, OUTPUT);
+    pinMode(BLUE_PIN, OUTPUT);
 
-  dht.begin();
+    dht.begin();
 
-  analogWrite(RED_PIN, 255);
-  analogWrite(GREEN_PIN, 0);
-  analogWrite(BLUE_PIN, 0);
+    analogWrite(RED_PIN, 255);
+    analogWrite(GREEN_PIN, 0);
+    analogWrite(BLUE_PIN, 0);
 }
 
-void loop() {
-  float temperature = dht.readTemperature();
+void loop()
+{
+    float temperature = dht.readTemperature();
 
-  if (isnan(temperature))
-  {
-    Serial.println("Failed to read from DHT sensor");
-    return;
-  }
+    if (isnan(temperature))
+    {
+        Serial.println("Failed to read from DHT sensor");
+        return;
+    }
 
-  Serial.print("Temperature: ");
-  Serial.print(temperature);
-  Serial.println("C");
+    Serial.print("Temperature: ");
+    Serial.print(temperature);
+    Serial.println("C");
 
-  delay(1000);
+    delay(1000);
 }

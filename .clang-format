@@ -1,29 +1,36 @@
+# Clang-Format Configuration
+
 BasedOnStyle: LLVM
 IndentWidth: 4
 UseTab: Never
 
-# Variable Naming
+## Variable Naming
+
 VariableCase: lower_snake_case
 ConstantCase: UPPER_CASE
 
-# Function Naming & Formatting
+## Function Naming & Formatting
+
 FunctionCase: camelBack
 AllowShortFunctionsOnASingleLine: Empty
 AlwaysBreakAfterDefinitionReturnType: None
 
-# Classes & Structs Naming
+## Classes & Structs Naming
+
 ClassCase: PascalCase
 StructCase: PascalCase
 
-# Instance Naming
+## Instance Naming
+
 ClassInstanceCase: PascalCase
 StructInstanceCase: PascalCase
 
-# Braces
-BreakBeforeBraces: Attach
+## Braces
 
-# Formatting rules
+BreakBeforeBraces: Allman
+
+## Formatting rules
+
 ColumnLimit: 100
 ReflowComments: true
 SortIncludes: true
-
