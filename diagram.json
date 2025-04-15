@@ -26,7 +26,38 @@
       "left": 268.8,
       "attrs": { "value": "10000" }
     },
-    { "type": "wokwi-dht22", "id": "dht1", "top": -210.9, "left": 301.8, "attrs": {} }
+    { "type": "wokwi-dht22", "id": "dht1", "top": -210.9, "left": 301.8, "attrs": {} },
+    {
+      "type": "wokwi-rgb-led",
+      "id": "rgb1",
+      "top": -140,
+      "left": 106.7,
+      "attrs": { "common": "cathode" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r2",
+      "top": -52.8,
+      "left": 105.05,
+      "rotate": 90,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r3",
+      "top": -52.8,
+      "left": 114.65,
+      "rotate": 90,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r4",
+      "top": -52.8,
+      "left": 85.85,
+      "rotate": 90,
+      "attrs": { "value": "220" }
+    }
   ],
   "connections": [
     [ "esp:TX", "$serialMonitor:RX", "", [] ],
@@ -42,6 +73,7 @@
     [ "bb1:15t.e", "esp:21", "orange", [ "v0" ] ],
     [ "bb1:17t.e", "bb1:bp.15", "red", [ "v0" ] ],
     [ "bb1:25t.e", "bb1:bn.21", "black", [ "v0" ] ],
+    [ "bb1:23t.e", "esp:20", "green", [ "v0" ] ],
     [ "gas1:AOUT", "bb1:15t.a", "", [ "$bb" ] ],
     [ "gas1:DOUT", "bb1:14t.a", "", [ "$bb" ] ],
     [ "gas1:GND", "bb1:13t.a", "", [ "$bb" ] ],
@@ -52,7 +84,20 @@
     [ "dht1:SDA", "bb1:23t.a", "", [ "$bb" ] ],
     [ "dht1:NC", "bb1:24t.a", "", [ "$bb" ] ],
     [ "dht1:GND", "bb1:25t.a", "", [ "$bb" ] ],
-    [ "bb1:23t.e", "esp:20", "green", [ "v0" ] ]
+    [ "r4:1", "bb1:1t.c", "", [ "$bb" ] ],
+    [ "r4:2", "bb1:1b.g", "", [ "$bb" ] ],
+    [ "r2:1", "bb1:3t.c", "", [ "$bb" ] ],
+    [ "r2:2", "bb1:3b.g", "", [ "$bb" ] ],
+    [ "r3:1", "bb1:4t.c", "", [ "$bb" ] ],
+    [ "r3:2", "bb1:4b.g", "", [ "$bb" ] ],
+    [ "bb1:2t.e", "bb1:bn.3", "black", [ "v76.8", "h19.2" ] ],
+    [ "bb1:4b.j", "esp:7", "green", [ "v163.2", "h-297.6", "v-115.2" ] ],
+    [ "bb1:3b.j", "esp:15", "green", [ "v153.6", "h-278.4", "v-192" ] ],
+    [ "bb1:1b.j", "esp:16", "green", [ "v144", "h-249.6", "v-182.4" ] ],
+    [ "rgb1:R", "bb1:1t.a", "", [ "$bb" ] ],
+    [ "rgb1:COM", "bb1:2t.b", "", [ "$bb" ] ],
+    [ "rgb1:G", "bb1:3t.a", "", [ "$bb" ] ],
+    [ "rgb1:B", "bb1:4t.a", "", [ "$bb" ] ]
   ],
   "dependencies": {}
 }
