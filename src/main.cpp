@@ -1,41 +1,18 @@
+#include "main.h"
+#include "sensors/dht22.h"
+#include "tasks/temp_humid.h"
+
 #include <Arduino.h>
 #include <DHT.h>
 
-#define RED_PIN 16
-#define GREEN_PIN 15
-#define BLUE_PIN 7
+SensorDHT dhtSensor(DHT_PIN);
 
-#define DHTPIN 20
-#define DHTTYPE DHT22
+void setup()
+{
+    Serial.begin(115200);
+    dhtSensor.begin();
 
-DHT dht(DHTPIN, DHTTYPE);
-
-void setup() {
-  Serial.begin(115200);
-
-  pinMode(RED_PIN, OUTPUT);
-  pinMode(GREEN_PIN, OUTPUT);
-  pinMode(BLUE_PIN, OUTPUT);
-
-  dht.begin();
-
-  analogWrite(RED_PIN, 255);
-  analogWrite(GREEN_PIN, 0);
-  analogWrite(BLUE_PIN, 0);
+    xTaskCreate(dhtTask, "DHT Task", 2048, NULL, 1, NULL);
 }
 
-void loop() {
-  float temperature = dht.readTemperature();
-
-  if (isnan(temperature))
-  {
-    Serial.println("Failed to read from DHT sensor");
-    return;
-  }
-
-  Serial.print("Temperature: ");
-  Serial.print(temperature);
-  Serial.println("C");
-
-  delay(1000);
-}
+void loop() {} // Using RTOS tasks, unused

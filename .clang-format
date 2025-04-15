@@ -20,7 +20,7 @@ ClassInstanceCase: PascalCase
 StructInstanceCase: PascalCase
 
 # Braces
-BreakBeforeBraces: Attach
+BreakBeforeBraces: Allman
 
 # Formatting rules
 ColumnLimit: 100
