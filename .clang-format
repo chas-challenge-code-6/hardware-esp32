@@ -26,4 +26,4 @@ BreakBeforeBraces: Attach
 ColumnLimit: 100
 ReflowComments: true
 SortIncludes: true
-
+AccessModifierOffset: -4
