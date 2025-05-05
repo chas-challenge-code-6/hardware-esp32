@@ -7,9 +7,9 @@
 #define HEARTRATE_CHAR_UUID "2A37"
 #define BATTERY_SERVICE_UUID "180F"
 #define BATTERY_CHAR_UUID "2A19"
-#define ACCEL_SERVICE_UUID "12345678-1234-5678-1234-56789abcdef0"
+#define ACCEL_SERVICE_UUID "12345678-1234-5678-1234-56789abcdef0" //just random uuid
 #define ACCEL_CHAR_UUID "12345678-1234-5678-1234-56789abcdef1"
-#define STEPS_SERVICE_UUID "6E400001-B5A3-F393-E0A9-E50E24DCCA9E"
+#define STEPS_SERVICE_UUID "6E400001-B5A3-F393-E0A9-E50E24DCCA9E" //same
 #define STEPS_CHAR_UUID "6E400002-B5A3-F393-E0A9-E50E24DCCA9E"
 
 const std::string TARGET_ADDRESS = "c4:de:e2:13:3f:0e";
@@ -40,10 +40,6 @@ void BluetoothClient::begin()
 
 void BluetoothClient::loop()
 {
-    Serial.print("[BluetoothClient] loop() - doConnect: ");
-    Serial.print(doConnect);
-    Serial.print(", advDevice: ");
-    Serial.println((uintptr_t)advDevice, HEX);
     if (doConnect && advDevice)
     {
         Serial.println("[BluetoothClient] Connecting to device...");
