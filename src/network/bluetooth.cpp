@@ -2,7 +2,7 @@
 #include <NimBLEDevice.h>
 #include <Arduino.h>
 
-#define WATCH_NAME "ESP32 BLE Emulator" // set to pinetime [unused?]
+#define WATCH_NAME "PineTime" // set to pinetime [unused?]
 #define HEARTRATE_SERVICE_UUID "180D"
 #define HEARTRATE_CHAR_UUID "2A37"
 #define BATTERY_SERVICE_UUID "180F"
