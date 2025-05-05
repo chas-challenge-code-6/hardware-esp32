@@ -1,15 +1,13 @@
 #include <Arduino.h>
 #include <NimBLEDevice.h>
 
-// Services UUIDs
 #define SERVICE_UUID_BATTERY       "180F"
 #define SERVICE_UUID_HEART_RATE    "180D"
-#define SERVICE_UUID_STEP_COUNTER  "6E400001-B5A3-F393-E0A9-E50E24DCCA9E"  // Custom
+#define SERVICE_UUID_STEP_COUNTER  "6E400001-B5A3-F393-E0A9-E50E24DCCA9E" //TEMP
 
-// Characteristics UUIDs
 #define CHAR_UUID_BATTERY_LEVEL    "2A19"
 #define CHAR_UUID_HEART_RATE       "2A37"
-#define CHAR_UUID_STEP_COUNT       "6E400002-B5A3-F393-E0A9-E50E24DCCA9E"
+#define CHAR_UUID_STEP_COUNT       "6E400002-B5A3-F393-E0A9-E50E24DCCA9E" //TEMP
 
 NimBLECharacteristic *batteryLevelChar;
 NimBLECharacteristic *heartRateChar;
@@ -21,7 +19,6 @@ void setup() {
 
   NimBLEServer *pServer = NimBLEDevice::createServer();
 
-  // Battery Service
   NimBLEService *batteryService = pServer->createService(SERVICE_UUID_BATTERY);
   batteryLevelChar = batteryService->createCharacteristic(
     CHAR_UUID_BATTERY_LEVEL,
@@ -29,7 +26,6 @@ void setup() {
   );
   batteryLevelChar->setValue(100);
 
-  // Heart Rate Service
   NimBLEService *heartRateService = pServer->createService(SERVICE_UUID_HEART_RATE);
   heartRateChar = heartRateService->createCharacteristic(
     CHAR_UUID_HEART_RATE,
@@ -37,7 +33,6 @@ void setup() {
   );
   heartRateChar->setValue((uint8_t*)"\x00", 1);
 
-  // Step Counter Service
   NimBLEService *stepService = pServer->createService(SERVICE_UUID_STEP_COUNTER);
   stepCountChar = stepService->createCharacteristic(
     CHAR_UUID_STEP_COUNT,
@@ -56,6 +51,8 @@ void setup() {
   pAdvertising->start();
 
   Serial.println("BLE GATT server started.");
+  Serial.print("Device Address: ");
+  Serial.println(NimBLEDevice::getAddress().toString().c_str());
 }
 
 void loop() {
