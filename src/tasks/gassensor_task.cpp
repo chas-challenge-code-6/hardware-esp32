@@ -10,7 +10,7 @@ void MQ2Task(void *parameter)
     {
         gasSensor.update();
         Serial.print("Gas Concentration (PPM): ");
-        Serial.println(gasSensor.getPPM());
+        Serial.println(gasSensor.getRawValue());
         vTaskDelay(pdMS_TO_TICKS(2000)); 
     }
 }
