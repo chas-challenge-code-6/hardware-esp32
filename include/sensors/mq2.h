@@ -9,11 +9,14 @@ class MQ2Sensor {
 public:
     MQ2Sensor(uint8_t pin, const String& board = "ESP-32", float voltageResolution = 3.3, int adcBitResolution = 12, const String& type = "MQ-2");
     void update();         
-    float getPPM(); 
+    float getRawValue(); 
+    void begin();
 
 private:
     MQUnifiedsensor mq2;
     uint8_t _pin;
+    int _adcBitResolution;
+    int _lastRaw; 
 };
 
 #endif
