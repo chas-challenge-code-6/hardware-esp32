@@ -2,6 +2,7 @@
 #include "sensors/dht22.h"
 #include "tasks/temp_humid.h"
 #include "network/bluetooth.h"
+#include "sensors/mq2.h"
 
 #include <Arduino.h>
 #include <DHT.h>
