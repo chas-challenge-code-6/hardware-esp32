@@ -3,13 +3,18 @@
 #include <MQUnifiedsensor.h>
 
 MQ2Sensor::MQ2Sensor(uint8_t pin, const String& board, float voltageResolution, int adcBitResolution, const String& type)
-    : mq2(board, voltageResolution, adcBitResolution, pin, type), _pin(pin) {}
+    : mq2(board, voltageResolution, adcBitResolution, pin, type), _pin(pin), _lastRaw(0) {}
 
 void MQ2Sensor::begin() {
     mq2.init();
 }
 
-int MQ2Sensor::readRaw() {
-    mq2.update();
-    return analogRead(_pin);
+void MQ2Sensor::update()
+{
+    _lastRaw = analogRead(_pin);  
+}
+
+float MQ2Sensor::getRawValue()
+{
+    return (float)_lastRaw;  
 }

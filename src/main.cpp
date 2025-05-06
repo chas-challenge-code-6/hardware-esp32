@@ -3,12 +3,15 @@
 #include "tasks/temp_humid.h"
 #include "network/bluetooth.h"
 #include "sensors/mq2.h"
+#include "tasks/gas_sensor.h"
 
 #include <Arduino.h>
 #include <DHT.h>
+#include <MQUnifiedsensor.h>
 
 SensorDHT dhtSensor(DHT_PIN);
 BluetoothClient bClient;
+MQ2Sensor gasSensor(MQ2_PIN);
 
 void setup()
 {
