@@ -16,7 +16,7 @@ MQ2Sensor gasSensor(MQ2_PIN);
 void setup()
 {
     Serial.begin(115200);
-    dhtSensor.begin();
+    //dhtSensor.begin();
 
     bClient.begin();
 
