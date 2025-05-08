@@ -1,10 +1,10 @@
-#ifndef BATTERYSTATUS_H
-#define BATTERYSTATUS_H
+#ifndef BATTERY_H
+#define BATTERY_H
 #include "utilities.h"
 #include <Arduino.h>
 #include <esp32-hal-adc.h> /// Include the ESP32 ADC library for analogReadMilliVolts
 
-class BatteryStatus 
+class Battery 
 {
     private:
         int batteryPin;
@@ -13,13 +13,13 @@ class BatteryStatus
         int voltageDivider;
 
     public:
-        BatteryStatus(); // Constructor
-        void begin(); // Set console baud rate
-        void loop();
+        Battery(); // Constructor
         float getBatteryStatus();
-        void printBatteryStatus();
         float getBatteryVoltage();
+        void getUpdate();
+        void sendUpdate(); //For sending battery status to the server
         void powerSaveMode();
+        bool isPowerOn();
 };
 
-#endif //BATTERYSTATUS_H
+#endif //BATTERY_H
