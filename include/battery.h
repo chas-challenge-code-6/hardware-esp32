@@ -9,8 +9,10 @@ class Battery
     private:
         int batteryPin;
         float batteryVoltage;
-        int batteryPercentage;
+        float rawBatteryVoltage;
+        float batteryPercentage;
         int voltageDivider;
+        bool isPowerOn;
 
     public:
         Battery(); // Constructor
@@ -19,7 +21,6 @@ class Battery
         void getUpdate();
         void sendUpdate(); //For sending battery status to the server
         void powerSaveMode();
-        bool isPowerOn();
 };
 
 #endif //BATTERY_H
