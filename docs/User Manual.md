@@ -17,7 +17,6 @@ Project Sentinel is a wearable safety device designed to monitor hazardous work 
 
 ## **2. Getting Started**
 ### **2.1 Install the Battery**
-1. Insert the 3.7 V battery, ensuring correct polarity.
 
 ### **2.2 Charge the Device**
 
