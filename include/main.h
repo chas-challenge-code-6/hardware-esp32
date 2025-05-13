@@ -13,4 +13,6 @@ uint8_t const DHT_PIN{20};
 #define MQ2
 uint8_t const MQ2_PIN{34};
 
+#define DEVICE_ID "SENTINEL-001";
+
 #endif
