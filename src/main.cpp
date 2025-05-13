@@ -35,7 +35,6 @@ void setup()
     xTaskCreate(accelerometerTask, "AccelTask", 2048, &accel, 1, NULL);
     xTaskCreate(WiFiTask, "WiFi Task", 2048, &wifi, 1, NULL);
     xTaskCreate(bluetoothTask, "Bluetooth Task", 2048, &bClient, 1, NULL);
-    xTaskCreate(LTETask, "LTE Task", 2048, &lte, 1, NULL);
     xTaskCreate(dhtTask, "DHT Task", 2048, &dhtSensor, 1, NULL);
     xTaskCreate(communicationTask, "CommTask", 4096, &comm, 1, NULL);
     xTaskCreate(processingTask, "Process", 2048, &process, 1, NULL);
