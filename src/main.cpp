@@ -18,7 +18,7 @@
 
 // TODO: move these into tasks
 SensorDHT dhtSensor(DHT_PIN);
-BluetoothClient bluetoothClient;
+BluetoothClient bClient;
 MQ2Sensor gasSensor(GAS_PIN);
 SensorAccelerometer accel;
 
@@ -29,7 +29,7 @@ EventGroupHandle_t networkEventGroup;
 
 void setup()
 {
-    bluetoothClient.begin();
+    bClient.begin();
     Serial.begin(115200);
 
     networkEventGroup = xEventGroupCreate();
@@ -38,7 +38,7 @@ void setup()
     httpQueue = xQueueCreate(10, sizeof(sensor_data_t));
 
     xTaskCreate(accelTask, "AccelTask", 2048, &accel, 1, NULL);
-    xTaskCreate(bluetoothTask, "Bluetooth Task", 2048, &bluetoothClient, 1, NULL);
+    xTaskCreate(bluetoothTask, "Bluetooth Task", 2048, &bClient, 1, NULL);
     // xTaskCreate(dhtTask, "DHT Task", 2048, &dhtSensor, 1, NULL);
     // xTaskCreate(gasTask, "Gas Task", 2048, &gasSensor, 1, NULL);
     // xTaskCreate(communicationTask, "CommTask", 4096, &comm, 1, NULL);
