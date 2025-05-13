@@ -8,6 +8,7 @@
 #include "tasks/gasTask.h"
 #include "tasks/dhtTask.h"
 #include "tasks/communicationTask.h"
+#include "tasks/bluetoothTask.h"
 
 #include <Arduino.h>
 #include <DHT.h>
@@ -32,12 +33,13 @@ void setup()
     dataQueue = xQueueCreate(10, sizeof(sensor_data_t));
     httpQueue = xQueueCreate(10, sizeof(sensor_data_t));
 
-    xTaskCreate(accelerometerTask, "AccelTask", 2048, &accel, 1, NULL);
+    //xTaskCreate(accelerometerTask, "AccelTask", 2048, &accel, 1, NULL);
     xTaskCreate(WiFiTask, "WiFi Task", 2048, &wifi, 1, NULL);
     xTaskCreate(bluetoothTask, "Bluetooth Task", 2048, &bClient, 1, NULL);
     xTaskCreate(dhtTask, "DHT Task", 2048, &dhtSensor, 1, NULL);
-    xTaskCreate(communicationTask, "CommTask", 4096, &comm, 1, NULL);
-    xTaskCreate(processingTask, "Process", 2048, &process, 1, NULL);
+    xTaskCreate(gasSensorTask, "Gas Task", 2048, &gasSensor, 1, NULL);
+    //xTaskCreate(communicationTask, "CommTask", 4096, &comm, 1, NULL);
+    //xTaskCreate(processingTask, "Process", 2048, &process, 1, NULL);
 }
 
 void loop() {}
