@@ -1,22 +1,21 @@
 #ifndef SENSOR_MQ2
 #define SENSOR_MQ2
 
-#include <MQUnifiedsensor.h>
-#include <Arduino.h>
 #include "main.h"
+#include <Arduino.h>
+#include <MQUnifiedsensor.h>
 
-class MQ2Sensor {
+class MQ2Sensor
+{
 public:
-    MQ2Sensor(uint8_t pin, const String& board = "ESP-32", float voltageResolution = 3.3, int adcBitResolution = 12, const String& type = "MQ-2");
-    void update();         
-    float getRawValue(); 
+    MQ2Sensor(uint8_t pin, const char *board = "ESP-32", float voltageResolution = 3.3,
+              uint8_t adcBitResolution = 12, const char *type = "MQ-2");
+    void update();
+    float getValue();
     void begin();
 
 private:
     MQUnifiedsensor mq2;
-    uint8_t _pin;
-    int _adcBitResolution;
-    int _lastRaw; 
 };
 
 #endif
