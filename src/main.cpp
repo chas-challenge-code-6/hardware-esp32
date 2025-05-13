@@ -8,9 +8,10 @@
 #include "sensors/accelerometer.h"
 #include "tasks/gasTask.h"
 #include "tasks/dhtTask.h"
-#include "tasks/communicationTask.h"
 #include "tasks/bluetoothTask.h"
 #include "tasks/accelerometerTask.h"
+#include "tasks/communicationTask.h"
+#include "tasks/processingTask.h"
 
 #include <Arduino.h>
 #include <DHT.h>
@@ -42,8 +43,8 @@ void setup()
     xTaskCreate(bluetoothTask, "Bluetooth Task", 2048, &bClient, 1, NULL);
     xTaskCreate(dhtTask, "DHT Task", 2048, &dhtSensor, 1, NULL);
     xTaskCreate(gasSensorTask, "Gas Task", 2048, &gasSensor, 1, NULL);
-    //xTaskCreate(communicationTask, "CommTask", 4096, &comm, 1, NULL);
-    //xTaskCreate(processingTask, "Process", 2048, &process, 1, NULL);
+    xTaskCreate(WiFiTask, "CommTask", 4096, &comm, 1, NULL);
+    xTaskCreate(processingTask, "Process", 2048, &process, 1, NULL);
 }
 
 void loop() {}

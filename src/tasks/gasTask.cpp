@@ -1,23 +1,27 @@
 #include "tasks/gasTask.h"
-#include "SensorData.h"
 #include "sensors/mq2.h"
 #include <Arduino.h>
 
 extern MQ2Sensor gasSensor;
 extern QueueHandle_t dataQueue;
 
-void gasSensorTask(void *parameter)
+void gasSensorTask(void *pvParameters)
 {
-    sensor_data_t gasData = {};
+    float gasData;
 
     while (true)
     {
         gasSensor.update();
-        Serial.print("Gas Concentration (PPM): ");
-        Serial.println(gasSensor.getRawValue());
+        gasData = gasSensor.getRawValue();
 
-        gasData.gasLevel = gasSensor.getRawValue();
+        if (xQueueSend(dataQueue, &gasData, pdMS_TO_TICKS(100)) != pdPASS) {
+            Serial.println("[Gas Sensor Task] Failed to send data to queue");
+        }
+        else {
+            Serial.print("[Gas Sensor Task] Gas Concentration (PPM): ");
+            Serial.println(gasData);
+        }
 
-        vTaskDelay(pdMS_TO_TICKS(2000));
+        vTaskDelay(pdMS_TO_TICKS(2000)); // Run every 2 seconds
     }
 }
