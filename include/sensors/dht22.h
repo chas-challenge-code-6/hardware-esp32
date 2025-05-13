@@ -5,7 +5,8 @@
 #include <Arduino.h>
 #include <DHT.h>
 
-class SensorDHT {
+class SensorDHT
+{
 private:
     DHT dht;
     float temperature;
