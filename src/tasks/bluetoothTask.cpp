@@ -1,24 +1,7 @@
-/* #include "tasks/bluetooth_task.h"
-#include "network/bluetooth.h"
-#include <Arduino.h>
-
-extern BluetoothClient bClient;
-
-void bluetoothTask(void *parameter)
-{
-    while (true)
-    {
-        bClient.getHeartRate();
-        Serial.print("Bluetooth Heart Rate: ");
-        Serial.println(bClient.getHeartRate());
-        vTaskDelay(pdMS_TO_TICKS(2000)); 
-    }
-} */
-
-
 #include "tasks/bluetoothTask.h"
-#include "network/bluetooth.h"
 #include "SensorData.h"
+#include "main.h"
+#include "network/bluetooth.h"
 #include <Arduino.h>
 
 extern BluetoothClient bClient;
