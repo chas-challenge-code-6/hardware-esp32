@@ -13,10 +13,12 @@
 #include <Arduino.h>
 #include <DHT.h>
 #include <MQUnifiedsensor.h>
+//#include <Accelerometer.h>
 
 SensorDHT dhtSensor(DHT_PIN);
 BluetoothClient bClient;
 MQ2Sensor gasSensor(MQ2_PIN);
+//Accelerometer accel(ACCEL_PIN);
 
 const char *ssid = "";
 const char *password = "";

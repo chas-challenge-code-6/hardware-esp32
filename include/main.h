@@ -13,4 +13,7 @@ uint8_t const DHT_PIN{20};
 #define MQ2
 uint8_t const MQ2_PIN{34};
 
+#define ACCEL
+uint8_t const ACCEL_PIN{35};
+
 #endif
