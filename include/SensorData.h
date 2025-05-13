@@ -12,4 +12,8 @@ typedef struct SensorData
     int heartRate;
 } sensor_data_t;
 
+typedef struct {
+    char json[256];
+} processed_data_t;
+
 #endif
