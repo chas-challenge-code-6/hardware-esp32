@@ -6,13 +6,17 @@ typedef struct SensorData
     float accelX;
     float accelY;
     float accelZ;
+    uint8_t device_battery;
+    bool fall_detected;
     float temperature;
     float humidity;
     float gasLevel;
-    int heartRate;
+    uint32_t steps;
+    uint8_t heartRate;
 } sensor_data_t;
 
-typedef struct {
+typedef struct
+{
     char json[256];
 } processed_data_t;
 
