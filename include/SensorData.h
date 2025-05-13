@@ -1,6 +1,8 @@
 #ifndef SENSORDATA_H
 #define SENSORDATA_H
 
+#include <Arduino.h>
+
 typedef struct SensorData
 {
     float accelX;
