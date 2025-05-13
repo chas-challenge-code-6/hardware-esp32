@@ -2,8 +2,8 @@
 #include <Arduino.h>
 #include <MQUnifiedsensor.h>
 
-MQ2Sensor::MQ2Sensor(uint8_t pin, const String& board, float voltageResolution, int adcBitResolution, const String& type)
-    : mq2(board, voltageResolution, adcBitResolution, pin, type), _pin(pin), _lastRaw(0) {}
+MQ2Sensor::MQ2Sensor(uint8_t pin, const char* board, float voltageResolution, uint8_t adcBitResolution, const char* type)
+    : mq2(board, voltageResolution, adcBitResolution, pin, type) {}
 
 void MQ2Sensor::begin() {
     mq2.init();
@@ -11,10 +11,10 @@ void MQ2Sensor::begin() {
 
 void MQ2Sensor::update()
 {
-    _lastRaw = analogRead(_pin);  
+    mq2.update();
 }
 
-float MQ2Sensor::getRawValue()
+float MQ2Sensor::getValue()
 {
-    return (float)_lastRaw;  
+    return mq2.readSensor();
 }
