@@ -3,13 +3,15 @@
 
 #include "main.h"
 #include <Arduino.h>
+#include <Adafruit_ADXL345_U.h>
 
 class SensorAccelerometer {
     private:
-        //Accelerometer accelerometer;
+        Adafruit_ADXL345_Unified accel;
         float accelX;
         float accelY;
         float accelZ;
+        int steps;
 
     public:
         //SensorAccelerometer(uint8_t pin) : pin(pin), accelX(0), accelY(0), accelZ(0) {}

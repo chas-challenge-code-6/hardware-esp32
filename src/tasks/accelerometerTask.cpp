@@ -3,7 +3,7 @@
 #include "SensorData.h"
 #include <Arduino.h>
 
-//extern Accelerometer accelSensor;
+extern SensorAccelerometer accel;
 extern QueueHandle_t dataQueue;
 
 void accelTask(void *pvParameters)
@@ -12,9 +12,7 @@ void accelTask(void *pvParameters)
 
     while (true)
     {
-        //accelData.accelX = accelSensor.getAccelX();
-        //accelData.accelY = accelSensor.getAccelY();
-        //accelData.accelZ = accelSensor.getAccelZ();
+        accel.update();
 
         if (xQueueSend(dataQueue, &accelData, pdMS_TO_TICKS(100)) != pdPASS) {
             Serial.println("[Bluetooth Task] Failed to send coordinates to queue");
@@ -26,6 +24,7 @@ void accelTask(void *pvParameters)
             Serial.print(accelData.accelY);
             Serial.print(", ");
             Serial.println(accelData.accelZ);
+
         }
 
         vTaskDelay(pdMS_TO_TICKS(1000)); // Run every 1 second
