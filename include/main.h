@@ -25,4 +25,7 @@ uint8_t const DHT_PIN{20};
 
 #define DEVICE_ID "SENTINEL-001";
 
+#define ACCEL
+uint8_t const ACCEL_PIN{35};
+
 #endif

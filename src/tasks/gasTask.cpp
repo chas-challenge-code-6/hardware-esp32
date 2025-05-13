@@ -6,7 +6,7 @@
 extern MQ2Sensor gasSensor;
 extern QueueHandle_t dataQueue;
 
-void MQ2Task(void *parameter)
+void gasSensorTask(void *parameter)
 {
     sensor_data_t gasData = {};
 
@@ -19,7 +19,6 @@ void MQ2Task(void *parameter)
         gasData.gasLevel = gasSensor.getValue();
 
         xQueueSend(dataQueue, &gasData, portMAX_DELAY);
-
         vTaskDelay(pdMS_TO_TICKS(2000));
     }
 }
