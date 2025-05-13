@@ -8,19 +8,30 @@ class Battery
 {
     private:
         int batteryPin;
-        float batteryVoltage;
+        float ADCbatteryVoltage;
         float rawBatteryVoltage;
+        float batteryVoltageLimit;
         float batteryPercentage;
         int voltageDivider;
         bool isPowerOn;
+        
 
     public:
-        Battery(); // Constructor
+        //Functions for monitoring battery status
+        void begin();
+        void loop();
         float getBatteryStatus();
         float getBatteryVoltage();
         void getUpdate();
-        void sendUpdate(); //For sending battery status to the server
+        void sendData(); //For sending battery status to the server
+
+        //Functions for power managment
         void powerSaveMode();
+        float isPowerOn(int pin);
+        void turnOnPower(int pin);
+        void turnOffPower(int pin);
+        void safetyShutdown(float pin, float VoltLimit);
+        
 };
 
 #endif //BATTERY_H
