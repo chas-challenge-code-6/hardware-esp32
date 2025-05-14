@@ -19,6 +19,7 @@ void gasSensorTask(void *parameter)
         gasData.gasLevel = gasSensor.getValue();
 
         xQueueSend(dataQueue, &gasData, portMAX_DELAY);
+
         vTaskDelay(pdMS_TO_TICKS(2000));
     }
 }
