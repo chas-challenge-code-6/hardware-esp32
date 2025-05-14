@@ -17,6 +17,7 @@ bool createJson(const sensor_data_t &data, char *buffer, size_t bufferSize)
         Serial.println("[Processing Task] JSON creation failed or truncated.");
         return false;
     }
+    return true;
 }
 
 void processingTask(void *pvParameters)
