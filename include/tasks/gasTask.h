@@ -1,6 +1,6 @@
-#ifndef MQ2TASK
-#define MQ2TASK
+#ifndef MQ2TASK_H
+#define MQ2TASK_H
 
-void gasSensorTask(void *parameter);
+void gasTask(void *parameter);
 
 #endif
