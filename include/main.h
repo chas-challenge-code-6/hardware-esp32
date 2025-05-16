@@ -13,7 +13,7 @@
 
 // DHT22 macros
 #define DHTTYPE DHT22
-uint8_t const DHT_PIN{32};
+#define DHT_PIN 32;
 
 // Macros for Polar H9
 #define STRAP_NAME "POLAR H9 EC351E2B"
