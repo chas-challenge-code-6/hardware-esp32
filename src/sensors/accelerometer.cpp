@@ -1,6 +1,6 @@
 #include "sensors/accelerometer.h"
-#include <Adafruit_Sensor.h>
 #include <Adafruit_ADXL345_U.h>
+#include <Adafruit_Sensor.h>
 #include <Arduino.h>
 #include <Wire.h>
 
@@ -11,25 +11,31 @@ bool SensorAccelerometer::begin()
 
 void SensorAccelerometer::update()
 {
-    accelX = accel.getX();
-    accelY = accel.getY();
-    accelZ = accel.getZ();
-    // steps = accel.getSteps();
+    this->accelX = accel.getX();
+    this->accelY = accel.getY();
+    this->accelZ = accel.getZ();
+    this->accelTotal = sqrt((this->accelX * this->accelX) + (this->accelY * this->accelY) +
+                            (this->accelZ * this->accelZ));
+}
+
+float SensorAccelerometer::getTotal() const
+{
+    return this->accelTotal;
 }
 
 float SensorAccelerometer::getX() const
 {
-    return accelX;
+    return this->accelX;
 }
 
 float SensorAccelerometer::getY() const
 {
-    return accelY;
+    return this->accelY;
 }
 
 float SensorAccelerometer::getZ() const
 {
-    return accelZ;
+    return this->accelZ;
 }
 
 float SensorAccelerometer::getSteps() const
