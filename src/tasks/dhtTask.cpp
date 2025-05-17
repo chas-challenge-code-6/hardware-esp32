@@ -18,8 +18,10 @@ void dhtTask(void *parameter)
         accData.temperature = dhtSensor.getTemperature();
         accData.humidity = dhtSensor.getHumdity();
 
-        Serial.print("Temperature: ");
+        Serial.print("[DHT Task] Temperature: ");
         Serial.println(accData.temperature);
+        Serial.print("[DHT Task] Humidity: ");
+        Serial.println(accData.humidity);
 
         if(xQueueSend(dataQueue, &accData, portMAX_DELAY) != pdPASS)
         {

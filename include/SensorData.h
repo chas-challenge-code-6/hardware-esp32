@@ -5,10 +5,11 @@
 
 typedef struct SensorData
 {
+    uint8_t device_battery;
     float accelX;
     float accelY;
     float accelZ;
-    uint8_t device_battery;
+    float accelTotal;
     bool fall_detected;
     float temperature;
     float humidity;

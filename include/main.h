@@ -28,8 +28,14 @@
 // #define GAS_ADC_BIT_RESOLUTION  (12)
 // #define GAS_RATIO_CLEANAIR      (9.83)
 
-// Setup I2C macros
+// Accelerometer macros
+// Setup I2C
 #define SDA_PIN 21
 #define SCL_PIN 22
+
+// Accelerometer fall thresholds
+#define FALL_THRESHOLD 3.0
+#define IMPACT_THRESHOLD 15.0
+#define MAX_TIME_BETWEEN 2000
 
 #endif
