@@ -1,7 +1,7 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <Arduino.h>
+#define DEBUG 1
 
 // DEVICE_ID for API
 #define DEVICE_ID "SENTINEL-001";
@@ -33,9 +33,18 @@
 #define SDA_PIN 21
 #define SCL_PIN 22
 
+#define MPU6500_ADDR 0x68
+
 // Accelerometer fall thresholds
-#define FALL_THRESHOLD 3.0
-#define IMPACT_THRESHOLD 15.0
+#define ACC_THRESHOLD 4.0
+#define ANGLE_THRESHOLD 60.0
 #define MAX_TIME_BETWEEN 2000
+#define STEP_THRESHOLD 1.2
+#define STEP_DEBOUNCE_MS 300
+
+// Kalibrering
+#define X_OFFSET 0.0737
+#define Y_OFFSET -0.6132
+#define Z_OFFSET -0.9986
 
 #endif
