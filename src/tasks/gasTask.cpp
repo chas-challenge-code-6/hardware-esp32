@@ -16,8 +16,7 @@ void gasTask(void *parameter)
 
         gasData.gasLevel = gasSensor.getValue();
 
-        Serial.print("[Gas Task] Gas Concentration (PPM): ");
-        Serial.println(gasData.gasLevel);
+        Serial.printf("[Gas Task] Gas Concentration (PPM): %.2f\n", gasData.gasLevel);
 
         if(xQueueSend(dataQueue, &gasData, portMAX_DELAY) != pdPASS)
         {
