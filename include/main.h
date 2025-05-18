@@ -36,7 +36,7 @@
 #define MPU6500_ADDR 0x68
 
 // Accelerometer fall thresholds
-#define ACC_THRESHOLD 4.0
+#define ACC_THRESHOLD 2.0
 #define ANGLE_THRESHOLD 60.0
 #define MAX_TIME_BETWEEN 2000
 #define STEP_THRESHOLD 1.2
