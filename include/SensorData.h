@@ -6,6 +6,7 @@
 typedef struct SensorData
 {
     uint8_t device_battery;
+    float accelZ;
     float accelTotal;
     float accelPitch;
     float accelRoll;
