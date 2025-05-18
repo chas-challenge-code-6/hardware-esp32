@@ -11,6 +11,9 @@ void accelTask(void *pvParameters)
     SensorAccelerometer accel;
     bool initialized = false;
 
+    uint32_t lastStepTime = 0;
+    uint32_t now = 0;
+
     for (size_t i = 0; i < 3; i++)
     {
         if (accel.begin())
@@ -31,12 +34,13 @@ void accelTask(void *pvParameters)
     {
         accel.update();
 
+        accelData.accelZ = accel.getZ();
         accelData.accelTotal = accel.getTotal();
         accelData.accelPitch = accel.getPitch();
         accelData.accelRoll = accel.getRoll();
 
-        Serial.printf("Acc: %.2f g | Pitch: %.2f° | Roll: %.2f°\n", accelData.accelTotal,
-                      accelData.accelPitch, accelData.accelRoll);
+        Serial.printf("Acc: %.2f g | Pitch: %.2f° | Roll: %.2f° | Z: %.2f\n", accelData.accelTotal,
+                      accelData.accelPitch, accelData.accelRoll, accelData.accelZ);
 
         // Fall detection
         if (accelData.accelTotal > ACC_THRESHOLD && (abs(accelData.accelPitch) > ANGLE_THRESHOLD ||
@@ -46,6 +50,15 @@ void accelTask(void *pvParameters)
         }
 
         // Pedometer
+        now = millis();
+        if (accel.getZ() > STEP_THRESHOLD && (now - lastStepTime) > STEP_DEBOUNCE_MS)
+        {
+            accelData.steps++;
+            lastStepTime = now;
+            Serial.printf("[Accelerometer Task] Step detected! Total steps: %d\n", accelData.steps);
+        }
+
+        // TODO: Skriv logik för att bara skicka vidare data om något detekteras.
         // if (xQueueSend(dataQueue, &accelData, portMAX_DELAY) != pdPASS)
         //     Serial.println("[Accelerometer Task] Data sent to queues successfully.");
         // {
