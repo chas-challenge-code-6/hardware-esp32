@@ -14,7 +14,7 @@ typedef struct SensorData
     float humidity;
     float gasLevel;
     uint32_t steps;
-    uint8_t heartRate;
+    uint16_t heartRate;
 } sensor_data_t;
 
 typedef struct
