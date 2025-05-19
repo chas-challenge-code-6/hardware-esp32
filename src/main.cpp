@@ -1,29 +1,41 @@
 #include "main.h"
-#include "sensors/dht22.h"
-#include "tasks/temp_humid.h"
+#include "SensorData.h"
 #include "network/bluetooth.h"
-#include "sensors/mq2.h"
-#include "tasks/gas_sensor.h"
+#include "tasks/accelerometerTask.h"
+#include "tasks/bluetoothTask.h"
+#include "tasks/communicationTask.h"
+#include "tasks/dhtTask.h"
+#include "tasks/gasTask.h"
+#include "tasks/processingTask.h"
 
 #include <Arduino.h>
-#include <DHT.h>
-#include <MQUnifiedsensor.h>
+#include <Wire.h>
 
-SensorDHT dhtSensor(DHT_PIN);
+// TODO: move these into tasks
 BluetoothClient bClient;
-MQ2Sensor gasSensor(MQ2_PIN);
+
+QueueHandle_t dataQueue;
+QueueHandle_t httpQueue;
+
+EventGroupHandle_t networkEventGroup;
 
 void setup()
 {
     Serial.begin(115200);
-    dhtSensor.begin();
+    Wire.begin(SDA_PIN, SCL_PIN, 100000);
 
-    bClient.begin();
+    networkEventGroup = xEventGroupCreate();
 
-    //xTaskCreate(dhtTask, "DHT Task", 2048, NULL, 1, NULL);
+    dataQueue = xQueueCreate(10, sizeof(sensor_data_t));
+    httpQueue = xQueueCreate(10, sizeof(sensor_data_t));
+
+    xTaskCreatePinnedToCore(accelTask, "AccelTask", 4096, NULL, 1, NULL,
+                            1); // Pin to core 1 to not disturb WiFi/LTE
+    // xTaskCreate(bluetoothTask, "Bluetooth Task", 2048, NULL, 1, NULL);
+    // xTaskCreate(dhtTask, "DHT Task", 2048, NULL, 1, NULL);
+    // xTaskCreate(gasTask, "Gas Task", 2048, NULL, 1, NULL);
+    // xTaskCreate(communicationTask, "CommTask", 4096, &comm, 1, NULL);
+    // xTaskCreate(processingTask, "Process", 4096, NULL, 1, NULL);
 }
 
-void loop() {
-    bClient.loop();
-    delay(1000);
-} // Using RTOS tasks, unused
+void loop() {}

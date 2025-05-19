@@ -10,9 +10,6 @@ public:
     void loop();
 
     uint8_t getHeartRate() const;
-    uint8_t getBatteryLevel() const;
-    void getAccelerometer(float &x, float &y, float &z) const;
-    int getStepCount() const;
 
     void onConnect(NimBLEClient* pClient) override;
     void onDisconnect(NimBLEClient* pClient, int reason) override;
@@ -21,14 +18,8 @@ public:
 
 private:
     void onHeartRateNotify(NimBLERemoteCharacteristic*, uint8_t*, size_t, bool);
-    void onBatteryNotify(NimBLERemoteCharacteristic*, uint8_t*, size_t, bool);
-    void onAccelNotify(NimBLERemoteCharacteristic*, uint8_t*, size_t, bool);
-    void onStepsNotify(NimBLERemoteCharacteristic*, uint8_t*, size_t, bool);
 
     uint8_t heartRate = -1;
-    int batteryLevel = -1;
-    float accelX = 0, accelY = 0, accelZ = 0;
-    int stepCount = 0;
     bool doConnect = false;
     const NimBLEAdvertisedDevice* advDevice = nullptr;
 };
