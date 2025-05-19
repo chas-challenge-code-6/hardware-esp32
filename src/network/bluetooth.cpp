@@ -3,8 +3,6 @@
 #include <Arduino.h>
 #include <NimBLEDevice.h>
 
-const std::string TARGET_ADDRESS = "a0:9e:1a:ec:35:1e";
-
 static BluetoothClient *g_btClient = nullptr;
 
 BluetoothClient::BluetoothClient()
@@ -112,7 +110,7 @@ void ScanCallbacks::onResult(const NimBLEAdvertisedDevice *advertisedDevice)
     Serial.println(advertisedDevice->getAddress().toString().c_str());
 
     std::string advAddr = advertisedDevice->getAddress().toString();
-    std::string targetAddr = TARGET_ADDRESS;
+    std::string targetAddr = STRAP_ADDRESS;
     std::transform(advAddr.begin(), advAddr.end(), advAddr.begin(), ::tolower);
     std::transform(targetAddr.begin(), targetAddr.end(), targetAddr.begin(), ::tolower);
 

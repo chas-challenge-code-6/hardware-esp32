@@ -4,7 +4,11 @@
 #define DEBUG 1
 
 // DEVICE_ID for API
-#define DEVICE_ID "SENTINEL-001";
+#define DEVICE_ID "SENTINEL-001"
+
+// LTE settings
+// #define TINY_GSM_RX_BUFFER 1024
+// #define LILYGO_T_A7670 //temp
 
 // RGB macros
 #define RGB_RED_PIN 16
@@ -17,11 +21,12 @@
 
 // Macros for Polar H9
 #define STRAP_NAME "POLAR H9 EC351E2B"
+#define STRAP_ADDRESS "a0:9e:1a:ec:35:1e"
 #define HEARTRATE_SERVICE_UUID "180D"
 #define HEARTRATE_CHAR_UUID "2A37"
 
 // Gas sensor macros
-#define GAS_PIN (34)
+#define GAS_PIN (32)
 // #define GAS_BOARD               ("ESP-32")
 // #define GAS_TYPE                ("MQ-2")
 // #define GAS_VOLTAGE_RESOLUTION  (12)
