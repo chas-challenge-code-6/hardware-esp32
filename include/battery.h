@@ -13,7 +13,6 @@ class Battery
         float batteryVoltageLimit;
         float batteryPercentage;
         int voltageDivider;
-        bool isPowerOn;
         
 
     public:
@@ -27,7 +26,7 @@ class Battery
 
         //Functions for power managment
         void powerSaveMode();
-        float isPowerOn(int pin);
+        bool isPowerOn(int pin);
         void turnOnPower(int pin);
         void turnOffPower(int pin);
         void safetyShutdown(float pin, float VoltLimit);

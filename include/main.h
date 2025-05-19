@@ -47,9 +47,4 @@
 #define Y_OFFSET -0.6132
 #define Z_OFFSET -0.9986
 
-#define BATTERY
-uint8_t const BOARD_BAT_ADC_PIN{35}; // ADC pin for battery voltage measurement
-uint8_t const BOARD_POWERON_PIN{23}; // Power on pin for the board
-uint8_t const BOARD_BATTERY_VOLTAGE_DIVIDER{2}; // Voltage divider for battery measurement
-
 #endif
