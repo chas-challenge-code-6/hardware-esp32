@@ -4,16 +4,15 @@
 #include "network/bluetooth.h"
 #include <Arduino.h>
 
-extern BluetoothClient bClient;
 extern QueueHandle_t dataQueue;
 
 void bluetoothTask(void *pvParameters)
 {
     sensor_data_t heartRateData = {};
+    BluetoothClient bClient;
 
     while (true)
     {
-        // Simulate reading heart rate data from Bluetooth
         heartRateData.heartRate = bClient.getHeartRate();
 
         if (xQueueSend(dataQueue, &heartRateData, pdMS_TO_TICKS(100)) != pdPASS) {
@@ -24,6 +23,6 @@ void bluetoothTask(void *pvParameters)
             Serial.println(heartRateData.heartRate);
         }
 
-        vTaskDelay(pdMS_TO_TICKS(1000)); // Run every 1 second
+        vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
