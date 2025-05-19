@@ -12,9 +12,8 @@ public:
     uint8_t getHeartRate() const;
 
     void onConnect(NimBLEClient* pClient) override;
-    void onDisconnect(NimBLEClient* pClient, int reason) override;
-
-    void setConnectFlag(const NimBLEAdvertisedDevice* device);
+    void onDisconnect(NimBLEClient *pClient, int reason) override;
+    void setConnectFlag(const NimBLEAdvertisedDevice *device);
 
 private:
     void onHeartRateNotify(NimBLERemoteCharacteristic*, uint8_t*, size_t, bool);
