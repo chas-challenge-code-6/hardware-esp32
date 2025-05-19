@@ -22,11 +22,6 @@ void Battery::begin()
 {
     Serial.begin(115200); // Set console baud rate
     Serial.println("initializing battery...");
-#define BOARD_BAT_ADC_PIN (4) // Battery pin
-#define BOARD_POWERON_PIN                                                                          \
-    (BOARD_LED_PIN) // There is no modem power control, the LED Pin is used as a power indicator
-                    // here.
-#define BOARD_LED_PIN (12)
 
     // Variables
     int batteryPin = BOARD_BAT_ADC_PIN;
