@@ -13,13 +13,13 @@
 #include <Wire.h>
 #include <math.h>
 
+
 /**
  * @brief Initializes the MPU6500 sensor
  * 
  * @return true 
  * @return false (if initialization fails)
  */
-
 bool SensorAccelerometer::begin()
 {
     if (!accel.init())
@@ -31,12 +31,12 @@ bool SensorAccelerometer::begin()
     return true;
 }
 
+
 /**
  * @brief Initializes the MPU6500 sensor with default settings
  * 
  * 
  */
-
 void SensorAccelerometer::setup()
 {
     accel.enableGyrDLPF();
@@ -55,7 +55,6 @@ void SensorAccelerometer::setup()
  * @details Updates the accelerometer values and calculates pitch, roll, and total acceleration.
  * 
  */
-
 void SensorAccelerometer::update()
 {
     values = accel.getGValues();
@@ -67,6 +66,7 @@ void SensorAccelerometer::update()
     this->accelRoll = atan2(-values.x, values.z) * 180.0 / PI;
 }
 
+
 /**
  * @brief Gets the Z value from the accelerometer
  * 
@@ -76,6 +76,7 @@ float SensorAccelerometer::getZ() const
 {
     return this->accelZ;
 }
+
 
 /**
  * @brief Gets the total acceleration from the accelerometer

@@ -13,17 +13,10 @@
 #include <NimBLEDevice.h>
 
 
-/**
- * @brief MAC address of the target device
- * 
- */
-const std::string TARGET_ADDRESS = "a0:9e:1a:ec:35:1e";
 
-/**
- * @brief UUIDs for the heart rate service and characteristic
- * 
- */
-static BluetoothClient *g_btClient = nullptr;
+const std::string TARGET_ADDRESS = "a0:9e:1a:ec:35:1e"; /// Target device MAC address
+
+static BluetoothClient *g_btClient = nullptr; ///< UUIDs for the heart rate service and characteristic
 
 
 /**

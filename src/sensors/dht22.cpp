@@ -23,6 +23,7 @@ void SensorDHT::begin()
     dht.begin();
 }
 
+
 /**
  * @brief Update the temperature and humidity values
  * 

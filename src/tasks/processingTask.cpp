@@ -52,6 +52,7 @@ bool createJson(const sensor_data_t &data, char *buffer, size_t bufferSize)
 }
 
 
+
 /**
  * @brief Processing Task function
  * 

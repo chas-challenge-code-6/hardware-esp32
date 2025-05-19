@@ -9,8 +9,8 @@
  */
 
 #include "tasks/gasTask.h"
-#include "SensorData.h"
 #include "sensors/mq2.h"
+#include "SensorData.h"
 #include <Arduino.h>
 
 extern QueueHandle_t dataQueue;
