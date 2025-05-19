@@ -41,7 +41,7 @@ void processingTask(void *pvParameters)
                 }
                 else
                 {
-                    Serial.print("[Processing Task] JSON to HTTP queue.");
+                    Serial.print("[Processing Task] Sent JSON to HTTP queue.");
                     Serial.println(processedData.json);
                 }
             }
