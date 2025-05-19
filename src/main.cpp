@@ -11,9 +11,6 @@
 #include <Arduino.h>
 #include <Wire.h>
 
-// TODO: move these into tasks
-BluetoothClient bClient;
-
 QueueHandle_t dataQueue;
 QueueHandle_t httpQueue;
 
@@ -31,7 +28,7 @@ void setup()
 
     xTaskCreatePinnedToCore(accelTask, "AccelTask", 4096, NULL, 1, NULL,
                             1); // Pin to core 1 to not disturb WiFi/LTE
-    // xTaskCreate(bluetoothTask, "Bluetooth Task", 2048, NULL, 1, NULL);
+    xTaskCreate(bluetoothTask, "Bluetooth Task", 2048, NULL, 1, NULL);
     // xTaskCreate(dhtTask, "DHT Task", 2048, NULL, 1, NULL);
     // xTaskCreate(gasTask, "Gas Task", 2048, NULL, 1, NULL);
     // xTaskCreate(communicationTask, "CommTask", 4096, &comm, 1, NULL);
