@@ -4,6 +4,26 @@
 #include <Arduino.h>
 
 extern QueueHandle_t dataQueue;
+extern EventGroupHandle_t networkEventGroup;
+#define NETWORK_CONNECTED_BIT BIT0
+
+void sendAccelData(sensor_data_t &accelData)
+{
+    EventBits_t bits = xEventGroupGetBits(networkEventGroup);
+
+    if (bits & NETWORK_CONNECTED_BIT)
+    {
+        if (xQueueSend(dataQueue, &accelData, portMAX_DELAY) != pdPASS)
+        {
+            Serial.println("[Accelerometer Task] Failed to send coordinates to queue");
+        }
+        else
+        {
+            Serial.println("[Accelerometer Task] Data sent to queue successfully.");
+        }
+        accelData.fall_detected = false;
+    }
+}
 
 void accelTask(void *pvParameters)
 {
@@ -46,24 +66,19 @@ void accelTask(void *pvParameters)
         if (accelData.accelTotal > ACC_THRESHOLD && (abs(accelData.accelPitch) > ANGLE_THRESHOLD ||
                                                      abs(accelData.accelRoll) > ANGLE_THRESHOLD))
         {
+            accelData.fall_detected = true;
             Serial.println("[Accelerometer Task] FALL DETECTED!");
+            sendAccelData(accelData);
         }
 
         // Pedometer
         now = millis();
         if (accel.getZ() > STEP_THRESHOLD && (now - lastStepTime) > STEP_DEBOUNCE_MS)
         {
-            accelData.steps++;
             lastStepTime = now;
             Serial.printf("[Accelerometer Task] Step detected! Total steps: %d\n", accelData.steps);
+            sendAccelData(accelData);
         }
-
-        // TODO: Skriv logik för att bara skicka vidare data om något detekteras.
-        // if (xQueueSend(dataQueue, &accelData, portMAX_DELAY) != pdPASS)
-        //     Serial.println("[Accelerometer Task] Data sent to queues successfully.");
-        // {
-        //     Serial.println("[Accelerometer Task] Failed to send coordinates to queue");
-        // }
 
         vTaskDelay(pdMS_TO_TICKS(100));
     }
