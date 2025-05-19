@@ -4,9 +4,6 @@
 
 // #elif defined(LILYGO_T_SIM7670G_S3)
 // #define MODEM_BAUDRATE (115200)
-// #define MODEM_DTR_PIN (9)
-// #define MODEM_TX_PIN (11)
-// #define MODEM_RX_PIN (10)
 
 // // The modem boot pin needs to follow the startup sequence.
 // #define BOARD_PWRKEY_PIN (18)
@@ -19,20 +16,7 @@
 // #define MODEM_RESET_LEVEL LOW
 // #define SerialAT Serial1
 
-// #define BOARD_BAT_ADC_PIN (4)
-// #define BOARD_SOLAR_ADC_PIN (5)
-// #define BOARD_MISO_PIN (47)
-// #define BOARD_MOSI_PIN (14)
-// #define BOARD_SCK_PIN (21)
-// #define BOARD_SD_CS_PIN (13)
-
-// #ifndef TINY_GSM_MODEM_SIM7672
-// #define TINY_GSM_MODEM_SIM7672
-// #endif
-
-// #define MODEM_GPS_ENABLE_GPIO (4)
-// #define MODEM_GPS_ENABLE_LEVEL (1)
-
+// #define BOARD_BAT_ADC_PIN 
 
 void Battery::begin()
 {
@@ -122,13 +106,45 @@ void Battery::loop()
     //Not done yet
     float Battery::getBatteryStatus()
     {
-        getBatteryVoltage(); // Call the getBatteryVoltage method
+        float voltage = getBatteryVoltage(); // Get the battery voltage in volts (or millivolts if that's your convention)
+        // If ADCbatteryVoltage is in millivolts, convert to volts:
+        // voltage = voltage / 1000.0;
 
+        // Define min and max voltages for your battery chemistry (adjust as needed)
+        const float minVoltage = 0; // 0% (empty)
+        const float maxVoltage = 3.7; // 100% (full)
+
+        // Clamp voltage to min/max range
+        if (voltage < minVoltage) voltage = minVoltage;
+        if (voltage > maxVoltage) voltage = maxVoltage;
+
+        // Calculate percentage
+        float percentage = ((voltage - minVoltage) / (maxVoltage - minVoltage)) * 100.0;
+
+        Serial.print("Battery Status: ");
+        Serial.print(percentage);
+        Serial.println("%");
+
+        return percentage;
 
     };
     //Not done yet
     void Battery::getUpdate()
-    {};
+    {
+        static unsigned long lastRead = 0;
+        unsigned long now = millis();
+        if (now - lastRead >= 10000) 
+        { // 10,000 ms = 10 seconds
+            float voltage = getBatteryVoltage();
+            float percent = getBatteryStatus();
+            Serial.print("10s Battery Voltage: ");
+            Serial.print(voltage);
+            Serial.print(" | Battery %: ");
+            Serial.println(percent);
+            lastRead = now;
+        }
+
+    };
     
     // Functions For power managment
     void Battery::turnOnPower(int pin)
