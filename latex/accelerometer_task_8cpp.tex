@@ -1,0 +1,49 @@
+\doxysection{src/tasks/accelerometer\+Task.cpp File Reference}
+\hypertarget{accelerometer_task_8cpp}{}\label{accelerometer_task_8cpp}\index{src/tasks/accelerometerTask.cpp@{src/tasks/accelerometerTask.cpp}}
+
+
+Accelerometer Task Implementation.  
+
+
+{\ttfamily \#include "{}tasks/accelerometer\+Task.\+h"{}}\newline
+{\ttfamily \#include "{}Sensor\+Data.\+h"{}}\newline
+{\ttfamily \#include "{}sensors/accelerometer.\+h"{}}\newline
+{\ttfamily \#include $<$Arduino.\+h$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{accelerometer_task_8cpp_ac7a3902b1ec1ce2fb2e880b24759c517}{accel\+Task}} (void \texorpdfstring{$\ast$}{*}pv\+Parameters)
+\begin{DoxyCompactList}\small\item\em Accelerometer task function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{accelerometer_task_8cpp_a2820736c7f6f9a3082102f0acd2cbac1}\label{accelerometer_task_8cpp_a2820736c7f6f9a3082102f0acd2cbac1} 
+Queue\+Handle\+\_\+t {\bfseries data\+Queue}
+\begin{DoxyCompactList}\small\item\em Queue for sensor data, used by all tasks. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Accelerometer Task Implementation. 
+
+This file contains the implementation of the accelerometer task, which is responsible for 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{accelerometer_task_8cpp_ac7a3902b1ec1ce2fb2e880b24759c517}\index{accelerometerTask.cpp@{accelerometerTask.cpp}!accelTask@{accelTask}}
+\index{accelTask@{accelTask}!accelerometerTask.cpp@{accelerometerTask.cpp}}
+\doxysubsubsection{\texorpdfstring{accelTask()}{accelTask()}}
+{\footnotesize\ttfamily \label{accelerometer_task_8cpp_ac7a3902b1ec1ce2fb2e880b24759c517} 
+void accel\+Task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{pv\+Parameters}{}\end{DoxyParamCaption})}
+
+
+
+Accelerometer task function. 
+
+Function for the accelerometer task.
+
+This function initializes the accelerometer and continuously reads data from it. It also handles fall detection and step counting.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pv\+Parameters} & \\
+\hline
+\end{DoxyParams}

@@ -1,0 +1,52 @@
+\doxysection{Scan\+Callbacks Class Reference}
+\hypertarget{class_scan_callbacks}{}\label{class_scan_callbacks}\index{ScanCallbacks@{ScanCallbacks}}
+
+
+Class to handle Bluetooth scan callbacks.  
+
+
+
+
+{\ttfamily \#include $<$bluetooth.\+h$>$}
+
+Inheritance diagram for Scan\+Callbacks\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_scan_callbacks}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_scan_callbacks_aee1608dffcc36c6e9325f3bb5ba9b924}\label{class_scan_callbacks_aee1608dffcc36c6e9325f3bb5ba9b924} 
+{\bfseries Scan\+Callbacks} (\mbox{\hyperlink{class_bluetooth_client}{Bluetooth\+Client}} \texorpdfstring{$\ast$}{*}client)
+\item 
+void \mbox{\hyperlink{class_scan_callbacks_a633d8e55b380f5d6c9924b08c6b60368}{on\+Result}} (const Nim\+BLEAdvertised\+Device \texorpdfstring{$\ast$}{*}advertised\+Device) override
+\begin{DoxyCompactList}\small\item\em Callback function for scan results. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class to handle Bluetooth scan callbacks. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_scan_callbacks_a633d8e55b380f5d6c9924b08c6b60368}\index{ScanCallbacks@{ScanCallbacks}!onResult@{onResult}}
+\index{onResult@{onResult}!ScanCallbacks@{ScanCallbacks}}
+\doxysubsubsection{\texorpdfstring{onResult()}{onResult()}}
+{\footnotesize\ttfamily \label{class_scan_callbacks_a633d8e55b380f5d6c9924b08c6b60368} 
+void Scan\+Callbacks\+::on\+Result (\begin{DoxyParamCaption}\item[{const Nim\+BLEAdvertised\+Device \texorpdfstring{$\ast$}{*}}]{advertised\+Device}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}}
+
+
+
+Callback function for scan results. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em advertised\+Device} & The advertised device found during scanning\\
+\hline
+\end{DoxyParams}
+This function is called when a scan result is found. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/network/\mbox{\hyperlink{bluetooth_8h}{bluetooth.\+h}}\item 
+src/network/\mbox{\hyperlink{bluetooth_8cpp}{bluetooth.\+cpp}}\end{DoxyCompactItemize}

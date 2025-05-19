@@ -1,0 +1,38 @@
+\doxysection{include/tasks/communication\+Task.h File Reference}
+\hypertarget{communication_task_8h}{}\label{communication_task_8h}\index{include/tasks/communicationTask.h@{include/tasks/communicationTask.h}}
+
+
+Communication Task Header File.  
+
+
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{communication_task_8h_af4e3e1e275109ab342b8a8dce2f8aede}{communication\+Task}} (void \texorpdfstring{$\ast$}{*}pv\+Parameters)
+\begin{DoxyCompactList}\small\item\em communication\+Task function \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Communication Task Header File. 
+
+This file contains the declaration of the communication\+Task function, which is used to handle communication operations in a Free\+RTOS task. The task is responsible for sending and receiving data 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{communication_task_8h_af4e3e1e275109ab342b8a8dce2f8aede}\index{communicationTask.h@{communicationTask.h}!communicationTask@{communicationTask}}
+\index{communicationTask@{communicationTask}!communicationTask.h@{communicationTask.h}}
+\doxysubsubsection{\texorpdfstring{communicationTask()}{communicationTask()}}
+{\footnotesize\ttfamily \label{communication_task_8h_af4e3e1e275109ab342b8a8dce2f8aede} 
+void communication\+Task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{pv\+Parameters}{}\end{DoxyParamCaption})}
+
+
+
+communication\+Task function 
+
+This function handles communication operations in a Free\+RTOS task. It reads processed data from a queue and sends it to the network. The task runs in an infinite loop, waiting for data to be available in the queue. When data is received, it is sent to the network for processing.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pv\+Parameters} & \\
+\hline
+\end{DoxyParams}
+\texorpdfstring{$<$}{<} Data structure to hold outgoing data
