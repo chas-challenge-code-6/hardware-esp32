@@ -108,9 +108,7 @@ void BluetoothClient::onHeartRateNotify(NimBLERemoteCharacteristic *, uint8_t *d
 
 void ScanCallbacks::onResult(const NimBLEAdvertisedDevice *advertisedDevice)
 {
-    Serial.print("[ScanCallbacks] Found device: ");
     Serial.println(advertisedDevice->toString().c_str());
-    Serial.print("[ScanCallbacks] Device address: ");
     Serial.println(advertisedDevice->getAddress().toString().c_str());
 
     std::string advAddr = advertisedDevice->getAddress().toString();
