@@ -14,7 +14,6 @@ var NAVTREEINDEX0 =
 "accelerometer_task_8h_source.html":[1,0,0,2,0],
 "annotated.html":[0,0],
 "bluetooth_8cpp.html":[1,0,1,0,0],
-"bluetooth_8cpp.html#a396d94534021622df7dbb694f5cf9dec":[1,0,1,0,0,0],
 "bluetooth_8h.html":[1,0,0,0,0],
 "bluetooth_8h_source.html":[1,0,0,0,0],
 "bluetooth_task_8cpp.html":[1,0,1,2,1],
