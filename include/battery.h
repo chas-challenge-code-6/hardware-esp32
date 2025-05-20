@@ -2,35 +2,30 @@
 #define BATTERY_H
 #include "utilities.h"
 #include <Arduino.h>
-#include <esp32-hal-adc.h> /// Include the ESP32 ADC library for analogReadMilliVolts
+#include <TinyGsmClient.h>
+
+#define SerialAT Serial1
+extern TinyGsm modem; // Declare as extern, define in battery.cpp
 
 class Battery 
 {
-    private:
-        int batteryPin;
-        float ADCbatteryVoltage;
-        float rawBatteryVoltage;
-        float batteryVoltageLimit;
-        float batteryPercentage;
-        int voltageDivider;
+    private: 
         
 
     public:
-        //Functions for monitoring battery status
+        Battery(int rx = 32, int tx = 31) : modem_rx(rx), modem_tx(tx) {}
         void begin();
         void loop();
-        float getBatteryStatus();
-        float getBatteryVoltage();
+        float getBatteryStatus(); // Returns battery percentage
+        float getBatteryVoltage(); // Returns battery voltage in mV
         void getUpdate();
-        void sendData(); //For sending battery status to the server
+        void sendData();
 
-        //Functions for power managment
         void powerSaveMode();
         bool isPowerOn(int pin);
         void turnOnPower(int pin);
         void turnOffPower(int pin);
-        void safetyShutdown(float pin, float VoltLimit);
-        
+        void safetyShutdown(int pin, float VoltLimit); // pin should be int
 };
 
 #endif //BATTERY_H
