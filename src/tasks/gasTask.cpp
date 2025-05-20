@@ -2,6 +2,7 @@
 #include "SensorData.h"
 #include "sensors/mq2.h"
 #include <Arduino.h>
+#include <cmath>
 
 extern QueueHandle_t dataQueue;
 extern EventGroupHandle_t networkEventGroup;
@@ -38,8 +39,7 @@ void gasTask(void *parameter)
 
         Serial.printf("[Gas Task] Gas Concentration (PPM): %.2f\n", newGasLevel);
 
-        // TODO: Set threshold for sending data instead, the span could be bigger
-        if (isnan(oldGasPPM) || newGasLevel != oldGasPPM)
+        if (isnan(oldGasPPM) || fabs(newGasLevel - oldGasPPM) >= GAS_DELTA_THRESHOLD)
         {
             gasData.gasLevel = newGasLevel;
             sendGasData(gasData);

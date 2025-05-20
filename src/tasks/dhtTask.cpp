@@ -2,6 +2,7 @@
 #include "SensorData.h"
 #include "sensors/dht22.h"
 #include <Arduino.h>
+#include <cmath>
 
 extern QueueHandle_t dataQueue;
 extern EventGroupHandle_t networkEventGroup;
