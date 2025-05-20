@@ -216,6 +216,12 @@ void Battery::safetyShutdown(float pin, float VoltLimit)
 
 void Battery::powerSaveMode() 
 {
+    Serial.println("Entering light sleep mode for 10 seconds...");
+    // Sleep for 10 seconds (adjust as needed)
+    esp_sleep_enable_timer_wakeup(10 * 1000000ULL); // 10 seconds in microseconds
+    Serial.flush(); // Ensure all serial output is sent
+    esp_light_sleep_start(); // <-- Use light sleep, not deep sleep!
+    Serial.println("Woke up from light sleep!");
 };
 
 
