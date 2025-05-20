@@ -46,6 +46,14 @@
 // #define GAS_ADC_BIT_RESOLUTION  (12)
 // #define GAS_RATIO_CLEANAIR      (9.83)
 
+// Battery macros
+#define BATTERY_PINRX 35
+#define BATTERY_PINTX 35
+
+// Battery macros
+#define BATTERY_PINRX 35
+#define BATTERY_PINTX 35
+
 /**
  * @brief Accelerometer macros / Setup I2C
  *  

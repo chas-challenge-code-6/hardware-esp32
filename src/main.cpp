@@ -17,6 +17,7 @@
 #include "tasks/dhtTask.h"
 #include "tasks/gasTask.h"
 #include "tasks/processingTask.h"
+#include "tasks/batteryTask.h"
 
 #include <Arduino.h>
 #include <Wire.h>
@@ -39,13 +40,15 @@ void setup()
     dataQueue = xQueueCreate(10, sizeof(sensor_data_t)); ///< Queue for sensor data, used by all tasks
     httpQueue = xQueueCreate(10, sizeof(sensor_data_t)); ///< Queue for HTTP data, used by the communication task
 
-    xTaskCreatePinnedToCore(accelTask, "AccelTask", 4096, NULL, 1, NULL, 
-                            1); // Pin to core 1 to not disturb WiFi/LTE ///< Task for accelerometer
-    // xTaskCreate(bluetoothTask, "Bluetooth Task", 2048, NULL, 1, NULL); ///< Task for Bluetooth
-    // xTaskCreate(dhtTask, "DHT Task", 2048, NULL, 1, NULL); ///< Task for DHT sensor
-    // xTaskCreate(gasTask, "Gas Task", 2048, NULL, 1, NULL); ///< Task for gas sensor
-    // xTaskCreate(communicationTask, "CommTask", 4096, &comm, 1, NULL); ///< Task for communication
-    // xTaskCreate(processingTask, "Process", 4096, NULL, 1, NULL); ///< Task for processing data
+    xTaskCreatePinnedToCore(accelTask, "AccelTask", 4096, NULL, 1, NULL,
+                            1); // Pin to core 1 to not disturb WiFi/LTE
+    // xTaskCreate(bluetoothTask, "Bluetooth Task", 2048, NULL, 1, NULL);
+    // xTaskCreate(dhtTask, "DHT Task", 2048, NULL, 1, NULL);
+    // xTaskCreate(gasTask, "Gas Task", 2048, NULL, 1, NULL);
+    // xTaskCreate(batteryTask, "Battery Task", 2048, NULL, 1, NULL);
+
+    // xTaskCreate(communicationTask, "CommTask", 4096, &comm, 1, NULL);
+    // xTaskCreate(processingTask, "Process", 4096, NULL, 1, NULL);
 }
 
 
