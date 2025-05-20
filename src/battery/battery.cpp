@@ -132,8 +132,8 @@ float Battery::getBatteryStatus()
     Serial.println("%");
 
     return percentage;
-};
-// Not done yet
+}
+
 void Battery::getUpdate()
 {
     static unsigned long lastRead = 0;
@@ -174,7 +174,6 @@ void Battery::turnOffPower(int pin)
     isPowerOn(pin);
 };
 
-// Checks if the pin is recieving power
 bool Battery::isPowerOn(int pin)
 {
     // Check if the pin is receiving power
@@ -198,12 +197,6 @@ bool Battery::isPowerOn(int pin)
     }
 }
 
-void Battery::powerSaveMode() {
-    // Set the power save mode
-
-};
-
-// Safety shutdown
 void Battery::safetyShutdown(float pin, float VoltLimit)
 {
     // Check if the battery voltage is below the limit
@@ -220,6 +213,12 @@ void Battery::safetyShutdown(float pin, float VoltLimit)
         Serial.println("Power is OFF");
     }
 };
+
+void Battery::powerSaveMode() 
+{
+};
+
+
 // For sending battery status to the smart watch or server
 void Battery::sendData() {
     // only send data when connected
