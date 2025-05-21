@@ -222,7 +222,7 @@ void Battery::powerSaveMode()
     Serial.flush(); // Ensure all serial output is sent
     esp_light_sleep_start(); // <-- Use light sleep, not deep sleep!
     Serial.println("Woke up from light sleep!");
-};
+    }
 
 
 // For sending battery status to the smart watch or server
