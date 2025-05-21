@@ -33,19 +33,19 @@ EventGroupHandle_t networkEventGroup; ///< Event group for network events
 void setup()
 {
     Serial.begin(115200);
-    Wire.begin(SDA_PIN, SCL_PIN, 100000); ///< Initialize I2C
+    //Wire.begin(SDA_PIN, SCL_PIN, 100000); ///< Initialize I2C
 
     networkEventGroup = xEventGroupCreate(); ///< Event group for network events
 
     dataQueue = xQueueCreate(10, sizeof(sensor_data_t)); ///< Queue for sensor data, used by all tasks
     httpQueue = xQueueCreate(10, sizeof(sensor_data_t)); ///< Queue for HTTP data, used by the communication task
 
-    xTaskCreatePinnedToCore(accelTask, "AccelTask", 4096, NULL, 1, NULL,
-                            1); // Pin to core 1 to not disturb WiFi/LTE
+    //xTaskCreatePinnedToCore(accelTask, "AccelTask", 4096, NULL, 1, NULL,
+                            //1); // Pin to core 1 to not disturb WiFi/LTE
     // xTaskCreate(bluetoothTask, "Bluetooth Task", 2048, NULL, 1, NULL);
     // xTaskCreate(dhtTask, "DHT Task", 2048, NULL, 1, NULL);
     // xTaskCreate(gasTask, "Gas Task", 2048, NULL, 1, NULL);
-    // xTaskCreate(batteryTask, "Battery Task", 2048, NULL, 1, NULL);
+    xTaskCreate(batteryTask, "Battery Task", 2048, NULL, 1, NULL);
 
     // xTaskCreate(communicationTask, "CommTask", 4096, &comm, 1, NULL);
     // xTaskCreate(processingTask, "Process", 4096, NULL, 1, NULL);

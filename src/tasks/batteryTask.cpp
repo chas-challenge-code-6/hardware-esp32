@@ -7,14 +7,14 @@ extern QueueHandle_t dataQueue;
 
 void batteryTask(void *parameter)
 {
-    Battery battery;
-    battery.begin();
+    BatteryMonitor battery(BOARD_BAT_ADC_PIN);
+    // battery.begin();
     sensor_data_t battData = {};
 
     while (true)
     {
-        float voltage = battery.getBatteryVoltage(); // in mV
-        float percent = battery.getBatteryStatus();  // in %
+        float voltage = battery.readVoltage(); // in mV
+        float percent = battery.percent();  // in %
 
         // Map battery percent to device_battery (uint8_t)
         battData.device_battery = static_cast<uint8_t>(percent);

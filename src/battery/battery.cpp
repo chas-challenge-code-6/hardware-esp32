@@ -1,12 +1,24 @@
 #include "battery.h"
 
-TinyGsm modem(SerialAT); // Define modem here
+BatteryMonitor::BatteryMonitor(int adcPin, float vMax, float vMin, float divider)
+    : _adcPin(adcPin), _vMax(vMax), _vMin(vMin), _divider(divider) {}
 
-Battery::Battery(int rx, int tx) : modem_rx(rx), modem_tx(tx)
-{
-    // Constructor initializes the modem pins
-    Serial.println("Battery constructor called");
+float BatteryMonitor::readVoltage() {
+    uint32_t mv = analogReadMilliVolts(_adcPin);
+    return (mv * _divider) / 1000.0;
 }
+
+int BatteryMonitor::percent() {
+    float v = readVoltage();
+    if (v <= _vMin) return 0;
+    if (v >= _vMax) return 100;
+    return int(100 * (v - _vMin) / (_vMax - _vMin) + 0.5f);
+}
+
+/* #include "battery.h"
+#include "main.h" // Ensure BATTERY_PINRX is defined
+
+TinyGsm modem(SerialAT); // Define modem here
 
 void Battery::begin()
 {
@@ -32,17 +44,22 @@ void Battery::loop()
 
 float Battery::getBatteryVoltage()
 {
-    float voltage = modem.getBattVoltage();
+    // Read battery voltage from analog pin (BATTERY_PINRX defined in main.h)
+    int raw = analogRead(BATTERY_PINRX);
+    // Example calculation for 12-bit ADC (0-4095), 3.3V ref, voltage divider ratio 2:1
+    float voltage = (raw / 4095.0) * 3.3 * 2.0; // Adjust multiplier for your hardware
     Serial.print("Battery Voltage: ");
     Serial.print(voltage);
-    Serial.println(" mV");
-    return voltage;                            
+    Serial.println(" V");
+    return voltage;
 }
 
-// Not done yet
 float Battery::getBatteryStatus()
 {
-    int percent = modem.getBattPercent();
+    float voltage = getBatteryVoltage();
+    // Map voltage to percentage (example: 3.0V = 0%, 4.2V = 100%)
+    float percent = (voltage - 3.0) / (4.2 - 3.0) * 100.0;
+    percent = constrain(percent, 0, 100);
     Serial.print("Battery Percentage: ");
     Serial.print(percent);
     Serial.println(" %");
@@ -147,3 +164,4 @@ void Battery::sendData() {
     //             please disconnect the USBC
     //             Serial.println(buf);
 };
+ */
