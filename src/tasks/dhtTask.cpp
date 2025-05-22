@@ -46,14 +46,22 @@ void dhtTask(void *parameter)
         Serial.print("[DHT Task] Humidity: ");
         Serial.println(newHum);
 
-        if (isnan(oldTemp) || isnan(oldHum) || fabs(newTemp - oldTemp) > TEMP_DELTA_THRESHOLD ||
-            fabs(newHum - oldHum) > HUM_DELTA_THRESHOLD)
-        {
-            dhtData.temperature = newTemp;
-            dhtData.humidity = newHum;
-            sendDHTData(dhtData);
-            oldTemp = newTemp;
-            oldHum = newHum;
+        // Skicka inte data om ej inom threshold eller om temp/humid plötsligt sjunker till 0 (om innan +-2 grader) om det inte fortsätter repetera.
+        static bool lastWasZeroTemp = false;
+        bool suddenZeroTemp = (oldTemp > 2.0f || oldTemp < -2.0f) && newTemp == 0.0f;
+
+        if (suddenZeroTemp && !lastWasZeroTemp) {
+            lastWasZeroTemp = true;
+        } else {
+            if (isnan(oldTemp) || isnan(oldHum) || fabs(newTemp - oldTemp) > TEMP_DELTA_THRESHOLD ||
+                fabs(newHum - oldHum) > HUM_DELTA_THRESHOLD) {
+                dhtData.temperature = newTemp;
+                dhtData.humidity = newHum;
+                sendDHTData(dhtData);
+                oldTemp = newTemp;
+                oldHum = newHum;
+            }
+            lastWasZeroTemp = (newTemp == 0.0f);
         }
         vTaskDelay(pdMS_TO_TICKS(2000));
     }
