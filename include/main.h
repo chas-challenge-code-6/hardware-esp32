@@ -28,7 +28,7 @@
 #ifdef LILYGO_T_A7670
 #define DHT_PIN 32
 #elif LILYGO_T_SIM7670G_S3
-#define DHT_PIN 5
+#define DHT_PIN 7
 #endif
 #define TEMP_DELTA_THRESHOLD 0.1
 #define HUM_DELTA_THRESHOLD 1.0
