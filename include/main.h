@@ -45,12 +45,23 @@
 #elif LILYGO_T_SIM7670G_S3
 #define GAS_PIN (15)
 #endif
-// #define GAS_BOARD               ("ESP-32")
-// #define GAS_TYPE                ("MQ-2")
-// #define GAS_VOLTAGE_RESOLUTION  (12)
-// #define GAS_ADC_BIT_RESOLUTION  (12)
-#define GAS_RATIO_CLEANAIR         (9.83)
+// #define GAS_BOARD               "ESP-32"
+// #define GAS_TYPE                "MQ-2"
+// #define GAS_VOLTAGE_RESOLUTION  12
+// #define GAS_ADC_BIT_RESOLUTION  12
+#define GAS_RATIO_CLEANAIR         9.83
 #define GAS_DELTA_THRESHOLD 5.0
+/*
+    Exponential regression:
+    Gas    | a      | b
+    H2     | 987.99 | -2.162
+    LPG    | 574.25 | -2.222
+    CO     | 36974  | -3.109
+    Alcohol| 3616.1 | -2.675
+    Propane| 658.71 | -2.168
+*/
+#define GAS_SETA 658.71
+#define GAS_SETB -2.168
 
 // Accelerometer macros
 

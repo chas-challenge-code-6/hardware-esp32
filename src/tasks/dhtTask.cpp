@@ -2,32 +2,67 @@
 #include "SensorData.h"
 #include "sensors/dht22.h"
 #include <Arduino.h>
+#include <cmath>
 
 extern QueueHandle_t dataQueue;
+extern EventGroupHandle_t networkEventGroup;
+#define NETWORK_CONNECTED_BIT BIT0
+
+void sendDHTData(sensor_data_t &dhtData)
+{
+    EventBits_t bits = xEventGroupGetBits(networkEventGroup);
+    if (bits & NETWORK_CONNECTED_BIT)
+    {
+        if (xQueueSend(dataQueue, &dhtData, portMAX_DELAY) != pdPASS)
+        {
+            Serial.println("[DHT Task] Failed to send data to queue");
+        }
+        else
+        {
+            Serial.println("[DHT Task] Data sent to queue successfully.");
+        }
+    }
+}
 
 void dhtTask(void *parameter)
 {
     SensorDHT dhtSensor(DHT_PIN);
-    sensor_data_t accData = {};
+    sensor_data_t dhtData = {};
+    float oldTemp = NAN;
+    float oldHum = NAN;
+    float newTemp = NAN;
+    float newHum = NAN;
 
     dhtSensor.begin();
 
     while (true)
     {
         dhtSensor.update();
-        accData.temperature = dhtSensor.getTemperature();
-        accData.humidity = dhtSensor.getHumdity();
+        newTemp = dhtSensor.getTemperature();
+        newHum = dhtSensor.getHumdity();
 
         Serial.print("[DHT Task] Temperature: ");
-        Serial.println(accData.temperature);
+        Serial.println(newTemp);
         Serial.print("[DHT Task] Humidity: ");
-        Serial.println(accData.humidity);
+        Serial.println(newHum);
 
-        if(xQueueSend(dataQueue, &accData, portMAX_DELAY) != pdPASS)
-        {
-            Serial.println("[DHT Task] Failed to send data to queue");
+        // Skicka inte data om ej inom threshold eller om temp/humid plötsligt sjunker till 0 (om innan +-2 grader) om det inte fortsätter repetera.
+        static bool lastWasZeroTemp = false;
+        bool suddenZeroTemp = (oldTemp > 2.0f || oldTemp < -2.0f) && newTemp == 0.0f;
+
+        if (suddenZeroTemp && !lastWasZeroTemp) {
+            lastWasZeroTemp = true;
+        } else {
+            if (isnan(oldTemp) || isnan(oldHum) || fabs(newTemp - oldTemp) > TEMP_DELTA_THRESHOLD ||
+                fabs(newHum - oldHum) > HUM_DELTA_THRESHOLD) {
+                dhtData.temperature = newTemp;
+                dhtData.humidity = newHum;
+                sendDHTData(dhtData);
+                oldTemp = newTemp;
+                oldHum = newHum;
+            }
+            lastWasZeroTemp = (newTemp == 0.0f);
         }
-        
         vTaskDelay(pdMS_TO_TICKS(2000));
     }
 }
