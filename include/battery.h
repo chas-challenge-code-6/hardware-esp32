@@ -3,6 +3,7 @@
 #include "utilities.h"
 #include <Arduino.h>
 #include <esp32-hal-adc.h> /// Include the ESP32 ADC library for analogReadMilliVolts
+#include "esp_sleep.h" // Include the ESP32 sleep library for power management
 
 class Battery 
 {
