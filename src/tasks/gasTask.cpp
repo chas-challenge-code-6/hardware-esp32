@@ -32,6 +32,9 @@ void gasTask(void *parameter)
     float oldGasPPM = NAN;
     float newGasLevel = NAN;
 
+    gasSensor.begin();
+    gasSensor.calibrate();
+
     while (true)
     {
         gasSensor.update();

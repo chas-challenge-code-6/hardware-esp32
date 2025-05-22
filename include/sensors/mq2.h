@@ -13,6 +13,7 @@ public:
     void update();
     float getValue();
     void begin();
+    void calibrate();
 
 private:
     MQUnifiedsensor mq2;
