@@ -20,4 +20,5 @@ private:
     float _vMax, _vMin, _divider;
 }; 
 
+
 #endif //BATTERY_H
