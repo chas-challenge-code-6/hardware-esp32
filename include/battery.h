@@ -18,6 +18,6 @@ public:
 private:
     int _adcPin;
     float _vMax, _vMin, _divider;
-};
+}; 
 
 #endif //BATTERY_H
