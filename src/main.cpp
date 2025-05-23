@@ -49,6 +49,7 @@ void setup()
 
     // xTaskCreate(communicationTask, "CommTask", 4096, &comm, 1, NULL);
     // xTaskCreate(processingTask, "Process", 4096, NULL, 1, NULL);
+    // xTaskCreate(batteryTask, "Battery Task", 2048, NULL, 1, NULL);
 }
 
 
