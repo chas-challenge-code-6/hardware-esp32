@@ -8,7 +8,6 @@ extern QueueHandle_t dataQueue;
 void batteryTask(void *parameter)
 {
     BatteryMonitor battery(BOARD_BAT_ADC_PIN);
-    // battery.begin();
     sensor_data_t battData = {};
 
     while (true)
