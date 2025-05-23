@@ -1,0 +1,41 @@
+\doxysection{src/tasks/dht\+Task.cpp File Reference}
+\hypertarget{dht_task_8cpp}{}\label{dht_task_8cpp}\index{src/tasks/dhtTask.cpp@{src/tasks/dhtTask.cpp}}
+
+
+DHT Task Implementation File.  
+
+
+{\ttfamily \#include "{}tasks/dht\+Task.\+h"{}}\newline
+{\ttfamily \#include "{}Sensor\+Data.\+h"{}}\newline
+{\ttfamily \#include "{}sensors/dht22.\+h"{}}\newline
+{\ttfamily \#include $<$Arduino.\+h$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{dht_task_8cpp_a4daeab46406c20cb2296d7898907c41c}{dht\+Task}} (void \texorpdfstring{$\ast$}{*}parameter)
+\begin{DoxyCompactList}\small\item\em DHT Task function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{dht_task_8cpp_a2820736c7f6f9a3082102f0acd2cbac1}\label{dht_task_8cpp_a2820736c7f6f9a3082102f0acd2cbac1} 
+Queue\+Handle\+\_\+t {\bfseries data\+Queue}
+\begin{DoxyCompactList}\small\item\em Queue for sensor data, used by all tasks. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+DHT Task Implementation File. 
+
+This file contains the implementation of the dht\+Task function, which is used to handle DHT sensor operations in a Free\+RTOS task. The task is responsible for reading temperature and humidity data from the DHT sensor and sending it to a queue for processing. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{dht_task_8cpp_a4daeab46406c20cb2296d7898907c41c}\index{dhtTask.cpp@{dhtTask.cpp}!dhtTask@{dhtTask}}
+\index{dhtTask@{dhtTask}!dhtTask.cpp@{dhtTask.cpp}}
+\doxysubsubsection{\texorpdfstring{dhtTask()}{dhtTask()}}
+{\footnotesize\ttfamily \label{dht_task_8cpp_a4daeab46406c20cb2296d7898907c41c} 
+void dht\+Task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{parameter}{}\end{DoxyParamCaption})}
+
+
+
+DHT Task function. 
+
+This function handles DHT sensor operations in a Free\+RTOS task. It reads temperature and humidity data from the DHT sensor and sends it to a queue for processing. The task runs in an infinite loop, waiting for data to be available in the queue. When data is received, it is sent to the network for processing. 

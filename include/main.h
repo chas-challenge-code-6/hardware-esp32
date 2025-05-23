@@ -1,7 +1,13 @@
+/**
+ * @file main.h
+ * 
+ * @brief Main Header File
+ */
+
 #ifndef MAIN_H
 #define MAIN_H
 
-#define DEBUG 1
+#define DEBUG 1 ///< Debug mode
 
 // DEVICE_ID for API
 #define DEVICE_ID "SENTINEL-001"
@@ -23,7 +29,10 @@
 #define RGB_BLUE_PIN 21
 #endif
 
-// DHT22 macros
+/**
+ * @brief DHT22 macros
+ * 
+ */
 #define DHTTYPE DHT22
 #ifdef LILYGO_T_A7670
 #define DHT_PIN 32
@@ -33,7 +42,10 @@
 #define TEMP_DELTA_THRESHOLD 0.1
 #define HUM_DELTA_THRESHOLD 1.0
 
-// Macros for Polar H9
+/**
+ * @brief Macros for Polar H9
+ * 
+ */
 #define STRAP_NAME "POLAR H9 EC351E2B"
 #define STRAP_ADDRESS "a0:9e:1a:ec:35:1e"
 #define HEARTRATE_SERVICE_UUID "180D"
@@ -63,18 +75,34 @@
 #define SCL_PIN 5
 #endif
 
-#define MPU6500_ADDR 0x68
 
-// Accelerometer fall thresholds
+#define MPU6500_ADDR 0x68 ///< I2C address of the MPU6500
+
+/**
+ * @brief Accelerometer fall thresholds
+ * 
+ */
 #define ACC_THRESHOLD 2.0
 #define ANGLE_THRESHOLD 60.0
 #define MAX_TIME_BETWEEN 2000
 #define STEP_THRESHOLD 1.2
 #define STEP_DEBOUNCE_MS 300
 
-// Kalibrering
+/**
+ * @brief Calibration offsets for accelerometer
+ * 
+ */
 #define X_OFFSET 0.0737
 #define Y_OFFSET -0.6132
 #define Z_OFFSET -0.9986
 
+// Battery macros
+#ifdef LILYGO_T_A7670
+#define BOARD_BAT_ADC_PIN 35
+#elif LILYGO_T_SIM7670G_S3
+#define BOARD_BAT_ADC_PIN 4
+
+
 #endif
+
+#endif // MAIN_H

@@ -1,9 +1,28 @@
+/**
+ * @file accelerometerTask.cpp
+ * @brief Accelerometer Task Implementation
+ * 
+ * @details This file contains the implementation of the accelerometer task, which is responsible for
+ * 
+ */
+
 #include "tasks/accelerometerTask.h"
 #include "SensorData.h"
 #include "sensors/accelerometer.h"
 #include <Arduino.h>
 
+
 extern QueueHandle_t dataQueue;
+
+/**
+ * 
+ * @brief Accelerometer task function
+ * 
+ * @details This function initializes the accelerometer and continuously reads data from it.
+ * It also handles fall detection and step counting.
+ * 
+ * @param pvParameters 
+ */
 
 void accelTask(void *pvParameters)
 {

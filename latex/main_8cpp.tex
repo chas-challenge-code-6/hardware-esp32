@@ -1,0 +1,71 @@
+\doxysection{src/main.cpp File Reference}
+\hypertarget{main_8cpp}{}\label{main_8cpp}\index{src/main.cpp@{src/main.cpp}}
+
+
+Main File.  
+
+
+{\ttfamily \#include "{}main.\+h"{}}\newline
+{\ttfamily \#include "{}Sensor\+Data.\+h"{}}\newline
+{\ttfamily \#include "{}network/bluetooth.\+h"{}}\newline
+{\ttfamily \#include "{}tasks/accelerometer\+Task.\+h"{}}\newline
+{\ttfamily \#include "{}tasks/bluetooth\+Task.\+h"{}}\newline
+{\ttfamily \#include "{}tasks/communication\+Task.\+h"{}}\newline
+{\ttfamily \#include "{}tasks/dht\+Task.\+h"{}}\newline
+{\ttfamily \#include "{}tasks/gas\+Task.\+h"{}}\newline
+{\ttfamily \#include "{}tasks/processing\+Task.\+h"{}}\newline
+{\ttfamily \#include $<$Arduino.\+h$>$}\newline
+{\ttfamily \#include $<$Wire.\+h$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{main_8cpp_a4fc01d736fe50cf5b977f755b675f11d}{setup}} ()
+\item 
+void \mbox{\hyperlink{main_8cpp_afe461d27b9c48d5921c00d521181f12f}{loop}} ()
+\begin{DoxyCompactList}\small\item\em Main loop. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{main_8cpp_a50ef38cb2acae374a91ebef550610711}\label{main_8cpp_a50ef38cb2acae374a91ebef550610711} 
+\mbox{\hyperlink{class_bluetooth_client}{Bluetooth\+Client}} {\bfseries b\+Client}
+\begin{DoxyCompactList}\small\item\em Bluetooth client object. \end{DoxyCompactList}\item 
+\Hypertarget{main_8cpp_a2820736c7f6f9a3082102f0acd2cbac1}\label{main_8cpp_a2820736c7f6f9a3082102f0acd2cbac1} 
+Queue\+Handle\+\_\+t {\bfseries data\+Queue}
+\begin{DoxyCompactList}\small\item\em Queue for sensor data, used by all tasks. \end{DoxyCompactList}\item 
+\Hypertarget{main_8cpp_a8954cbaccd2b2ba1e6cc1abe9a7a53be}\label{main_8cpp_a8954cbaccd2b2ba1e6cc1abe9a7a53be} 
+Queue\+Handle\+\_\+t {\bfseries http\+Queue}
+\begin{DoxyCompactList}\small\item\em Queue for HTTP data, used by the communication task. \end{DoxyCompactList}\item 
+\Hypertarget{main_8cpp_a01fe87d0f21810f5e1e1485bb53066d3}\label{main_8cpp_a01fe87d0f21810f5e1e1485bb53066d3} 
+Event\+Group\+Handle\+\_\+t {\bfseries network\+Event\+Group}
+\begin{DoxyCompactList}\small\item\em Event group for network events. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Main File. 
+
+This file contains the main function and setup function for the ESP32 project. It initializes the necessary components, creates Free\+RTOS tasks, and sets up the event group for network communication. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{main_8cpp_afe461d27b9c48d5921c00d521181f12f}\index{main.cpp@{main.cpp}!loop@{loop}}
+\index{loop@{loop}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{loop()}{loop()}}
+{\footnotesize\ttfamily \label{main_8cpp_afe461d27b9c48d5921c00d521181f12f} 
+void loop (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Main loop. 
+
+The main loop is empty as all tasks are handled in Free\+RTOS tasks. The loop function is required by the Arduino framework, but it does not perform any operations. \Hypertarget{main_8cpp_a4fc01d736fe50cf5b977f755b675f11d}\index{main.cpp@{main.cpp}!setup@{setup}}
+\index{setup@{setup}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{setup()}{setup()}}
+{\footnotesize\ttfamily \label{main_8cpp_a4fc01d736fe50cf5b977f755b675f11d} 
+void setup (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\texorpdfstring{$<$}{<} Initialize I2C
+
+\texorpdfstring{$<$}{<} Event group for network events
+
+\texorpdfstring{$<$}{<} Queue for sensor data, used by all tasks
+
+\texorpdfstring{$<$}{<} Queue for HTTP data, used by the communication task

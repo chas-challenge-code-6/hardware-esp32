@@ -1,3 +1,11 @@
+/**
+ * @file accelerometer.h
+ * @brief Class for the accelerometer sensor
+ * @date 2025-05-19
+ * 
+ * 
+ */
+
 #ifndef ACCELEROMETER_H
 #define ACCELEROMETER_H
 
@@ -5,6 +13,11 @@
 #include <MPU6500_WE.h>
 #include <Wire.h>
 #include <main.h>
+
+/**
+ * @brief Class for the accelerometer sensor
+ * 
+ */
 
 class SensorAccelerometer
 {

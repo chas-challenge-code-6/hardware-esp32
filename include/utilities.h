@@ -127,6 +127,11 @@
 #define TINY_GSM_MODEM_A7670
 #endif
 
+
+/** 
+ * 
+ * @brief Lilygo T-SIM7670G-S3
+ */
 #elif defined(LILYGO_T_SIM7670G_S3)
 #define MODEM_BAUDRATE (115200)
 #define MODEM_DTR_PIN (9)
