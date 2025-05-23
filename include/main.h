@@ -77,4 +77,13 @@
 #define Y_OFFSET -0.6132
 #define Z_OFFSET -0.9986
 
+// Battery macros
+#ifdef LILYGO_T_A7670
+#define BOARD_BAT_ADC_PIN 35
+#elif LILYGO_T_SIM7670G_S3
+#define BOARD_BAT_ADC_PIN 4
+
+
 #endif
+
+#endif // MAIN_H

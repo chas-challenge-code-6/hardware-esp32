@@ -7,6 +7,7 @@
 #include "tasks/dhtTask.h"
 #include "tasks/gasTask.h"
 #include "tasks/processingTask.h"
+#include "tasks/batteryTask.h"
 
 #include <Arduino.h>
 #include <Wire.h>
@@ -36,6 +37,7 @@ void setup()
     // xTaskCreate(gasTask, "Gas Task", 2048, NULL, 1, NULL);
     // xTaskCreate(communicationTask, "CommTask", 4096, &comm, 1, NULL);
     // xTaskCreate(processingTask, "Process", 4096, NULL, 1, NULL);
+    // xTaskCreate(batteryTask, "Battery Task", 2048, NULL, 1, NULL);
 }
 
 void loop() {}
