@@ -25,7 +25,6 @@ public:
     float getTotal() const;
     float getPitch() const;
     float getRoll() const;
-    float getSteps() const;
 };
 
 #endif
