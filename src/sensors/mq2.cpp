@@ -38,5 +38,12 @@ void MQ2Sensor::update()
 
 int MQ2Sensor::getValue()
 {
-    return (int)mq2.readSensor();
+    float rawValue = mq2.readSensor();
+    
+    if (rawValue < 0.0f || rawValue > 10000.0f || isnan(rawValue) || isinf(rawValue)) {
+        return -1;
+    }
+    
+    int intValue = (int)round(rawValue);
+    return intValue;
 }
