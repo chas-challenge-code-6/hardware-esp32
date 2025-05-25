@@ -18,7 +18,6 @@ void BluetoothClient::setConnectFlag(const NimBLEAdvertisedDevice *device)
 
 void BluetoothClient::begin()
 {
-    Serial.println("[BluetoothClient] begin() called");
     NimBLEDevice::init("");
     NimBLEDevice::setPower(ESP_PWR_LVL_P9);
     NimBLEScan *pScan = NimBLEDevice::getScan();
@@ -65,7 +64,7 @@ void BluetoothClient::loop()
         }
 
         doConnect = false;
-        advDevice = nullptr;
+        // advDevice = nullptr; // Ta INTE bort advDevice, så vi kan försöka igen vid misslyckad anslutning
     }
 }
 
@@ -78,6 +77,10 @@ void BluetoothClient::onDisconnect(NimBLEClient *pClient, int reason)
 {
     Serial.printf("[BluetoothClient] onDisconnect: Disconnected, reason=%d\n", reason);
     NimBLEDevice::getScan()->start(0, false);
+    // Försök återansluta automatiskt till samma enhet
+    if (advDevice) {
+        doConnect = true;
+    }
 }
 
 uint8_t BluetoothClient::getHeartRate() const
