@@ -48,7 +48,8 @@ See [LilyGO T-A76XX repo](https://github.com/Xinyuan-LilyGO/LilyGO-T-A76XX) and 
 3. **Connect your ESP32 board**
 4. **Configure board and secrets:**
    - Edit `platformio.ini` to select your board/environment
-   - Add your network APN and credentials in `include/secrets.h`
+   - Copy `include/secrets.h.default` to `include/secrets.h` and configure your network credentials
+   - Review `include/config.h` for additional system configuration options
 5. **Build and upload:**
    ```sh
    pio run -t upload
