@@ -8,13 +8,13 @@ extern QueueHandle_t dataQueue;
 extern EventGroupHandle_t networkEventGroup;
 #define NETWORK_CONNECTED_BIT BIT0
 
-void sendGasData(sensor_data_t &gasData)
+void sendGasData(sensor_message_t msg)
 {
     EventBits_t bits = xEventGroupGetBits(networkEventGroup);
 
     if (bits & NETWORK_CONNECTED_BIT)
     {
-        if (xQueueSend(dataQueue, &gasData, portMAX_DELAY) != pdPASS)
+        if (xQueueSend(dataQueue, &msg, portMAX_DELAY) != pdPASS)
         {
             Serial.println("[Gas Task] Failed to send data to queue");
         }
@@ -27,7 +27,7 @@ void sendGasData(sensor_data_t &gasData)
 
 void gasTask(void *parameter)
 {
-    sensor_data_t gasData = {};
+    sensor_message_t msg = {};
     MQ2Sensor gasSensor(GAS_PIN);
     float oldGasPPM = NAN;
     float newGasLevel = NAN;
@@ -44,10 +44,12 @@ void gasTask(void *parameter)
 
         if (isnan(oldGasPPM) || fabs(newGasLevel - oldGasPPM) >= GAS_DELTA_THRESHOLD)
         {
-            gasData.gasLevel = newGasLevel;
-            sendGasData(gasData);
+            msg.data.gasLevel = newGasLevel;
+            msg.valid.gasLevel = true;
+            sendGasData(msg);
             oldGasPPM = newGasLevel;
+            msg.valid.gasLevel = false;
         }
-        vTaskDelay(pdMS_TO_TICKS(2000));
+        vTaskDelay(pdMS_TO_TICKS(10000));
     }
 }
