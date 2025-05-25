@@ -1,5 +1,5 @@
 #include "network/network.h"
-#include "main.h"
+#include "config.h"
 #include "utils/threadsafe_serial.h"
 #include <Arduino.h>
 #include <TinyGSM.h>
@@ -171,7 +171,7 @@ void Network::maintainConnection(const char *ssid, const char *password, const c
     {
         int n = WiFi.scanNetworks(false, false, false, 300, 0, ssid);
         bool ssidFound = (n > 0);
-        
+
         if (ssidFound)
         {
             safePrintln("[Network] Target WiFi network found, attempting connection...");

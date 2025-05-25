@@ -1,10 +1,29 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef CONFIG_H
+#define CONFIG_H
 
 #include <freertos/FreeRTOS.h>
 #include <freertos/semphr.h>
 
-#define DEBUG 1
+#define DEBUG 0
+
+// fallback to secrets.h.default
+#ifdef __has_include
+    #if __has_include("secrets.h")
+        #include "secrets.h"
+        #define USING_SECRETS_H
+    #elif __has_include("secrets.h.default")
+        #include "secrets.h.default"
+        #warning "secrets.h not found, using secrets.h.default. Please copy secrets.h.default to secrets.h and configure your settings."
+        #define USING_SECRETS_DEFAULT
+    #else
+        #error "Neither secrets.h nor secrets.h.default found. Please ensure secrets.h.default exists."
+    #endif
+#else
+    // Fallback for compilers that don't support __has_include
+    #include "secrets.h.default"
+    #warning "Compiler doesn't support __has_include, using secrets.h.default as fallback."
+    #define USING_SECRETS_DEFAULT
+#endif
 
 // DEVICE_ID for API
 #define DEVICE_ID "SENTINEL-001"
@@ -57,7 +76,7 @@ extern SemaphoreHandle_t networkEventMutex;
 // #define GAS_TYPE                "MQ-2"
 // #define GAS_VOLTAGE_RESOLUTION  12
 // #define GAS_ADC_BIT_RESOLUTION  12
-#define GAS_RATIO_CLEANAIR         9.83
+#define GAS_RATIO_CLEANAIR 9.83
 #define GAS_DELTA_THRESHOLD 5.0
 /*
     Exponential regression:

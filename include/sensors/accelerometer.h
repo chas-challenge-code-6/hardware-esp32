@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include <MPU6500_WE.h>
 #include <Wire.h>
-#include <main.h>
+#include "config.h"
 
 class SensorAccelerometer
 {

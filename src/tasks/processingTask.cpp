@@ -1,6 +1,6 @@
 #include "tasks/processingTask.h"
 #include "SensorData.h"
-#include "main.h"
+#include "config.h"
 #include "utils/threadsafe_serial.h"
 #include <Arduino.h>
 
@@ -13,7 +13,7 @@ extern QueueHandle_t dataQueue;
 extern QueueHandle_t httpQueue;
 
 bool createJson(const sensor_data_t &data, char *buffer, size_t bufferSize)
-{    
+{
     int len = snprintf(buffer, bufferSize,
                        "{\"device_id\": \"%s\", \"sensors\": { "
                        "\"steps\": %d, "
@@ -34,9 +34,8 @@ bool createJson(const sensor_data_t &data, char *buffer, size_t bufferSize)
     return true;
 }
 
-static void updateLatestData(sensor_data_t &latest, const sensor_message_t &incoming) {
-    Serial.printf("[Proc Task] Before update - gasLevel: %d\n", latest.gasLevel);
-    
+static void updateLatestData(sensor_data_t &latest, const sensor_message_t &incoming)
+{
     if (incoming.valid.accelPitch)
         latest.accelPitch = incoming.data.accelPitch;
     if (incoming.valid.accelRoll)
@@ -61,8 +60,6 @@ static void updateLatestData(sensor_data_t &latest, const sensor_message_t &inco
         latest.steps = incoming.data.steps;
     if (incoming.valid.temperature)
         latest.temperature = incoming.data.temperature;
-        
-    Serial.printf("[Proc Task] After update - gasLevel: %d\n", latest.gasLevel);
 }
 
 void processingTask(void *pvParameters)
@@ -81,30 +78,36 @@ void processingTask(void *pvParameters)
         {
             updateLatestData(latestData, incoming);
 
-
             if (createJson(latestData, buffer, sizeof(buffer)))
             {
                 // null terminate buffer
                 buffer[sizeof(buffer) - 1] = '\0';
-                
+
                 // Debug print json
                 Serial.println("[Proc Task] JSON to be sent to server:");
                 Serial.println(buffer);
                 Serial.println("----------------------------------------");
-                
+
                 memset(&processedData, 0, sizeof(processedData));
                 strncpy(processedData.json, buffer, sizeof(processedData.json) - 1);
                 processedData.json[sizeof(processedData.json) - 1] = '\0';
 
                 int retries = 0;
                 bool sent = false;
-                while (retries < HTTP_QUEUE_SEND_RETRIES && !sent) {
-                    if (xQueueSend(httpQueue, &processedData, HTTP_QUEUE_SEND_TIMEOUT_MS / portTICK_PERIOD_MS) == pdPASS) {
+                while (retries < HTTP_QUEUE_SEND_RETRIES && !sent)
+                {
+                    if (xQueueSend(httpQueue, &processedData,
+                                   HTTP_QUEUE_SEND_TIMEOUT_MS / portTICK_PERIOD_MS) == pdPASS)
+                    {
                         sent = true;
-                    } else {
+                    }
+                    else
+                    {
                         retries++;
-                        if (retries >= HTTP_QUEUE_SEND_RETRIES) {
-                            Serial.println("[Proc Task] Failed to send JSON to HTTP queue after retries.");
+                        if (retries >= HTTP_QUEUE_SEND_RETRIES)
+                        {
+                            Serial.println(
+                                "[Proc Task] Failed to send JSON to HTTP queue after retries.");
                         }
                     }
                 }

@@ -12,10 +12,10 @@ extern EventGroupHandle_t networkEventGroup;
 extern SemaphoreHandle_t networkEventMutex;
 #define NETWORK_CONNECTED_BIT BIT0
 
-void sendAccelData(const sensor_message_t& msg)
+void sendAccelData(const sensor_message_t &msg)
 {
     EventBits_t bits;
-    
+
     if (xSemaphoreTake(networkEventMutex, pdMS_TO_TICKS(100)) == pdTRUE)
     {
         bits = xEventGroupGetBits(networkEventGroup);
@@ -40,7 +40,7 @@ void accelTask(void *pvParameters)
 {
     sensor_message_t msg;
     memset(&msg, 0, sizeof(msg));
-    
+
     SensorAccelerometer accel;
     bool initialized = false;
 
@@ -53,7 +53,7 @@ void accelTask(void *pvParameters)
     const uint32_t FIVE_MINUTES_MS = 5 * 60 * 1000;
     const uint32_t ONE_MINUTE_MS = 60 * 1000;
     const uint32_t MAX_REASONABLE_STEPS = 100000;
-    
+
     now = millis();
     lastStepTime = now;
     lastStepSendTime = now;
@@ -77,36 +77,38 @@ void accelTask(void *pvParameters)
     while (true)
     {
         memset(&msg, 0, sizeof(msg));
-        
+
         now = millis();
-        
+
         accel.update();
         msg.data.accelPitch = accel.getPitch();
         msg.data.accelRoll = accel.getRoll();
         msg.data.accelTotal = accel.getTotal();
         msg.data.accelZ = accel.getZ();
 
-        bool validReading = (msg.data.accelZ >= -20.0 && msg.data.accelZ <= 20.0) && 
-                           (msg.data.accelTotal >= 0.0 && msg.data.accelTotal <= 20.0);
-        
-        if (!validReading) {
+        bool validReading = (msg.data.accelZ >= -20.0 && msg.data.accelZ <= 20.0) &&
+                            (msg.data.accelTotal >= 0.0 && msg.data.accelTotal <= 20.0);
+
+        if (!validReading)
+        {
             vTaskDelay(pdMS_TO_TICKS(100));
             continue;
         }
 
         // Fall detection
-        bool fallCondition = msg.data.accelTotal > ACC_THRESHOLD && 
-                            (abs(msg.data.accelPitch) > ANGLE_THRESHOLD ||
-                             abs(msg.data.accelRoll) > ANGLE_THRESHOLD);
-        
+        bool fallCondition =
+            msg.data.accelTotal > ACC_THRESHOLD && (abs(msg.data.accelPitch) > ANGLE_THRESHOLD ||
+                                                    abs(msg.data.accelRoll) > ANGLE_THRESHOLD);
+
         if (fallCondition)
         {
             // Only send fall detection if enough time has passed since last fall
-            if ((now - lastFallTime) > ONE_MINUTE_MS) {
+            if ((now - lastFallTime) > ONE_MINUTE_MS)
+            {
                 msg.data.fall_detected = true;
                 msg.valid.fall_detected = 1;
                 lastFallTime = now;
-                
+
                 safePrintln("[Accel Task] Fall detected! Sending alert...");
                 sendAccelData(msg);
             }
@@ -118,32 +120,35 @@ void accelTask(void *pvParameters)
             {
                 msg.data.fall_detected = false;
                 msg.valid.fall_detected = 1;
-                
+
                 safePrintln("[Accel Task] Fall detection cleared after 1 minute");
                 sendAccelData(msg);
                 lastFallTime = 0;
             }
         }
 
-        // Pedometer        
+        // Pedometer
         if (msg.data.accelZ > STEP_THRESHOLD && (now - lastStepTime) > STEP_DEBOUNCE_MS)
         {
             totalSteps++;
             lastStepTime = now;
             safePrintf("[Accel Task] Step detected! Total steps: %d\n", totalSteps);
-            
-            if (totalSteps > MAX_REASONABLE_STEPS) {
+
+            if (totalSteps > MAX_REASONABLE_STEPS)
+            {
                 safePrintln("[Accel Task] Step counter corrupted, resetting...");
                 totalSteps = 0;
             }
         }
-        
+
         // Send step data every 5 minutes if changed
-        if (now - lastStepSendTime > FIVE_MINUTES_MS && totalSteps != lastSentSteps) {
-            safePrintf("[Accel Task] Sending step data: %d steps (changed from %d)\n", totalSteps, lastSentSteps);
+        if (now - lastStepSendTime > FIVE_MINUTES_MS && totalSteps != lastSentSteps)
+        {
+            safePrintf("[Accel Task] Sending step data: %d steps (changed from %d)\n", totalSteps,
+                       lastSentSteps);
             msg.data.steps = totalSteps;
             msg.valid.steps = 1;
-            
+
             sendAccelData(msg);
             lastStepSendTime = now;
             lastSentSteps = totalSteps;

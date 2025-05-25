@@ -1,5 +1,5 @@
 #include "network/bluetooth.h"
-#include "main.h"
+#include "config.h"
 #include "utils/threadsafe_serial.h"
 #include <Arduino.h>
 #include <NimBLEDevice.h>
@@ -62,7 +62,8 @@ void BluetoothClient::loop()
         }
 
         doConnect = false;
-        // advDevice = nullptr; // Ta INTE bort advDevice, så vi kan försöka igen vid misslyckad anslutning
+        // advDevice = nullptr; // Ta INTE bort advDevice, så vi kan försöka igen vid misslyckad
+        // anslutning
     }
 }
 
@@ -76,7 +77,8 @@ void BluetoothClient::onDisconnect(NimBLEClient *pClient, int reason)
     safePrintf("[BT] Disconnected (reason=%d)\n", reason);
     NimBLEDevice::getScan()->start(0, false);
     // Försök återansluta automatiskt till samma enhet
-    if (advDevice) {
+    if (advDevice)
+    {
         doConnect = true;
     }
 }

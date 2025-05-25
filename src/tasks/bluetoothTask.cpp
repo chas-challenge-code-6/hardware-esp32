@@ -1,6 +1,6 @@
 #include "tasks/bluetoothTask.h"
 #include "SensorData.h"
-#include "main.h"
+#include "config.h"
 #include "network/bluetooth.h"
 #include "utils/threadsafe_serial.h"
 #include <Arduino.h>
@@ -13,10 +13,10 @@ extern EventGroupHandle_t networkEventGroup;
 extern SemaphoreHandle_t networkEventMutex;
 #define NETWORK_CONNECTED_BIT BIT0
 
-void sendBluetoothData(const sensor_message_t& msg)
+void sendBluetoothData(const sensor_message_t &msg)
 {
     EventBits_t bits;
-    
+
     if (xSemaphoreTake(networkEventMutex, pdMS_TO_TICKS(100)) == pdTRUE)
     {
         bits = xEventGroupGetBits(networkEventGroup);
@@ -27,7 +27,7 @@ void sendBluetoothData(const sensor_message_t& msg)
         safePrintln("[BT Task] Failed to access network event group");
         return;
     }
-    
+
     if (bits & NETWORK_CONNECTED_BIT)
     {
         if (xQueueSend(dataQueue, &msg, QUEUE_SEND_TIMEOUT_MS / portTICK_PERIOD_MS) != pdPASS)
@@ -41,7 +41,7 @@ void bluetoothTask(void *pvParameters)
 {
     sensor_message_t msg;
     memset(&msg, 0, sizeof(msg));
-    
+
     BluetoothClient bClient;
     int oldHeartRate = -1;
     int newHeartRate = 0;

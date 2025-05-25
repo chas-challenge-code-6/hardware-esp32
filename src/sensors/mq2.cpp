@@ -1,5 +1,5 @@
 #include "sensors/mq2.h"
-#include "main.h"
+#include "config.h"
 #include <Arduino.h>
 #include <MQUnifiedsensor.h>
 
@@ -39,11 +39,12 @@ void MQ2Sensor::update()
 int MQ2Sensor::getValue()
 {
     float rawValue = mq2.readSensor();
-    
-    if (rawValue < 0.0f || rawValue > 10000.0f || isnan(rawValue) || isinf(rawValue)) {
+
+    if (rawValue < 0.0f || rawValue > 10000.0f || isnan(rawValue) || isinf(rawValue))
+    {
         return -1;
     }
-    
+
     int intValue = (int)round(rawValue);
     return intValue;
 }

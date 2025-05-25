@@ -1,7 +1,7 @@
 #ifndef SENSOR_MQ2
 #define SENSOR_MQ2
 
-#include "main.h"
+#include "config.h"
 #include <Arduino.h>
 #include <MQUnifiedsensor.h>
 

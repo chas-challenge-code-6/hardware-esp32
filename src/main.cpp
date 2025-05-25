@@ -1,5 +1,5 @@
-#include "main.h"
 #include "SensorData.h"
+#include "config.h"
 #include "network/bluetooth.h"
 #include "tasks/accelerometerTask.h"
 #include "tasks/bluetoothTask.h"
@@ -39,9 +39,11 @@ void setup()
     modemMutex = xSemaphoreCreateMutex();
     networkEventMutex = xSemaphoreCreateMutex();
 
-    if (serialMutex == NULL || modemMutex == NULL || networkEventMutex == NULL) {
+    if (serialMutex == NULL || modemMutex == NULL || networkEventMutex == NULL)
+    {
         Serial.println("Failed to create mutexes!");
-        while(1);
+        while (1)
+            ;
     }
 
     networkEventGroup = xEventGroupCreate();
@@ -65,7 +67,8 @@ void setup()
     else
     {
         Serial.println("Failed to initialize system ready bit!");
-        while(1);
+        while (1)
+            ;
     }
 
     Serial.println("Sentinel started.");

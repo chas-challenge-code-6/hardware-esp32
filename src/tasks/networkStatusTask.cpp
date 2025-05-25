@@ -1,6 +1,6 @@
 #include "tasks/networkStatusTask.h"
 #include "network/network.h"
-#include "secrets.h"
+#include "config.h"
 #include "utils/threadsafe_serial.h"
 #include <Arduino.h>
 
@@ -15,19 +15,24 @@ void networkStatusTask(void *pvParameters)
 {
     bool systemReady = false;
     bool startupLogged = false;
-    
-    while (!systemReady) {
+
+    while (!systemReady)
+    {
         if (xSemaphoreTake(networkEventMutex, pdMS_TO_TICKS(1000)) == pdTRUE)
         {
-            EventBits_t bits = xEventGroupWaitBits(networkEventGroup, SYSTEM_READY_BIT, 
-                                                 pdFALSE, pdTRUE, pdMS_TO_TICKS(100));
+            EventBits_t bits = xEventGroupWaitBits(networkEventGroup, SYSTEM_READY_BIT, pdFALSE,
+                                                   pdTRUE, pdMS_TO_TICKS(100));
             xSemaphoreGive(networkEventMutex);
-            
-            if (bits & SYSTEM_READY_BIT) {
+
+            if (bits & SYSTEM_READY_BIT)
+            {
                 systemReady = true;
                 safePrintln("[Net Task] System ready, starting network management");
-            } else {
-                if (!startupLogged) {
+            }
+            else
+            {
+                if (!startupLogged)
+                {
                     safePrintln("[Net Task] Waiting for system ready...");
                     startupLogged = true;
                 }
@@ -36,16 +41,17 @@ void networkStatusTask(void *pvParameters)
         }
         else
         {
-            safePrintln("[Net Task] Failed to access network event group during startup, retrying...");
+            safePrintln(
+                "[Net Task] Failed to access network event group during startup, retrying...");
             vTaskDelay(pdMS_TO_TICKS(1000));
         }
     }
 
     bool lastConnectionState = false;
-    
+
     while (true)
     {
-        network.maintainConnection(SSID, PASSWORD, NETWORK_APN);
+        network.maintainConnection(WIFI_SSID, PASSWORD, NETWORK_APN);
 
         if (xSemaphoreTake(networkEventMutex, pdMS_TO_TICKS(1000)) == pdTRUE)
         {
@@ -53,7 +59,8 @@ void networkStatusTask(void *pvParameters)
             if (isConnected)
             {
                 xEventGroupSetBits(networkEventGroup, NETWORK_CONNECTED_BIT);
-                if (!lastConnectionState) {
+                if (!lastConnectionState)
+                {
                     safePrintln("[Net Task] Connected to internet");
                     lastConnectionState = true;
                 }
@@ -61,7 +68,8 @@ void networkStatusTask(void *pvParameters)
             else
             {
                 xEventGroupClearBits(networkEventGroup, NETWORK_CONNECTED_BIT);
-                if (lastConnectionState) {
+                if (lastConnectionState)
+                {
                     safePrintln("[Net Task] Connection lost, retrying...");
                     lastConnectionState = false;
                 }
@@ -72,7 +80,7 @@ void networkStatusTask(void *pvParameters)
         {
             safePrintln("[Net Task] Failed to access network event group, continuing...");
         }
-        
+
         vTaskDelay(pdMS_TO_TICKS(10000));
     }
 }

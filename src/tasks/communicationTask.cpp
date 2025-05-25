@@ -1,7 +1,7 @@
 #include "SensorData.h"
 #include "WiFi.h"
 #include "network/network.h"
-#include "secrets.h"
+#include "config.h"
 #include "utils/threadsafe_serial.h"
 #include <Arduino.h>
 #include <CustomJWT.h>
@@ -74,7 +74,7 @@ void communicationTask(void *pvParameters)
 
     while (true)
     {
-        network.maintainConnection(SSID, PASSWORD, NETWORK_APN);
+        network.maintainConnection(WIFI_SSID, PASSWORD, NETWORK_APN);
 
         if (xQueueReceive(httpQueue, &outgoingData, pdMS_TO_TICKS(1000)))
         {
