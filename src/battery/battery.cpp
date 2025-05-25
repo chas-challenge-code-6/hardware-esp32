@@ -1,4 +1,6 @@
 #include "battery.h"
+#include "utilities.h"
+#include <Arduino.h>
 
 // The documentation for our specific board (If needed): LILYGO T-SIM7000G S3
 
@@ -22,15 +24,12 @@ void Battery::begin()
 {
     Serial.begin(115200); // Set console baud rate
     Serial.println("initializing battery...");
-#define BOARD_BAT_ADC_PIN (4) // Battery pin
-#define BOARD_POWERON_PIN                                                                          \
-    (BOARD_LED_PIN) // There is no modem power control, the LED Pin is used as a power indicator
-                    // here.
-#define BOARD_LED_PIN (12)
 
     // Variables
     int batteryPin = BOARD_BAT_ADC_PIN;
+#ifdef BOARD_LED_PIN
     int boardLedPin = BOARD_LED_PIN;
+#endif
     float rawBatteryVoltage = (analogReadMilliVolts(batteryPin)); // Reads the raw battery voltage
     float ADCbatteryVoltage =
         rawBatteryVoltage / voltageDivider * 2; // Analog/Digital Converter battery voltage
@@ -51,7 +50,9 @@ void Battery::begin()
     pinMode(batteryPin, INPUT);
     analogReadMilliVolts(batteryPin); // Read the battery voltage
     turnOnPower(batteryPin);          // Turn on the power
+#ifdef BOARD_LED_PIN
     pinMode(boardLedPin, OUTPUT);
+#endif
 
     // Print the battery status
     Serial.print("Battery Pin: " + String(batteryPin));

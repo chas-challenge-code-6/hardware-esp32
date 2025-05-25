@@ -1,0 +1,5 @@
+#define WIFI_SSID "ssid"
+#define PASSWORD "password"
+#define NETWORK_APN "internet.apn.se"
+#define BACKEND_URL "http://127.0.0.1:1234"
+#define JWT_TOKEN "HMAC"

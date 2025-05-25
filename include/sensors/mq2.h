@@ -1,7 +1,7 @@
 #ifndef SENSOR_MQ2
 #define SENSOR_MQ2
 
-#include "main.h"
+#include "config.h"
 #include <Arduino.h>
 #include <MQUnifiedsensor.h>
 
@@ -11,8 +11,9 @@ public:
     MQ2Sensor(uint8_t pin, const char *board = "ESP-32", float voltageResolution = 3.3,
               uint8_t adcBitResolution = 12, const char *type = "MQ-2");
     void update();
-    float getValue();
+    int getValue();
     void begin();
+    void calibrate();
 
 private:
     MQUnifiedsensor mq2;

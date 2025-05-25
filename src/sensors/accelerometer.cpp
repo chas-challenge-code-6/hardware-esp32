@@ -55,8 +55,3 @@ float SensorAccelerometer::getRoll() const
 {
     return this->accelRoll;
 }
-
-float SensorAccelerometer::getSteps() const
-{
-    return steps;
-}
