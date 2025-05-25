@@ -36,7 +36,7 @@ void MQ2Sensor::update()
     mq2.update();
 }
 
-float MQ2Sensor::getValue()
+int MQ2Sensor::getValue()
 {
-    return mq2.readSensor();
+    return (int)mq2.readSensor();
 }
