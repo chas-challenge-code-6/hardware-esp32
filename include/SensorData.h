@@ -1,7 +1,7 @@
 #ifndef SENSORDATA_H
 #define SENSORDATA_H
 
-#include <stdbool.h>
+#include <stdint.h>
 
 typedef struct
 {
@@ -21,18 +21,18 @@ typedef struct
 
 typedef struct
 {
-    bool device_battery;
-    bool noise_level;
-    bool accelZ;
-    bool accelTotal;
-    bool accelPitch;
-    bool accelRoll;
-    bool fall_detected;
-    bool temperature;
-    bool humidity;
-    bool gasLevel;
-    bool steps;
-    bool heartRate;
+    uint8_t device_battery;
+    uint8_t noise_level;
+    uint8_t accelZ;
+    uint8_t accelTotal;
+    uint8_t accelPitch;
+    uint8_t accelRoll;
+    uint8_t fall_detected;
+    uint8_t temperature;
+    uint8_t humidity;
+    uint8_t gasLevel;
+    uint8_t steps;
+    uint8_t heartRate;
 } sensor_data_flags_t;
 
 typedef struct
@@ -43,7 +43,7 @@ typedef struct
 
 typedef struct
 {
-    char json[256];
+    char json[512];
 } processed_data_t;
 
 #endif
