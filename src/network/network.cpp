@@ -1,11 +1,14 @@
 #include "network/network.h"
 #include "main.h"
+#include "utils/threadsafe_serial.h"
 #include <Arduino.h>
 #include <TinyGSM.h>
 #include <WiFi.h>
 
 extern TinyGsm modem;
 extern EventGroupHandle_t networkEventGroup;
+extern SemaphoreHandle_t modemMutex;
+extern SemaphoreHandle_t networkEventMutex;
 #define NETWORK_CONNECTED_BIT BIT0
 
 Network::Network() : wifiConnected(false), lteConnected(false) {}
@@ -16,13 +19,13 @@ void Network::begin()
 
     // enableModem();
     // vTaskDelay(pdMS_TO_TICKS(10));
-    Serial.println("[Network] Network hardware initialized (WiFi + LTE modem)");
+    safePrintln("[Network] Network hardware initialized (WiFi + LTE modem)");
 }
 
 bool Network::connectWiFi(const char *ssid, const char *password)
 {
 #if DEBUG
-    Serial.println("NETWORK: Connecting to WiFi...");
+    safePrintln("NETWORK: Connecting to WiFi...");
 #endif
     WiFi.begin(ssid, password);
     uint32_t start = millis();
@@ -32,7 +35,7 @@ bool Network::connectWiFi(const char *ssid, const char *password)
     }
     wifiConnected = (WiFi.status() == WL_CONNECTED);
 #if DEBUG
-    Serial.println("NETWORK: Connected to WiFI.");
+    safePrintln("NETWORK: Connected to WiFI.");
 #endif
     return wifiConnected;
 }
@@ -75,44 +78,85 @@ bool Network::enableModem() const
 
     delay(3000);
 
-    if (!modem.init())
+    // Thread-safe modem initialization
+    bool initResult = false;
+    if (xSemaphoreTake(modemMutex, pdMS_TO_TICKS(5000)) == pdTRUE)
     {
-        DBG("Failed to restart modem");
-        return false;
-    }
+        initResult = modem.init();
+        if (!initResult)
+        {
+            DBG("Failed to restart modem");
+            xSemaphoreGive(modemMutex);
+            return false;
+        }
 
 #ifndef TINY_GSM_MODEM_SIM7672
-    bool ret;
-    ret = modem.setNetworkMode(MODEM_NETWORK_AUTO);
-    if (modem.waitResponse(10000L) != 1)
+        bool ret = modem.setNetworkMode(MODEM_NETWORK_AUTO);
+        if (modem.waitResponse(10000L) != 1)
+        {
+            DBG(" setNetworkMode fail");
+            xSemaphoreGive(modemMutex);
+            return false;
+        }
+#endif
+        xSemaphoreGive(modemMutex);
+    }
+    else
     {
-        DBG(" setNetworkMode fail");
+        safePrintln("[Network] Failed to acquire modem mutex for initialization");
         return false;
     }
-#endif
 
-    return true;
+    return initResult;
 }
 
 bool Network::connectLTE(const char *apn)
 {
-    modem.restart();
-    lteConnected = modem.gprsConnect(apn);
-    return lteConnected;
+    bool result = false;
+    if (xSemaphoreTake(modemMutex, pdMS_TO_TICKS(10000)) == pdTRUE)
+    {
+        modem.restart();
+        lteConnected = modem.gprsConnect(apn);
+        result = lteConnected;
+        xSemaphoreGive(modemMutex);
+    }
+    else
+    {
+        safePrintln("[Network] Failed to acquire modem mutex for LTE connection");
+    }
+    return result;
 }
 
 void Network::disconnectLTE()
 {
-    modem.gprsDisconnect();
-    lteConnected = false;
+    if (xSemaphoreTake(modemMutex, pdMS_TO_TICKS(5000)) == pdTRUE)
+    {
+        modem.gprsDisconnect();
+        lteConnected = false;
+        xSemaphoreGive(modemMutex);
+    }
+    else
+    {
+        safePrintln("[Network] Failed to acquire modem mutex for LTE disconnection");
+    }
 }
 
 bool Network::isLTEConnected()
 {
-    return modem.isNetworkConnected();
+    bool result = false;
+    if (xSemaphoreTake(modemMutex, pdMS_TO_TICKS(1000)) == pdTRUE)
+    {
+        result = modem.isNetworkConnected();
+        xSemaphoreGive(modemMutex);
+    }
+    else
+    {
+        safePrintln("[Network] Failed to acquire modem mutex to check LTE status");
+    }
+    return result;
 }
 
-bool Network::isConnected() /* not const */
+bool Network::isConnected()
 {
     return isWiFiConnected() || isLTEConnected();
 }
@@ -121,39 +165,43 @@ void Network::maintainConnection(const char *ssid, const char *password, const c
 {
     if (isWiFiConnected())
     {
-        // nothing
+        // Already connected to WiFi, nothing to do
     }
     else
     {
-        int n = WiFi.scanNetworks();
-        bool ssidFound = false;
-        for (int i = 0; i < n; ++i)
-        {
-            if (WiFi.SSID(i) == ssid)
-            {
-                ssidFound = true;
-                break;
-            }
-        }
+        int n = WiFi.scanNetworks(false, false, false, 300, 0, ssid);
+        bool ssidFound = (n > 0);
+        
         if (ssidFound)
         {
+            safePrintln("[Network] Target WiFi network found, attempting connection...");
             connectWiFi(ssid, password);
         }
         else
         {
+            safePrintln("[Network] WiFi network not available, checking LTE...");
             if (!isLTEConnected())
             {
+                safePrintln("[Network] Attempting LTE connection...");
                 connectLTE(apn);
             }
         }
     }
 
-    if (isConnected())
+    if (xSemaphoreTake(networkEventMutex, pdMS_TO_TICKS(100)) == pdTRUE)
     {
-        xEventGroupSetBits(networkEventGroup, NETWORK_CONNECTED_BIT);
+        if (isConnected())
+        {
+            xEventGroupSetBits(networkEventGroup, NETWORK_CONNECTED_BIT);
+        }
+        else
+        {
+            xEventGroupClearBits(networkEventGroup, NETWORK_CONNECTED_BIT);
+        }
+        xSemaphoreGive(networkEventMutex);
     }
     else
     {
-        xEventGroupClearBits(networkEventGroup, NETWORK_CONNECTED_BIT);
+        safePrintln("[Network] Failed to access network event group in maintainConnection");
     }
 }
