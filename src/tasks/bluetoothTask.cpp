@@ -2,33 +2,48 @@
 #include "SensorData.h"
 #include "main.h"
 #include "network/bluetooth.h"
+#include "utils/threadsafe_serial.h"
 #include <Arduino.h>
+#include <cstring>
+
+#define QUEUE_SEND_TIMEOUT_MS 1000
 
 extern QueueHandle_t dataQueue;
 extern EventGroupHandle_t networkEventGroup;
+extern SemaphoreHandle_t networkEventMutex;
 #define NETWORK_CONNECTED_BIT BIT0
 
-void sendBluetoothData(sensor_message_t msg)
+void sendBluetoothData(const sensor_message_t& msg)
 {
-    EventBits_t bits = xEventGroupGetBits(networkEventGroup);
+    EventBits_t bits;
+    
+    if (xSemaphoreTake(networkEventMutex, pdMS_TO_TICKS(100)) == pdTRUE)
+    {
+        bits = xEventGroupGetBits(networkEventGroup);
+        xSemaphoreGive(networkEventMutex);
+    }
+    else
+    {
+        safePrintln("[BT Task] Failed to access network event group");
+        return;
+    }
+    
     if (bits & NETWORK_CONNECTED_BIT)
     {
-        if (xQueueSend(dataQueue, &msg, portMAX_DELAY) != pdPASS)
+        if (xQueueSend(dataQueue, &msg, QUEUE_SEND_TIMEOUT_MS / portTICK_PERIOD_MS) != pdPASS)
         {
-            Serial.println("[Bluetooth Task] Failed to send heart rate data to queue");
-        }
-        else
-        {
-            Serial.println("[Bluetooth Task] Data sent to queue successfully.");
+            safePrintln("[BT Task] Failed to send data to queue");
         }
     }
 }
 
 void bluetoothTask(void *pvParameters)
 {
-    sensor_message_t msg = {};
+    sensor_message_t msg;
+    memset(&msg, 0, sizeof(msg));
+    
     BluetoothClient bClient;
-    int oldHeartRate = 0;
+    int oldHeartRate = -1;
     int newHeartRate = 0;
 
     bClient.begin();
@@ -38,16 +53,15 @@ void bluetoothTask(void *pvParameters)
         bClient.loop(); // rewrite to use eventgroup
 
         newHeartRate = bClient.getHeartRate();
-        if (isnan(oldHeartRate) || newHeartRate != oldHeartRate)
+        if (oldHeartRate == -1 || newHeartRate != oldHeartRate)
         {
             msg.data.heartRate = newHeartRate;
-            msg.valid.heartRate = true;
+            msg.valid.heartRate = 1;
             sendBluetoothData(msg);
+            safePrint("[BT Task] HR: ");
+            safePrintln(newHeartRate);
             oldHeartRate = newHeartRate;
-            msg.valid.heartRate = false;
         }
-        Serial.print("[Bluetooth Task] Heart Rate: ");
-        Serial.println(newHeartRate);
         vTaskDelay(pdMS_TO_TICKS(10000));
     }
 }
