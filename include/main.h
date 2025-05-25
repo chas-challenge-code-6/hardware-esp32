@@ -1,10 +1,18 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+#include <freertos/FreeRTOS.h>
+#include <freertos/semphr.h>
+
 #define DEBUG 1
 
 // DEVICE_ID for API
 #define DEVICE_ID "SENTINEL-001"
+
+// Mutex declarations
+extern SemaphoreHandle_t serialMutex;
+extern SemaphoreHandle_t modemMutex;
+extern SemaphoreHandle_t networkEventMutex;
 
 // Modem settings (NETWORK_APN is set in secrets.h)
 // #define TINY_GSM_RX_BUFFER 1024
