@@ -1,40 +1,62 @@
 #include "tasks/accelerometerTask.h"
 #include "SensorData.h"
 #include "sensors/accelerometer.h"
+#include "utils/threadsafe_serial.h"
 #include <Arduino.h>
+#include <cstring>
+
+#define QUEUE_SEND_TIMEOUT_MS 1000
 
 extern QueueHandle_t dataQueue;
 extern EventGroupHandle_t networkEventGroup;
+extern SemaphoreHandle_t networkEventMutex;
 #define NETWORK_CONNECTED_BIT BIT0
 
-void sendAccelData(sensor_message_t msg)
+void sendAccelData(const sensor_message_t& msg)
 {
-    EventBits_t bits = xEventGroupGetBits(networkEventGroup);
+    EventBits_t bits;
+    
+    if (xSemaphoreTake(networkEventMutex, pdMS_TO_TICKS(100)) == pdTRUE)
+    {
+        bits = xEventGroupGetBits(networkEventGroup);
+        xSemaphoreGive(networkEventMutex);
+    }
+    else
+    {
+        safePrintln("[Accel Task] Failed to access network event group");
+        return;
+    }
 
     if (bits & NETWORK_CONNECTED_BIT)
     {
-        if (xQueueSend(dataQueue, &msg, portMAX_DELAY) != pdPASS)
+        if (xQueueSend(dataQueue, &msg, QUEUE_SEND_TIMEOUT_MS / portTICK_PERIOD_MS) != pdPASS)
         {
-            Serial.println("[Accelerometer Task] Failed to send coordinates to queue");
-        }
-        else
-        {
-            Serial.println("[Accelerometer Task] Data sent to queue successfully.");
+            safePrintln("[Accel Task] Failed to send coordinates to queue");
         }
     }
 }
 
 void accelTask(void *pvParameters)
 {
-    sensor_message_t msg = {};
+    sensor_message_t msg;
+    memset(&msg, 0, sizeof(msg));
+    
     SensorAccelerometer accel;
     bool initialized = false;
 
     uint32_t lastStepTime = 0;
+    uint32_t lastStepSendTime = 0;
+    uint32_t lastFallTime = 0;
     uint32_t now = 0;
-
-    static uint32_t lastStepSendTime = 0;
-    const uint32_t TEN_MINUTES_MS = 10 * 60 * 1000;
+    uint32_t totalSteps = 0;
+    uint32_t lastSentSteps = 0;
+    const uint32_t FIVE_MINUTES_MS = 5 * 60 * 1000;
+    const uint32_t ONE_MINUTE_MS = 60 * 1000;
+    const uint32_t MAX_REASONABLE_STEPS = 100000;
+    
+    now = millis();
+    lastStepTime = now;
+    lastStepSendTime = now;
 
     for (size_t i = 0; i < 3; i++)
     {
@@ -48,49 +70,83 @@ void accelTask(void *pvParameters)
 
     if (!initialized)
     {
-        Serial.println("[Accelerometer Task] Failed to initialize accelerometer, deleting task.");
+        safePrintln("[Accel Task] Failed to initialize accelerometer, deleting task.");
         vTaskDelete(NULL);
     }
 
     while (true)
     {
+        memset(&msg, 0, sizeof(msg));
+        
+        now = millis();
+        
         accel.update();
         msg.data.accelPitch = accel.getPitch();
         msg.data.accelRoll = accel.getRoll();
         msg.data.accelTotal = accel.getTotal();
         msg.data.accelZ = accel.getZ();
 
-#if DEBUG_MEH
-        Serial.printf("Acc: %.2f g | Pitch: %.2f° | Roll: %.2f° | Z: %.2f\n", msg.data.accelTotal,
-                      msg.data.accelPitch, msg.data.accelRoll, msg.data.accelZ);
-#endif
-
-        // Fall detection
-        if (msg.data.accelTotal > ACC_THRESHOLD && (abs(msg.data.accelPitch) > ANGLE_THRESHOLD ||
-                                                    abs(msg.data.accelRoll) > ANGLE_THRESHOLD))
-        {
-            msg.data.fall_detected = true;
-            msg.valid.fall_detected = true;
-            Serial.println("[Accelerometer Task] FALL DETECTED!");
-            sendAccelData(msg);
-            msg.data.fall_detected = false;
-            msg.valid.fall_detected = false;
+        bool validReading = (msg.data.accelZ >= -20.0 && msg.data.accelZ <= 20.0) && 
+                           (msg.data.accelTotal >= 0.0 && msg.data.accelTotal <= 20.0);
+        
+        if (!validReading) {
+            vTaskDelay(pdMS_TO_TICKS(100));
+            continue;
         }
 
-        // Pedometer
-        now = millis();
-        lastStepSendTime = 0;
-        if (accel.getZ() > STEP_THRESHOLD && (now - lastStepTime) > STEP_DEBOUNCE_MS)
+        // Fall detection
+        bool fallCondition = msg.data.accelTotal > ACC_THRESHOLD && 
+                            (abs(msg.data.accelPitch) > ANGLE_THRESHOLD ||
+                             abs(msg.data.accelRoll) > ANGLE_THRESHOLD);
+        
+        if (fallCondition)
         {
-            msg.data.steps++;
-            msg.valid.steps = true;
-            lastStepTime = now;
-            Serial.printf("[Accelerometer Task] Step detected! Total steps: %d\n", msg.data.steps);
-            if (now - lastStepSendTime > TEN_MINUTES_MS) {
+            // Only send fall detection if enough time has passed since last fall
+            if ((now - lastFallTime) > ONE_MINUTE_MS) {
+                msg.data.fall_detected = true;
+                msg.valid.fall_detected = 1;
+                lastFallTime = now;
+                
+                safePrintln("[Accel Task] Fall detected! Sending alert...");
                 sendAccelData(msg);
-                lastStepSendTime = now;
             }
-            msg.valid.steps = false;
+        }
+        else
+        {
+            // Clear fall detection if 1 minute has passed since last fall
+            if (lastFallTime > 0 && (now - lastFallTime) > ONE_MINUTE_MS)
+            {
+                msg.data.fall_detected = false;
+                msg.valid.fall_detected = 1;
+                
+                safePrintln("[Accel Task] Fall detection cleared after 1 minute");
+                sendAccelData(msg);
+                lastFallTime = 0;
+            }
+        }
+
+        // Pedometer        
+        if (msg.data.accelZ > STEP_THRESHOLD && (now - lastStepTime) > STEP_DEBOUNCE_MS)
+        {
+            totalSteps++;
+            lastStepTime = now;
+            safePrintf("[Accel Task] Step detected! Total steps: %d\n", totalSteps);
+            
+            if (totalSteps > MAX_REASONABLE_STEPS) {
+                safePrintln("[Accel Task] Step counter corrupted, resetting...");
+                totalSteps = 0;
+            }
+        }
+        
+        // Send step data every 5 minutes if changed
+        if (now - lastStepSendTime > FIVE_MINUTES_MS && totalSteps != lastSentSteps) {
+            safePrintf("[Accel Task] Sending step data: %d steps (changed from %d)\n", totalSteps, lastSentSteps);
+            msg.data.steps = totalSteps;
+            msg.valid.steps = 1;
+            
+            sendAccelData(msg);
+            lastStepSendTime = now;
+            lastSentSteps = totalSteps;
         }
 
         vTaskDelay(pdMS_TO_TICKS(100));
