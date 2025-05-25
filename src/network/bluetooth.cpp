@@ -1,9 +1,8 @@
 #include "network/bluetooth.h"
-#include "main.h"
+#include "config.h"
+#include "utils/threadsafe_serial.h"
 #include <Arduino.h>
 #include <NimBLEDevice.h>
-
-const std::string TARGET_ADDRESS = "a0:9e:1a:ec:35:1e";
 
 static BluetoothClient *g_btClient = nullptr;
 
@@ -20,13 +19,12 @@ void BluetoothClient::setConnectFlag(const NimBLEAdvertisedDevice *device)
 
 void BluetoothClient::begin()
 {
-    Serial.println("[BluetoothClient] begin() called");
     NimBLEDevice::init("");
     NimBLEDevice::setPower(ESP_PWR_LVL_P9);
     NimBLEScan *pScan = NimBLEDevice::getScan();
     pScan->setScanCallbacks(new ScanCallbacks(this));
     pScan->setActiveScan(true);
-    Serial.println("[BluetoothClient] NimBLE initialized, starting scan...");
+    safePrintln("[BT] Scanning...");
     pScan->start(0, false);
 }
 
@@ -34,23 +32,20 @@ void BluetoothClient::loop()
 {
     if (doConnect)
     {
-        Serial.println("[BluetoothClient] Connecting to device...");
         NimBLEClient *pClient = NimBLEDevice::createClient();
         pClient->setClientCallbacks(this, false);
 
         if (pClient->connect(advDevice))
         {
-            Serial.println("[BluetoothClient] Connected to device");
             NimBLERemoteService *heartRateService = pClient->getService(HEARTRATE_SERVICE_UUID);
 
             if (heartRateService)
             {
-                Serial.println("[BluetoothClient] Found heartrate service");
                 NimBLERemoteCharacteristic *heartRateChar =
                     heartRateService->getCharacteristic(HEARTRATE_CHAR_UUID);
                 if (heartRateChar && heartRateChar->canNotify())
                 {
-                    Serial.println("[BluetoothClient] Subscribing to heart rate notifications");
+                    safePrintln("[BT] Connected & subscribed");
                     heartRateChar->subscribe(true, [this](NimBLERemoteCharacteristic *c,
                                                           uint8_t *data, size_t len, bool isNotify)
                                              { this->onHeartRateNotify(c, data, len, isNotify); });
@@ -58,28 +53,34 @@ void BluetoothClient::loop()
             }
             else
             {
-                Serial.println("[BluetoothClient] Heartrate service not found");
+                safePrintln("[BT] HR service not found");
             }
         }
         else
         {
-            Serial.println("[BluetoothClient] Failed to connect");
+            safePrintln("[BT] Connection failed");
         }
 
         doConnect = false;
-        advDevice = nullptr;
+        // advDevice = nullptr; // Ta INTE bort advDevice, så vi kan försöka igen vid misslyckad
+        // anslutning
     }
 }
 
 void BluetoothClient::onConnect(NimBLEClient *pClient)
 {
-    Serial.println("[BluetoothClient] onConnect: Connected to server");
+    // meh
 }
 
 void BluetoothClient::onDisconnect(NimBLEClient *pClient, int reason)
 {
-    Serial.printf("[BluetoothClient] onDisconnect: Disconnected, reason=%d\n", reason);
+    safePrintf("[BT] Disconnected (reason=%d)\n", reason);
     NimBLEDevice::getScan()->start(0, false);
+    // Försök återansluta automatiskt till samma enhet
+    if (advDevice)
+    {
+        doConnect = true;
+    }
 }
 
 uint8_t BluetoothClient::getHeartRate() const
@@ -101,26 +102,19 @@ void BluetoothClient::onHeartRateNotify(NimBLERemoteCharacteristic *, uint8_t *d
         {
             heartRate = (data[2] << 8) | data[1];
         }
-        Serial.print("[BluetoothClient] Heart rate: ");
-        Serial.println(heartRate);
     }
 }
 
 void ScanCallbacks::onResult(const NimBLEAdvertisedDevice *advertisedDevice)
 {
-    Serial.print("[ScanCallbacks] Found device: ");
-    Serial.println(advertisedDevice->toString().c_str());
-    Serial.print("[ScanCallbacks] Device address: ");
-    Serial.println(advertisedDevice->getAddress().toString().c_str());
-
     std::string advAddr = advertisedDevice->getAddress().toString();
-    std::string targetAddr = TARGET_ADDRESS;
+    std::string targetAddr = STRAP_ADDRESS;
     std::transform(advAddr.begin(), advAddr.end(), advAddr.begin(), ::tolower);
     std::transform(targetAddr.begin(), targetAddr.end(), targetAddr.begin(), ::tolower);
 
     if (advAddr == targetAddr)
     {
-        Serial.println("[ScanCallbacks] Target device address matched!");
+        safePrintln("[BT] Target device found");
         client->setConnectFlag(advertisedDevice);
         NimBLEDevice::getScan()->stop();
     }
