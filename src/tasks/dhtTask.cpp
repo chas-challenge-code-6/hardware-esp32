@@ -8,12 +8,12 @@ extern QueueHandle_t dataQueue;
 extern EventGroupHandle_t networkEventGroup;
 #define NETWORK_CONNECTED_BIT BIT0
 
-void sendDHTData(sensor_data_t &dhtData)
+void sendDHTData(sensor_message_t msg)
 {
     EventBits_t bits = xEventGroupGetBits(networkEventGroup);
     if (bits & NETWORK_CONNECTED_BIT)
     {
-        if (xQueueSend(dataQueue, &dhtData, portMAX_DELAY) != pdPASS)
+        if (xQueueSend(dataQueue, &msg, portMAX_DELAY) != pdPASS)
         {
             Serial.println("[DHT Task] Failed to send data to queue");
         }
@@ -27,7 +27,7 @@ void sendDHTData(sensor_data_t &dhtData)
 void dhtTask(void *parameter)
 {
     SensorDHT dhtSensor(DHT_PIN);
-    sensor_data_t dhtData = {};
+    sensor_message_t msg = {};
     float oldTemp = NAN;
     float oldHum = NAN;
     float newTemp = NAN;
@@ -46,23 +46,32 @@ void dhtTask(void *parameter)
         Serial.print("[DHT Task] Humidity: ");
         Serial.println(newHum);
 
-        // Skicka inte data om ej inom threshold eller om temp/humid plötsligt sjunker till 0 (om innan +-2 grader) om det inte fortsätter repetera.
+        // Skicka inte data om ej inom threshold eller om temp/humid plötsligt sjunker till 0 (om
+        // innan +-2 grader) om det inte fortsätter repetera.
         static bool lastWasZeroTemp = false;
         bool suddenZeroTemp = (oldTemp > 2.0f || oldTemp < -2.0f) && newTemp == 0.0f;
 
-        if (suddenZeroTemp && !lastWasZeroTemp) {
+        if (suddenZeroTemp && !lastWasZeroTemp)
+        {
             lastWasZeroTemp = true;
-        } else {
+        }
+        else
+        {
             if (isnan(oldTemp) || isnan(oldHum) || fabs(newTemp - oldTemp) > TEMP_DELTA_THRESHOLD ||
-                fabs(newHum - oldHum) > HUM_DELTA_THRESHOLD) {
-                dhtData.temperature = newTemp;
-                dhtData.humidity = newHum;
-                sendDHTData(dhtData);
+                fabs(newHum - oldHum) > HUM_DELTA_THRESHOLD)
+            {
+                msg.data.temperature = newTemp;
+                msg.valid.temperature = true;
+                msg.data.humidity = newHum;
+                msg.valid.humidity = true;
+                sendDHTData(msg);
                 oldTemp = newTemp;
                 oldHum = newHum;
+                msg.valid.temperature = false;
+                msg.valid.humidity = false;
             }
             lastWasZeroTemp = (newTemp == 0.0f);
         }
-        vTaskDelay(pdMS_TO_TICKS(2000));
+        vTaskDelay(pdMS_TO_TICKS(60000));
     }
 }
