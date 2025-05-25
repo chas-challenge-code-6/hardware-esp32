@@ -1,20 +1,21 @@
 @startuml sentinel
 
-' main.cpp simulated
+' Main application class
 class Main {
     -lte: LTEModule
     -btManager: BluetoothManager
     -gpsManager: GPSManager
-    -sensor: Sensor
     -dataPacket: DataPacket
+    -battery: Battery
+    -sensorData: SensorData
 }
 
-'LTE Module
+' LTE Module
 class LTEModule {
     -modem: TinyGSM
     -client: TinyGSMClient
     +init(): void
-    +send(data: String): 
+    +send(data: String): void
 }
 
 ' BluetoothManager
@@ -39,31 +40,132 @@ class GPSManager {
     +getStatus(): bool
 }
 
-' Virtuell sensor class
-abstract Sensor {
-    +init(): void
-    +readData(): String
+' SensorData struct
+class SensorData {
+    +device_battery: uint8_t
+    +accelZ: float
+    +accelTotal: float
+    +accelPitch: float
+    +accelRoll: float
+    +fall_detected: bool
+    +temperature: float
+    +humidity: float
+    +gasLevel: float
+    +steps: uint32_t
+    +heartRate: uint16_t
 }
 
-' Temperature Sensor Class 
-class TemperatureSensor {
-    -temperature: int16_t
-    +getTemperature: int16_t
+' BluetoothClient class
+class BluetoothClient {
+    -heartRate: uint8_t
+    -doConnect: bool
+    -advDevice: NimBLEAdvertisedDevice*
+    +BluetoothClient()
+    +begin(): void
+    +loop(): void
+    +getHeartRate(): uint8_t
+    +onConnect(pClient: NimBLEClient*): void
+    +onDisconnect(pClient: NimBLEClient*, reason: int): void
+    +setConnectFlag(device: NimBLEAdvertisedDevice*): void
 }
 
-' Gas sensor class
-class GasSensor {
-    -ppm: uint16_t
-    +getParticleValue: uint16_t
+' DHT22 sensor class
+class SensorDHT {
+    -dht: DHT
+    -temperature: float
+    -humidity: float
+    +SensorDHT(pin: uint8_t)
+    +begin(): void
+    +update(): void
+    +getTemperature(): float
+    +getHumdity(): float
 }
 
-Sensor <|-- TemperatureSensor
-Sensor <|-- GasSensor
+' MQ2 gas sensor class
+class MQ2Sensor {
+    -mq2: MQUnifiedsensor
+    +MQ2Sensor(pin: uint8_t, board: String, voltageResolution: float, adcBitResolution: uint8_t, type: String)
+    +update(): void
+    +getValue(): float
+    +begin(): void
+}
 
+' Accelerometer sensor class
+class SensorAccelerometer {
+    -accel: MPU6500_WE
+    -values: xyzFloat
+    -steps: int
+    -accelZ: float
+    -accelTotal: float
+    -accelPitch: float
+    -accelRoll: float
+    +begin(): bool
+    +setup(): void
+    +update(): void
+    +getZ(): float
+    +getTotal(): float
+    +getPitch(): float
+    +getRoll(): float
+    +getSteps(): float
+}
+
+' Battery class
+class Battery {
+    -batteryPin: int
+    -ADCbatteryVoltage: float
+    -rawBatteryVoltage: float
+    -batteryVoltageLimit: float
+    -batteryPercentage: float
+    -voltageDivider: int
+    +begin(): void
+    +loop(): void
+    +getBatteryStatus(): float
+    +getBatteryVoltage(): float
+    +getUpdate(): void
+    +sendData(): void
+    +powerSaveMode(): void
+    +isPowerOn(pin: int): bool
+    +turnOnPower(pin: int): void
+    +turnOffPower(pin: int): void
+    +safetyShutdown(pin: float, VoltLimit: float): void
+}
+
+' FreeRTOS Task Functions
+class accelTask {
+    +accelTask(void* parameter): void
+}
+class bluetoothTask {
+    +bluetoothTask(void* parameter): void
+}
+class communicationTask {
+    +communicationTask(void* parameter): void
+}
+class dhtTask {
+    +dhtTask(void* parameter): void
+}
+class gasTask {
+    +gasTask(void* parameter): void
+}
+class processingTask {
+    +processingTask(void* parameter): void
+}
+
+' Relationships
 Main --> LTEModule
-Main --> Sensor
 Main --> BluetoothManager
 Main --> GPSManager
 Main --> DataPacket
+Main --> Battery
+Main --> SensorData
+Main --> BluetoothClient
+Main --> SensorDHT
+Main --> MQ2Sensor
+Main --> SensorAccelerometer
+Main --> accelTask
+Main --> bluetoothTask
+Main --> communicationTask
+Main --> dhtTask
+Main --> gasTask
+Main --> processingTask
 
 @enduml
