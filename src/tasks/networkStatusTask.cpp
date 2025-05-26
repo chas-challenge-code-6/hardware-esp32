@@ -1,6 +1,6 @@
 #include "tasks/networkStatusTask.h"
-#include "network/network.h"
 #include "config.h"
+#include "network/network.h"
 #include "utils/threadsafe_serial.h"
 #include <Arduino.h>
 

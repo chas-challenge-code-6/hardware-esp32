@@ -1,9 +1,26 @@
+/**
+ * @file mq2.h
+ * @brief MQ-2 Gas Sensor
+ * @date 2025-05-19
+ * 
+ * File to handle the MQ-2 gas sensor class.
+ * 
+ */
+
 #ifndef SENSOR_MQ2
 #define SENSOR_MQ2
 
 #include "config.h"
 #include <Arduino.h>
 #include <MQUnifiedsensor.h>
+
+/**
+ * @brief Class for the MQ-2 gas sensor
+ * 
+ * 
+ * 
+ */
+
 
 class MQ2Sensor
 {

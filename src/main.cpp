@@ -1,7 +1,19 @@
+/**
+ * @file main.cpp
+ * @brief Main File
+ *
+ * @details This file contains the main function and setup function for the ESP32 project. It
+ * initializes the necessary components, creates FreeRTOS tasks, and sets up the event group for
+ * network communication.
+ *
+ *
+ */
+
 #include "SensorData.h"
 #include "config.h"
 #include "network/bluetooth.h"
 #include "tasks/accelerometerTask.h"
+#include "tasks/batteryTask.h"
 #include "tasks/bluetoothTask.h"
 #include "tasks/communicationTask.h"
 #include "tasks/dhtTask.h"
@@ -58,6 +70,7 @@ void setup()
     xTaskCreatePinnedToCore(communicationTask, "CommTask", 8192, NULL, 1, NULL, 1);
     xTaskCreatePinnedToCore(networkStatusTask, "networkStatusTask", 8192, NULL, 1, NULL, 1);
     xTaskCreate(processingTask, "Process", 4096, NULL, 1, NULL);
+    // xTaskCreate(batteryTask, "Battery Task", 2048, NULL, 1, NULL);
 
     if (xSemaphoreTake(networkEventMutex, pdMS_TO_TICKS(1000)) == pdTRUE)
     {
@@ -74,4 +87,10 @@ void setup()
     Serial.println("Sentinel started.");
 }
 
+/**
+ * @brief Main loop
+ *
+ * @details The main loop is empty as all tasks are handled in FreeRTOS tasks.
+ * The loop function is required by the Arduino framework, but it does not perform any operations.
+ */
 void loop() {}

@@ -1,8 +1,20 @@
+/**
+ * @file bluetooth.h
+ * @brief Bluetooth Client Class
+ * 
+ * @details This file contains the declaration of the BluetoothClient class, which is used to manage
+ * 
+ */
+
 #ifndef BLUETOOTH_H
 #define BLUETOOTH_H
 
 #include <NimBLEDevice.h>
 
+/**
+ * @brief Class to handle Bluetooth client operations
+ * 
+ */
 class BluetoothClient : public NimBLEClientCallbacks
 {
 public:
@@ -24,6 +36,10 @@ private:
     const NimBLEAdvertisedDevice *advDevice = nullptr;
 };
 
+/**
+ * @brief Class to handle Bluetooth scan callbacks
+ * 
+ */
 class ScanCallbacks : public NimBLEScanCallbacks
 {
 public:

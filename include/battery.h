@@ -3,9 +3,24 @@
 
 #include "utilities.h"
 #include <Arduino.h>
-
+#include <TinyGsmClient.h>
 #include <esp32-hal-adc.h> /// Include the ESP32 ADC library for analogReadMilliVolts
-#include "esp_sleep.h" // Include the ESP32 sleep library for power management
+
+class BatteryMonitor
+{
+public:
+    BatteryMonitor(int adcPin, float vMax = 4.2, float vMin = 3.3, float divider = 2.0);
+
+    // Returns battery voltage in volts
+    float readVoltage();
+
+    // Returns battery percent (0-100)
+    int percent();
+
+private:
+    int _adcPin;
+    float _vMax, _vMin, _divider;
+};
 
 class Battery
 {

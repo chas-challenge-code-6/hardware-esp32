@@ -1,9 +1,23 @@
+/**
+ * @file SensorData.h
+ * @brief Sensor Data Header File
+ *
+ */
+
 #ifndef SENSORDATA_H
 #define SENSORDATA_H
 
 #include <stdint.h>
 
-typedef struct
+/**
+ * @brief Sensor Data Structure
+ *
+ * @details This structure contains the data collected from various sensors.
+ * It includes information such as device battery level, accelerometer data, temperature, humidity,
+ * gas level, steps, and heart rate.
+ *
+ */
+typedef struct SensorData
 {
     int device_battery;
     int noise_level;
@@ -41,6 +55,12 @@ typedef struct
     sensor_data_flags_t valid;
 } sensor_message_t;
 
+/**
+ * @brief Processed Data Structure
+ *
+ * @details This structure contains the processed data in JSON format.
+ *
+ */
 typedef struct
 {
     char json[512];

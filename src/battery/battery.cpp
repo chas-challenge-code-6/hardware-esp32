@@ -215,16 +215,15 @@ void Battery::safetyShutdown(float pin, float VoltLimit)
     }
 };
 
-void Battery::powerSaveMode() 
+void Battery::powerSaveMode()
 {
     Serial.println("Entering light sleep mode for 10 seconds...");
     // Sleep for 10 seconds (adjust as needed)
     esp_sleep_enable_timer_wakeup(10 * 1000000ULL); // 10 seconds in microseconds
-    Serial.flush(); // Ensure all serial output is sent
-    esp_light_sleep_start(); // <-- Use light sleep, not deep sleep!
+    Serial.flush();                                 // Ensure all serial output is sent
+    esp_light_sleep_start();                        // <-- Use light sleep, not deep sleep!
     Serial.println("Woke up from light sleep!");
-    }
-
+}
 
 // For sending battery status to the smart watch or server
 void Battery::sendData() {
@@ -243,3 +242,24 @@ void Battery::sendData() {
     //             please disconnect the USBC
     //             Serial.println(buf);
 };
+
+BatteryMonitor::BatteryMonitor(int adcPin, float vMax, float vMin, float divider)
+    : _adcPin(adcPin), _vMax(vMax), _vMin(vMin), _divider(divider)
+{
+}
+
+float BatteryMonitor::readVoltage()
+{
+    uint32_t mv = analogReadMilliVolts(_adcPin);
+    return (mv * _divider) / 1000.0;
+}
+
+int BatteryMonitor::percent()
+{
+    float v = readVoltage();
+    if (v <= _vMin)
+        return 0;
+    if (v >= _vMax)
+        return 100;
+    return int(100 * (v - _vMin) / (_vMax - _vMin) + 0.5f);
+}

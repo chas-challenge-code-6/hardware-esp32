@@ -138,9 +138,20 @@ class Battery {
     +safetyShutdown(pin: float, VoltLimit: float): void
 }
 
+class BatteryMonitor {
+    -_adcPin: int
+    -_vMax: float
+    -_vMin: float
+    -_divider: float
+    +BatteryMonitor(adcPin: int, vMax: float, vMin: float, divider: float)
+    +readVoltage(): float
+    +percent(): int
+}
+
 ' FreeRTOS Task Functions
 class TaskFunctions <<function>> {
     +accelTask(parameter: void*): void
+    +batteryTask(parameter: void*): void
     +bluetoothTask(parameter: void*): void
     +communicationTask(parameter: void*): void
     +dhtTask(parameter: void*): void
