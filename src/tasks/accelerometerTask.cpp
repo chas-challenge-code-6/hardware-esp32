@@ -1,9 +1,10 @@
 /**
  * @file accelerometerTask.cpp
  * @brief Accelerometer Task Implementation
- * 
- * @details This file contains the implementation of the accelerometer task, which is responsible for
- * 
+ *
+ * @details This file contains the implementation of the accelerometer task, which is responsible
+ * for
+ *
  */
 
 #include "tasks/accelerometerTask.h"
@@ -14,7 +15,6 @@
 #include <cstring>
 
 #define QUEUE_SEND_TIMEOUT_MS 1000
-
 
 extern QueueHandle_t dataQueue;
 extern EventGroupHandle_t networkEventGroup;
@@ -46,13 +46,13 @@ void sendAccelData(const sensor_message_t &msg)
 }
 
 /**
- * 
+ *
  * @brief Accelerometer task function
- * 
+ *
  * @details This function initializes the accelerometer and continuously reads data from it.
  * It also handles fall detection and step counting.
- * 
- * @param pvParameters 
+ *
+ * @param pvParameters
  */
 
 void accelTask(void *pvParameters)

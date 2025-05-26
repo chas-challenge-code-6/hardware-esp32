@@ -1,10 +1,10 @@
 /**
  * @file accelerometer.cpp
- * @brief 
+ * @brief
  * @date 2025-05-19
- * 
+ *
  * File to handle the MPU6500 accelerometer class.
- * 
+ *
  */
 
 #include "sensors/accelerometer.h"
@@ -13,11 +13,10 @@
 #include <Wire.h>
 #include <math.h>
 
-
 /**
  * @brief Initializes the MPU6500 sensor
- * 
- * @return true 
+ *
+ * @return true
  * @return false (if initialization fails)
  */
 bool SensorAccelerometer::begin()
@@ -31,11 +30,10 @@ bool SensorAccelerometer::begin()
     return true;
 }
 
-
 /**
  * @brief Initializes the MPU6500 sensor with default settings
- * 
- * 
+ *
+ *
  */
 void SensorAccelerometer::setup()
 {
@@ -48,12 +46,11 @@ void SensorAccelerometer::setup()
     accel.setAccDLPF(MPU6500_DLPF_6);
 }
 
-
 /**
  * @brief Updates the accelerometer values
- * 
+ *
  * @details Updates the accelerometer values and calculates pitch, roll, and total acceleration.
- * 
+ *
  */
 void SensorAccelerometer::update()
 {

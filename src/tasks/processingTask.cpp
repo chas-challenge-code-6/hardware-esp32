@@ -1,11 +1,11 @@
 /**
  * @file processingTask.cpp
  * @brief Processing Task Implementation File
- * 
- * @details This file contains the implementation of the processingTask function, which is used to handle
- * processing operations in a FreeRTOS task. The task is responsible for processing sensor data
- * and creating a JSON string for network transmission.
- * 
+ *
+ * @details This file contains the implementation of the processingTask function, which is used to
+ * handle processing operations in a FreeRTOS task. The task is responsible for processing sensor
+ * data and creating a JSON string for network transmission.
+ *
  */
 
 #include "tasks/processingTask.h"
@@ -24,9 +24,9 @@ extern QueueHandle_t httpQueue;
 
 /**
  * @brief Create a Json object
- * 
- * @details This function creates a JSON string from the sensor data and stores it in the provided buffer.
- * The JSON string contains the following fields:
+ *
+ * @details This function creates a JSON string from the sensor data and stores it in the provided
+ * buffer. The JSON string contains the following fields:
  * - steps
  * - humidity
  * - gas
@@ -34,12 +34,12 @@ extern QueueHandle_t httpQueue;
  * - device_battery
  * - heart_rate
  * - noise_level
- * 
- * @param data 
- * @param buffer 
- * @param bufferSize 
- * @return true 
- * @return false 
+ *
+ * @param data
+ * @param buffer
+ * @param bufferSize
+ * @return true
+ * @return false
  */
 bool createJson(const sensor_data_t &data, char *buffer, size_t bufferSize)
 {
@@ -93,13 +93,13 @@ static void updateLatestData(sensor_data_t &latest, const sensor_message_t &inco
 
 /**
  * @brief Processing Task function
- * 
- * @details This function handles processing operations in a FreeRTOS task. It reads sensor data from a queue,
- * processes it, and creates a JSON string for network transmission. The task runs in an infinite loop,
- * waiting for data to be available in the queue. When data is received, it is processed and sent to
- * the HTTP queue for transmission.
- * 
- * @param pvParameters 
+ *
+ * @details This function handles processing operations in a FreeRTOS task. It reads sensor data
+ * from a queue, processes it, and creates a JSON string for network transmission. The task runs in
+ * an infinite loop, waiting for data to be available in the queue. When data is received, it is
+ * processed and sent to the HTTP queue for transmission.
+ *
+ * @param pvParameters
  */
 void processingTask(void *pvParameters)
 {

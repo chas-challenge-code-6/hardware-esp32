@@ -1,10 +1,10 @@
 /**
  * @file bluetoothTask.cpp
- * @brief 
- * 
- * @details This file contains the implementation of the bluetoothTask function, which is used to handle
- * Bluetooth operations in a FreeRTOS task.
- * 
+ * @brief
+ *
+ * @details This file contains the implementation of the bluetoothTask function, which is used to
+ * handle Bluetooth operations in a FreeRTOS task.
+ *
  */
 
 #include "tasks/bluetoothTask.h"
@@ -48,11 +48,11 @@ void sendBluetoothData(const sensor_message_t &msg)
 
 /**
  * @brief bluetoothTask function
- * 
+ *
  * @details This function handles Bluetooth operations in a FreeRTOS task. It reads heart rate data
  * from the Bluetooth client and sends it to a queue for processing.
- * 
- * @param pvParameters 
+ *
+ * @param pvParameters
  */
 void bluetoothTask(void *pvParameters)
 {

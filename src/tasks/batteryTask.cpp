@@ -13,7 +13,7 @@ void batteryTask(void *parameter)
     while (true)
     {
         float voltage = battery.readVoltage(); // in mV
-        float percent = battery.percent();  // in %
+        float percent = battery.percent();     // in %
 
         // Map battery percent to device_battery (uint8_t)
         battData.device_battery = static_cast<uint8_t>(percent);
@@ -25,7 +25,7 @@ void batteryTask(void *parameter)
         Serial.print(percent);
         Serial.println(" %");
 
-        if(xQueueSend(dataQueue, &battData, portMAX_DELAY) != pdPASS)
+        if (xQueueSend(dataQueue, &battData, portMAX_DELAY) != pdPASS)
         {
             Serial.println("[Battery Task] Failed to send data to queue");
         }

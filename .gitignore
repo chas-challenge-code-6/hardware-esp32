@@ -39,6 +39,8 @@
 .cache
 compile_commands.json
 
+include/secrets.h
+
 # Doxygen output
 latex
 

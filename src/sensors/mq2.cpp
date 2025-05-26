@@ -2,8 +2,8 @@
  * @file mq2.cpp
  * @brief MQ-2 Gas Sensor
  * @date 2025-05-19
- * 
- * File to handle the MQ-2 gas sensor class. 
+ *
+ * File to handle the MQ-2 gas sensor class.
  */
 
 #include "sensors/mq2.h"
@@ -18,7 +18,7 @@
  * @param board Board type (default is "ESP-32")
  * @param voltageResolution Voltage resolution (default is 3.3)
  * @param adcBitResolution ADC bit resolution (default is 12)
- * @param type Sensor type (default is "MQ-2") 
+ * @param type Sensor type (default is "MQ-2")
  */
 MQ2Sensor::MQ2Sensor(uint8_t pin, const char *board, float voltageResolution,
                      uint8_t adcBitResolution, const char *type)
@@ -28,9 +28,9 @@ MQ2Sensor::MQ2Sensor(uint8_t pin, const char *board, float voltageResolution,
 
 /**
  * @brief Initializes the MQ2 sensor
- * 
+ *
  * @details Initializes the MQ2 sensor with the given parameters.
- * 
+ *
  */
 void MQ2Sensor::begin()
 {
@@ -56,9 +56,9 @@ void MQ2Sensor::calibrate()
 
 /**
  * @brief Updates the MQ2 sensor
- * 
+ *
  * @details Updates the MQ2 sensor with the latest readings.
- * 
+ *
  */
 void MQ2Sensor::update()
 {
@@ -67,9 +67,9 @@ void MQ2Sensor::update()
 
 /**
  * @brief Gets the value from the MQ2 sensor
- * 
+ *
  * @details Returns the value from the MQ2 sensor.
- * 
+ *
  */
 int MQ2Sensor::getValue()
 {

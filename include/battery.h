@@ -6,7 +6,8 @@
 #include <TinyGsmClient.h>
 #include <esp32-hal-adc.h> /// Include the ESP32 ADC library for analogReadMilliVolts
 
-class BatteryMonitor {
+class BatteryMonitor
+{
 public:
     BatteryMonitor(int adcPin, float vMax = 4.2, float vMin = 3.3, float divider = 2.0);
 
@@ -19,7 +20,7 @@ public:
 private:
     int _adcPin;
     float _vMax, _vMin, _divider;
-}; 
+};
 
 class Battery
 {
