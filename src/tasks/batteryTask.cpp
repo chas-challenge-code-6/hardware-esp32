@@ -76,6 +76,8 @@ void batteryTask(void *parameter)
 
         voltage = battery.readVoltage();       // in Volts
         newBatteryPercent = battery.percent(); // in %
+        battery.setRGB(newBatteryPercent);
+        
 
         if (oldBatteryPercent == -1 || abs(newBatteryPercent - oldBatteryPercent) >= 1)
         {
