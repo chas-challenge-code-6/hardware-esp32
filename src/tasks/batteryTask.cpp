@@ -1,36 +1,98 @@
+/**
+ * @file batteryTask.cpp
+ * @brief Battery Task Implementation File
+ *
+ * @details This file contains the implementation of the batteryTask function, which is used to
+ * handle battery monitoring operations in a FreeRTOS task. The task is responsible for reading
+ * battery voltage and percentage data from the BatteryMonitor and sending it to a queue for
+ * processing.
+ *
+ */
+
 #include "tasks/batteryTask.h"
 #include "SensorData.h"
 #include "battery.h"
+#include "config.h"
+#include "utils/threadsafe_serial.h"
 #include <Arduino.h>
+#include <cstring>
+
+#define QUEUE_SEND_TIMEOUT_MS 1000
 
 extern QueueHandle_t dataQueue;
+extern EventGroupHandle_t networkEventGroup;
+extern SemaphoreHandle_t networkEventMutex;
+#define NETWORK_CONNECTED_BIT BIT0
 
+void sendBatteryData(const sensor_message_t &msg)
+{
+    EventBits_t bits;
+
+    if (xSemaphoreTake(networkEventMutex, pdMS_TO_TICKS(100)) == pdTRUE)
+    {
+        bits = xEventGroupGetBits(networkEventGroup);
+        xSemaphoreGive(networkEventMutex);
+    }
+    else
+    {
+        safePrintln("[Battery Task] Failed to access network event group");
+        return;
+    }
+
+    if (bits & NETWORK_CONNECTED_BIT)
+    {
+        if (xQueueSend(dataQueue, &msg, QUEUE_SEND_TIMEOUT_MS / portTICK_PERIOD_MS) != pdPASS)
+        {
+            safePrintln("[Battery Task] Failed to send data to queue");
+        }
+    }
+}
+
+/**
+ * @brief Battery Task function
+ *
+ * @details This function handles battery monitoring operations in a FreeRTOS task. It reads battery
+ * voltage and percentage data from the BatteryMonitor and sends it to a queue for processing. The
+ * task runs in an infinite loop, monitoring battery status and sending updates when the battery
+ * level changes.
+ *
+ * @param parameter Task parameter (unused)
+ */
 void batteryTask(void *parameter)
 {
+    sensor_message_t msg;
+    memset(&msg, 0, sizeof(msg));
+
     BatteryMonitor battery(BOARD_BAT_ADC_PIN);
-    sensor_data_t battData = {};
+    int oldBatteryPercent = -1;
+    int newBatteryPercent = 0;
+    float voltage = 0.0;
+
+    safePrintln("[Battery Task] Battery monitoring started");
 
     while (true)
     {
-        float voltage = battery.readVoltage(); // in mV
-        float percent = battery.percent();     // in %
+        memset(&msg, 0, sizeof(msg));
 
-        // Map battery percent to device_battery (uint8_t)
-        battData.device_battery = static_cast<uint8_t>(percent);
-        // No field for voltage in sensor_data_t, so only percent is sent
+        voltage = battery.readVoltage();       // in Volts
+        newBatteryPercent = battery.percent(); // in %
 
-        Serial.print("[Battery Task] Voltage: ");
-        Serial.print(voltage);
-        Serial.print(" mV, Percent: ");
-        Serial.print(percent);
-        Serial.println(" %");
-
-        if (xQueueSend(dataQueue, &battData, portMAX_DELAY) != pdPASS)
+        if (oldBatteryPercent == -1 || abs(newBatteryPercent - oldBatteryPercent) >= 1)
         {
-            Serial.println("[Battery Task] Failed to send data to queue");
+            msg.data.device_battery = newBatteryPercent;
+            msg.valid.device_battery = 1;
+
+            sendBatteryData(msg);
+
+            safePrint("[Battery Task] Voltage: ");
+            safePrint(voltage);
+            safePrint(" V, Percent: ");
+            safePrint(newBatteryPercent);
+            safePrintln(" %");
+
+            oldBatteryPercent = newBatteryPercent;
         }
 
-        Serial.println("[Battery Task] Data sent to queue");
-        vTaskDelay(pdMS_TO_TICKS(2000));
+        vTaskDelay(pdMS_TO_TICKS(5000));
     }
 }
