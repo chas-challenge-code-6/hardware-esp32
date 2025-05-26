@@ -11,13 +11,12 @@
 
 #include <NimBLEDevice.h>
 
-
 /**
  * @brief Class to handle Bluetooth client operations
  * 
  */
-
-class BluetoothClient : public NimBLEClientCallbacks {
+class BluetoothClient : public NimBLEClientCallbacks
+{
 public:
     BluetoothClient();
     void begin();
@@ -25,32 +24,30 @@ public:
 
     uint8_t getHeartRate() const;
 
-    void onConnect(NimBLEClient* pClient) override;
-    void onDisconnect(NimBLEClient* pClient, int reason) override;
-
-    void setConnectFlag(const NimBLEAdvertisedDevice* device);
+    void onConnect(NimBLEClient *pClient) override;
+    void onDisconnect(NimBLEClient *pClient, int reason) override;
+    void setConnectFlag(const NimBLEAdvertisedDevice *device);
 
 private:
-    void onHeartRateNotify(NimBLERemoteCharacteristic*, uint8_t*, size_t, bool);
+    void onHeartRateNotify(NimBLERemoteCharacteristic *, uint8_t *, size_t, bool);
 
     uint8_t heartRate = -1;
     bool doConnect = false;
-    const NimBLEAdvertisedDevice* advDevice = nullptr;
+    const NimBLEAdvertisedDevice *advDevice = nullptr;
 };
-
 
 /**
  * @brief Class to handle Bluetooth scan callbacks
  * 
  */
-
-class ScanCallbacks : public NimBLEScanCallbacks {
+class ScanCallbacks : public NimBLEScanCallbacks
+{
 public:
-    ScanCallbacks(BluetoothClient* client) : client(client) {}
-    void onResult(const NimBLEAdvertisedDevice* advertisedDevice) override;
+    ScanCallbacks(BluetoothClient *client) : client(client) {}
+    void onResult(const NimBLEAdvertisedDevice *advertisedDevice) override;
 
 private:
-    BluetoothClient* client;
+    BluetoothClient *client;
 };
 
 #endif

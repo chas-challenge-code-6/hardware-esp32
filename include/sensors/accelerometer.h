@@ -12,7 +12,7 @@
 #include <Arduino.h>
 #include <MPU6500_WE.h>
 #include <Wire.h>
-#include <main.h>
+#include "config.h"
 
 /**
  * @brief Class for the accelerometer sensor
@@ -38,7 +38,6 @@ public:
     float getTotal() const;
     float getPitch() const;
     float getRoll() const;
-    float getSteps() const;
 };
 
 #endif

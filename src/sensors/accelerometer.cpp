@@ -66,54 +66,21 @@ void SensorAccelerometer::update()
     this->accelRoll = atan2(-values.x, values.z) * 180.0 / PI;
 }
 
-
-/**
- * @brief Gets the Z value from the accelerometer
- * 
- * @return float Z value
- */
 float SensorAccelerometer::getZ() const
 {
     return this->accelZ;
 }
-
-
-/**
- * @brief Gets the total acceleration from the accelerometer
- * 
- * @return float Total acceleration
- */
 float SensorAccelerometer::getTotal() const
 {
     return this->accelTotal;
 }
 
-/**
- * @brief Gets the pitch from the accelerometer
- * 
- * @return float Pitch value
- */
 float SensorAccelerometer::getPitch() const
 {
     return this->accelPitch;
 }
 
-/**
- * @brief Gets the roll from the accelerometer
- * 
- * @return float Roll value
- */
 float SensorAccelerometer::getRoll() const
 {
     return this->accelRoll;
-}
-
-/**
- * @brief Gets the number of steps from the accelerometer
- * 
- * @return float Number of steps
- */
-float SensorAccelerometer::getSteps() const
-{
-    return steps;
 }

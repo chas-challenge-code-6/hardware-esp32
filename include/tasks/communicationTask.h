@@ -9,7 +9,6 @@
 #ifndef WIFI_TASK_H
 #define WIFI_TASK_H
 
-
 /**
  * @brief communicationTask function
  * 
@@ -19,6 +18,6 @@
  * 
  * @param pvParameters 
  */
-void communicationTask(void* pvParameters);
+void communicationTask(void *pvParameters);
 
 #endif

@@ -40,5 +40,5 @@
 compile_commands.json
 
 # Doxygen output
-docs/latex
+latex
 

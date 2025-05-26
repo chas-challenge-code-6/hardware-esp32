@@ -1,69 +1,208 @@
 @startuml sentinel
 
-' main.cpp simulated
-class Main {
-    -lte: LTEModule
-    -btManager: BluetoothManager
-    -gpsManager: GPSManager
-    -sensor: Sensor
-    -dataPacket: DataPacket
+' Core Data Structures
+struct sensor_data_t {
+    +device_battery: int
+    +noise_level: int
+    +accelZ: float
+    +accelTotal: float
+    +accelPitch: float
+    +accelRoll: float
+    +fall_detected: bool
+    +temperature: float
+    +humidity: float
+    +gasLevel: int
+    +steps: int
+    +heartRate: int
 }
 
-'LTE Module
-class LTEModule {
-    -modem: TinyGSM
-    -client: TinyGSMClient
+struct sensor_data_flags_t {
+    +device_battery: uint8_t
+    +noise_level: uint8_t
+    +accelZ: uint8_t
+    +accelTotal: uint8_t
+    +accelPitch: uint8_t
+    +accelRoll: uint8_t
+    +fall_detected: uint8_t
+    +temperature: uint8_t
+    +humidity: uint8_t
+    +gasLevel: uint8_t
+    +steps: uint8_t
+    +heartRate: uint8_t
+}
+
+struct sensor_message_t {
+    +data: sensor_data_t
+    +valid: sensor_data_flags_t
+}
+
+struct processed_data_t {
+    +json: char[512]
+}
+
+' Network Management
+class Network {
+    -wifiConnected: bool
+    -lteConnected: bool
+    +Network()
+    +begin(): void
+    +enableModem(): bool
+    +disableModem(): bool
+    +connectWiFi(ssid: char*, password: char*): bool
+    +connectLTE(apn: char*): bool
+    +isWiFiConnected(): bool
+    +isLTEConnected(): bool
+    +isConnected(): bool
+    +disconnectWiFi(): void
+    +disconnectLTE(): void
+    +maintainConnection(ssid: char*, password: char*, apn: char*): void
+}
+
+' Bluetooth Client for Heart Rate Monitoring
+class BluetoothClient {
+    -heartRate: uint8_t
+    -doConnect: bool
+    -advDevice: NimBLEAdvertisedDevice*
+    +BluetoothClient()
+    +begin(): void
+    +loop(): void
+    +getHeartRate(): uint8_t
+    +onConnect(pClient: NimBLEClient*): void
+    +onDisconnect(pClient: NimBLEClient*, reason: int): void
+    +setConnectFlag(device: NimBLEAdvertisedDevice*): void
+    -onHeartRateNotify(char: NimBLERemoteCharacteristic*, data: uint8_t*, len: size_t, notify: bool): void
+}
+
+class ScanCallbacks {
+    -client: BluetoothClient*
+    +ScanCallbacks(client: BluetoothClient*)
+    +onResult(device: NimBLEAdvertisedDevice*): void
+}
+
+' Sensor Classes
+class SensorDHT {
+    -dht: DHT
+    -temperature: float
+    -humidity: float
+    +SensorDHT(pin: uint8_t)
+    +begin(): void
+    +update(): void
+    +getTemperature(): float
+    +getHumdity(): float
+}
+
+class MQ2Sensor {
+    -mq2: MQUnifiedsensor
+    +MQ2Sensor(pin: uint8_t, board: char*, voltageResolution: float, adcBitResolution: uint8_t, type: char*)
+    +update(): void
+    +getValue(): int
+    +begin(): void
+    +calibrate(): void
+}
+
+class SensorAccelerometer {
+    -accel: MPU6500_WE
+    -values: xyzFloat
+    -steps: int
+    -accelZ: float
+    -accelTotal: float
+    -accelPitch: float
+    -accelRoll: float
+    +begin(): bool
+    +setup(): void
+    +update(): void
+    +getZ(): float
+    +getTotal(): float
+    +getPitch(): float
+    +getRoll(): float
+}
+
+' Battery Management
+class Battery {
+    -batteryPin: int
+    -ADCbatteryVoltage: float
+    -rawBatteryVoltage: float
+    -batteryVoltageLimit: float
+    -batteryPercentage: float
+    -voltageDivider: int
+    +begin(): void
+    +loop(): void
+    +getBatteryStatus(): float
+    +getBatteryVoltage(): float
+    +getUpdate(): void
+    +sendData(): void
+    +powerSaveMode(): void
+    +isPowerOn(pin: int): bool
+    +turnOnPower(pin: int): void
+    +turnOffPower(pin: int): void
+    +safetyShutdown(pin: float, VoltLimit: float): void
+}
+
+' FreeRTOS Task Functions
+class TaskFunctions <<function>> {
+    +accelTask(parameter: void*): void
+    +bluetoothTask(parameter: void*): void
+    +communicationTask(parameter: void*): void
+    +dhtTask(parameter: void*): void
+    +gasTask(parameter: void*): void
+    +processingTask(parameter: void*): void
+    +networkStatusTask(parameter: void*): void
+}
+
+' Global System Components
+class SystemGlobals <<global>> {
+    +dataQueue: QueueHandle_t
+    +httpQueue: QueueHandle_t
+    +networkEventGroup: EventGroupHandle_t
+    +serialMutex: SemaphoreHandle_t
+    +modemMutex: SemaphoreHandle_t
+    +networkEventMutex: SemaphoreHandle_t
+    +modem: TinyGsm
+}
+
+' External Libraries (shown for completeness)
+class TinyGsm <<library>> {
+    +begin(): void
+    +restart(): bool
+    +connectGPRS(): bool
+    +isNetworkConnected(): bool
+}
+
+class NimBLEDevice <<library>> {
     +init(): void
-    +send(data: String): 
+    +createClient(): NimBLEClient*
+    +getScan(): NimBLEScan*
 }
 
-' BluetoothManager
-class BluetoothManager {
-    -receivedData: String
-    -pCharacteristic: BLECharacteristic*
-    +init(): void
-    +checkData(): string
-    +onWrite(pCharacteristic): void
+' Main Application (main.cpp functions)
+class MainApp <<application>> {
+    +setup(): void
+    +loop(): void
 }
 
-' DataPacket struct
-class DataPacket {
-    +source: String
-    +payload: String
-}
+' Relationships
+sensor_message_t *-- sensor_data_t : contains
+sensor_message_t *-- sensor_data_flags_t : contains
 
-class GPSManager {
-    +init(): void
-    +enableGPS(): void
-    +disableGPS(): void
-    +getStatus(): bool
-}
+TaskFunctions ..> SystemGlobals : uses
+TaskFunctions ..> sensor_message_t : processes
+TaskFunctions ..> processed_data_t : creates
 
-' Virtuell sensor class
-abstract Sensor {
-    +init(): void
-    +readData(): String
-}
+Network ..> TinyGsm : uses
+BluetoothClient ..> NimBLEDevice : uses
+BluetoothClient ..> ScanCallbacks : creates
 
-' Temperature Sensor Class 
-class TemperatureSensor {
-    -temperature: int16_t
-    +getTemperature: int16_t
-}
+MainApp ..> TaskFunctions : creates
+MainApp ..> SystemGlobals : initializes
+MainApp ..> Network : instantiates
 
-' Gas sensor class
-class GasSensor {
-    -ppm: uint16_t
-    +getParticleValue: uint16_t
-}
+TaskFunctions ..> SensorDHT : uses
+TaskFunctions ..> MQ2Sensor : uses  
+TaskFunctions ..> SensorAccelerometer : uses
+TaskFunctions ..> BluetoothClient : uses
+TaskFunctions ..> Battery : uses
 
-Sensor <|-- TemperatureSensor
-Sensor <|-- GasSensor
-
-Main --> LTEModule
-Main --> Sensor
-Main --> BluetoothManager
-Main --> GPSManager
-Main --> DataPacket
+SystemGlobals ..> sensor_message_t : queues
+SystemGlobals ..> processed_data_t : queues
 
 @enduml
