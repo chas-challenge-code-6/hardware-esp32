@@ -2,6 +2,7 @@
 #define BATTERY_H
 
 #include "utilities.h"
+#include "config.h"
 #include <Arduino.h>
 #include <TinyGsmClient.h>
 #include <esp32-hal-adc.h> /// Include the ESP32 ADC library for analogReadMilliVolts
@@ -17,9 +18,14 @@ public:
     // Returns battery percent (0-100)
     int percent();
 
+    void setRGB(int percent);
+
 private:
     int _adcPin;
     float _vMax, _vMin, _divider;
+
+    int RED_PIN = RGB_RED_PIN; // GPIO pin for red LED
+    int GREEN_PIN = RGB_GREEN_PIN; // GPIO pin for green LED   
 };
 
 class Battery
