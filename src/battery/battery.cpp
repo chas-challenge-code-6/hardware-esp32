@@ -272,16 +272,16 @@ void BatteryMonitor::setRGB(int percent)
         // Set RGB LED to red
         Serial.println("Battery is low, setting RGB to red");
         // Add code to set RGB LED to red
-        digitalWrite(RED_PIN, HIGH);
-        digitalWrite(GREEN_PIN, LOW);
+        analogWrite(RED_PIN, 255);
+        analogWrite(GREEN_PIN, 0);
     }
     else if (percent < 50)
     {
         // Set RGB LED to yellow
         Serial.println("Battery is medium, setting RGB to yellow");
         // Add code to set RGB LED to yellow
-        digitalWrite(RED_PIN, HIGH);
-        digitalWrite(GREEN_PIN, HIGH);
+        analogWrite(RED_PIN, 255);
+        analogWrite(GREEN_PIN, 255);
     }
     else
     {
@@ -289,7 +289,7 @@ void BatteryMonitor::setRGB(int percent)
         Serial.println("Battery is good, setting RGB to green");
         // Add code to set RGB LED to green
         // Example: digitalWrite for RGB pins (replace with your actual pin numbers)
-        digitalWrite(RED_PIN, LOW);
-        digitalWrite(GREEN_PIN, HIGH);
+        analogWrite(RED_PIN, 0);
+        analogWrite(GREEN_PIN, 255);
     }
 }
