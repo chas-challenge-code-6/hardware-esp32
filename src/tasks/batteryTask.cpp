@@ -76,10 +76,9 @@ void batteryTask(void *parameter)
     {
         memset(&msg, 0, sizeof(msg));
 
-        voltage = battery.readVoltage();       // in Volts
-        newBatteryPercent = battery.percent(); // in %
-        battery.setRGB(newBatteryPercent);
-        
+        voltage = battery.readVoltage();
+        newBatteryPercent = battery.percent();
+        // battery.setRGB(newBatteryPercent);
 
         // Check for critically low voltage (using the same thresholds as Battery class)
         uint32_t voltage_mv = voltage * 1000;
