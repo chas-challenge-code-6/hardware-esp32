@@ -28,7 +28,7 @@ typedef struct SensorData
     bool fall_detected;
     float temperature;
     float humidity;
-    int gasLevel;
+    float gasLevel;
     int steps;
     int heartRate;
 } sensor_data_t;
