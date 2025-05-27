@@ -154,7 +154,6 @@ void processingTask(void *pvParameters)
         }
         else
         {
-            // yield if no data recieved
             vTaskDelay(pdMS_TO_TICKS(10));
         }
     }
