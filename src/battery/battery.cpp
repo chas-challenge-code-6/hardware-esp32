@@ -44,7 +44,6 @@ void Battery::begin()
     uint32_t battery_voltage_mv = getBatteryVoltage();
     safePrintf("Initial battery voltage: %u mV\n", battery_voltage_mv);
 
-    // Check if battery voltage is critically low
     if (battery_voltage_mv < LOW_VOLTAGE_LEVEL)
     {
         safePrintf("Battery voltage is too low, %u mV, entering sleep mode\n",
@@ -62,7 +61,7 @@ uint32_t Battery::getBatteryVoltageAverage()
     {
         uint32_t val = analogReadMilliVolts(BOARD_BAT_ADC_PIN);
         data.push_back(val);
-        delay(30);
+        vTaskDelay(pdMS_TO_TICKS(30));
     }
     std::sort(data.begin(), data.end());
     data.erase(data.begin());
@@ -94,7 +93,7 @@ float Battery::getBatteryStatus()
     uint32_t voltage_mv = getBatteryVoltage(); // Get the battery voltage in millivolts
     float voltage = voltage_mv / 1000.0;       // Convert to volts
 
-    // Define min and max voltages for lithium battery (adjust as needed)
+    // Define min and max voltages for lithium battery
     const float minVoltage = 3.3; // 0% (empty)
     const float maxVoltage = 4.2; // 100% (full)
 
@@ -104,7 +103,6 @@ float Battery::getBatteryStatus()
     if (voltage > maxVoltage)
         voltage = maxVoltage;
 
-    // Calculate percentage
     float percentage = ((voltage - minVoltage) / (maxVoltage - minVoltage)) * 100.0;
 
     return percentage;
@@ -115,7 +113,7 @@ void Battery::getUpdate()
     static unsigned long lastRead = 0;
     unsigned long now = millis();
     if (now - lastRead >= 10000)
-    { // 10,000 ms = 10 seconds
+    {
         uint32_t voltage_mv = getBatteryVoltage();
         float percent = getBatteryStatus();
         safePrintf("10s Battery Update: %u mV | %.1f%%\n", voltage_mv, percent);
@@ -123,7 +121,6 @@ void Battery::getUpdate()
     }
 }
 
-// Functions For power management
 void Battery::turnOnPower(int pin)
 {
     pinMode(pin, OUTPUT);
@@ -163,7 +160,7 @@ void Battery::deepSleep(uint32_t ms)
 void Battery::powerSaveMode()
 {
     safePrintln("Entering deep sleep mode for 10 seconds...");
-    Serial.flush();   // Ensure all serial output is sent
-    deepSleep(10000); // 10 seconds
+    Serial.flush();
+    deepSleep(10000);
     safePrintln("Woke up from deep sleep!");
 }
