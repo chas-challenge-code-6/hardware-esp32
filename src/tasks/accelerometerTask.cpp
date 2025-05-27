@@ -121,7 +121,6 @@ void accelTask(void *pvParameters)
 
         if (fallCondition)
         {
-            // Only send fall detection if enough time has passed since last fall
             if ((now - lastFallTime) > ONE_MINUTE_MS)
             {
                 msg.data.fall_detected = true;

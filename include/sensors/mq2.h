@@ -28,7 +28,7 @@ public:
     MQ2Sensor(uint8_t pin, const char *board = "ESP-32", float voltageResolution = 3.3,
               uint8_t adcBitResolution = 12, const char *type = "MQ-2");
     void update();
-    int getValue();
+    float getValue();
     void begin();
     void calibrate();
 

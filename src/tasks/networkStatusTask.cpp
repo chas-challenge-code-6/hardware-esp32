@@ -47,6 +47,9 @@ void networkStatusTask(void *pvParameters)
         }
     }
 
+    network.begin();
+    safePrintln("[Net Task] Network system initialized");
+
     bool lastConnectionState = false;
 
     while (true)
@@ -81,6 +84,7 @@ void networkStatusTask(void *pvParameters)
             safePrintln("[Net Task] Failed to access network event group, continuing...");
         }
 
-        vTaskDelay(pdMS_TO_TICKS(10000));
+        uint32_t delayTime = lastConnectionState ? 10000 : 30000;
+        vTaskDelay(pdMS_TO_TICKS(delayTime));
     }
 }

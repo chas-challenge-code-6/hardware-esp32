@@ -28,6 +28,9 @@
 // DEVICE_ID for API
 #define DEVICE_ID "SENTINEL-001"
 
+// JWT
+#define USE_JWT_AUTH
+
 // Mutex declarations
 extern SemaphoreHandle_t serialMutex;
 extern SemaphoreHandle_t modemMutex;
