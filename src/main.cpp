@@ -70,7 +70,7 @@ void setup()
     xTaskCreatePinnedToCore(communicationTask, "CommTask", 8192, NULL, 1, NULL, 1);
     xTaskCreatePinnedToCore(networkStatusTask, "networkStatusTask", 8192, NULL, 1, NULL, 1);
     xTaskCreate(processingTask, "Process", 4096, NULL, 1, NULL);
-    // xTaskCreate(batteryTask, "Battery Task", 2048, NULL, 1, NULL);
+    xTaskCreate(batteryTask, "Battery Task", 4096, NULL, 1, NULL);
 
     if (xSemaphoreTake(networkEventMutex, pdMS_TO_TICKS(1000)) == pdTRUE)
     {
