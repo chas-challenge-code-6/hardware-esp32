@@ -112,6 +112,7 @@ void batteryTask(void *parameter)
             safePrintln(" %");
 
             oldBatteryPercent = newBatteryPercent;
+            battery.setRGB(newBatteryPercent);
         }
 
         vTaskDelay(pdMS_TO_TICKS(5000));
