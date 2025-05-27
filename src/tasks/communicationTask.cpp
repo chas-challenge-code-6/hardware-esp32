@@ -189,7 +189,6 @@ void sendJsonJWTWiFi(const char *url, const char *jsonPayload, CustomJWT &jwt)
     HTTPClient http;
     int httpResponseCode = -1;
 
-    // Use simple claims without time validation to avoid sync issues
     char jwtClaims[256];
     snprintf(
         jwtClaims, sizeof(jwtClaims),
@@ -206,7 +205,7 @@ void sendJsonJWTWiFi(const char *url, const char *jsonPayload, CustomJWT &jwt)
 
     String token = String(jwt.out);
     safePrint("[CommTask] JWT Token (WiFi): ");
-    safePrintln(token.substring(0, 20) + "...");  // Log first 20 chars for debugging
+    safePrintln(token.substring(0, 20) + "..."); // debug
 
     if (strncmp(url, "https://", 8) == 0)
     {
@@ -282,7 +281,7 @@ void sendJsonJWTLTE(const char *url, const char *jsonPayload, CustomJWT &jwt)
 
     String token = String(jwt.out);
     safePrint("[CommTask] JWT Token (LTE): ");
-    safePrintln(token.substring(0, 20) + "...");  // Log first 20 chars for debugging
+    safePrintln(token.substring(0, 20) + "...");
 
     if (xSemaphoreTake(modemMutex, pdMS_TO_TICKS(10000)) == pdTRUE)
     {
