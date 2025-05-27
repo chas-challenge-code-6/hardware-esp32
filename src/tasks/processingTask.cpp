@@ -47,13 +47,13 @@ bool createJson(const sensor_data_t &data, char *buffer, size_t bufferSize)
                        "{\"device_id\": \"%s\", \"sensors\": { "
                        "\"steps\": %d, "
                        "\"temperature\": %.2f, "
-                       "\"humidity\": %.2f, "
+                       "\"humidity\": %d, "
                        "\"gas\": { \"ppm\": %d }, "
                        "\"fall_detected\": %d, "
                        "\"device_battery\": %d, "
                        "\"heart_rate\": %d, "
                        "\"noise_level\": %d } }",
-                       DEVICE_ID, data.steps, data.temperature, data.humidity, data.gasLevel,
+                       DEVICE_ID, data.steps, data.temperature, (int)data.humidity, data.gasLevel,
                        data.fall_detected, data.device_battery, data.heartRate, data.noise_level);
     if (len < 0 || len >= (int)bufferSize)
     {
