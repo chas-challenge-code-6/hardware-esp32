@@ -1,0 +1,118 @@
+\doxysection{include/config.h File Reference}
+\hypertarget{config_8h}{}\label{config_8h}\index{include/config.h@{include/config.h}}
+
+
+Configuration Header File.  
+
+
+{\ttfamily \#include $<$freertos/\+Free\+RTOS.\+h$>$}\newline
+{\ttfamily \#include $<$freertos/semphr.\+h$>$}\newline
+{\ttfamily \#include "{}secrets.\+h.\+default"{}}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{config_8h_ad72dbcf6d0153db1b8d8a58001feed83}\label{config_8h_ad72dbcf6d0153db1b8d8a58001feed83} 
+\#define {\bfseries DEBUG}~0
+\item 
+\Hypertarget{config_8h_a6d0ec3f3d5ad90e976526b76237747f0}\label{config_8h_a6d0ec3f3d5ad90e976526b76237747f0} 
+\#define {\bfseries USING\+\_\+\+SECRETS\+\_\+\+DEFAULT}
+\item 
+\Hypertarget{config_8h_a0b85963cace75e76ae726bcffb04eb70}\label{config_8h_a0b85963cace75e76ae726bcffb04eb70} 
+\#define {\bfseries DEVICE\+\_\+\+ID}~"{}SENTINEL-\/001"{} $<$
+\item 
+\Hypertarget{config_8h_a1e1d80d105e978750fd28f75ff89c491}\label{config_8h_a1e1d80d105e978750fd28f75ff89c491} 
+\#define {\bfseries TINY\+\_\+\+GSM\+\_\+\+USE\+\_\+\+GPRS}~true
+\item 
+\Hypertarget{config_8h_a4e0fb00ae6fc9dcff37b41f420248c1a}\label{config_8h_a4e0fb00ae6fc9dcff37b41f420248c1a} 
+\#define {\bfseries TINY\+\_\+\+GSM\+\_\+\+USE\+\_\+\+WIFI}~false
+\item 
+\#define \mbox{\hyperlink{config_8h_a2c509dba12bba99883a5be9341b7a0c5}{DHTTYPE}}~DHT22
+\begin{DoxyCompactList}\small\item\em PIN Definitions for RGB LED. \end{DoxyCompactList}\item 
+\Hypertarget{config_8h_ab08ad6f34a1bd55d05ed59c335dadd9c}\label{config_8h_ab08ad6f34a1bd55d05ed59c335dadd9c} 
+\#define {\bfseries TEMP\+\_\+\+DELTA\+\_\+\+THRESHOLD}~0.\+1
+\item 
+\Hypertarget{config_8h_adafbaf56b2f1328459375b95d357621f}\label{config_8h_adafbaf56b2f1328459375b95d357621f} 
+\#define {\bfseries HUM\+\_\+\+DELTA\+\_\+\+THRESHOLD}~1.\+0
+\item 
+\Hypertarget{config_8h_a73ae3dcddc8b754bc9c8db0cd4b96b7e}\label{config_8h_a73ae3dcddc8b754bc9c8db0cd4b96b7e} 
+\#define {\bfseries STRAP\+\_\+\+NAME}~"{}POLAR H9 EC351\+E2\+B"{}
+\begin{DoxyCompactList}\small\item\em Macros for Polar H9. \end{DoxyCompactList}\item 
+\Hypertarget{config_8h_a469168bb848df83134ffc1971bdce290}\label{config_8h_a469168bb848df83134ffc1971bdce290} 
+\#define {\bfseries STRAP\+\_\+\+ADDRESS}~"{}a0\+:9e\+:1a\+:ec\+:35\+:1e"{}
+\item 
+\Hypertarget{config_8h_aee96f02c31ce4a51080e92683498fb83}\label{config_8h_aee96f02c31ce4a51080e92683498fb83} 
+\#define {\bfseries HEARTRATE\+\_\+\+SERVICE\+\_\+\+UUID}~"{}180\+D"{}
+\item 
+\Hypertarget{config_8h_a7326a2806e77456de42bfc93bc1c575a}\label{config_8h_a7326a2806e77456de42bfc93bc1c575a} 
+\#define {\bfseries HEARTRATE\+\_\+\+CHAR\+\_\+\+UUID}~"{}2A37"{}
+\item 
+\Hypertarget{config_8h_a2d67f7f5e47c90baf1e838b80cea3466}\label{config_8h_a2d67f7f5e47c90baf1e838b80cea3466} 
+\#define {\bfseries GAS\+\_\+\+RATIO\+\_\+\+CLEANAIR}~9.\+83
+\begin{DoxyCompactList}\small\item\em Gas sensor macros. \end{DoxyCompactList}\item 
+\Hypertarget{config_8h_a3505e111698a6e5aaa0d2ce6da0ffa10}\label{config_8h_a3505e111698a6e5aaa0d2ce6da0ffa10} 
+\#define {\bfseries GAS\+\_\+\+DELTA\+\_\+\+THRESHOLD}~5.\+0
+\item 
+\Hypertarget{config_8h_acb684447898c3a57206452dfbab0841c}\label{config_8h_acb684447898c3a57206452dfbab0841c} 
+\#define {\bfseries GAS\+\_\+\+SETA}~658.\+71
+\item 
+\Hypertarget{config_8h_a00a83f12abcaaa15d41821a424e16fe6}\label{config_8h_a00a83f12abcaaa15d41821a424e16fe6} 
+\#define {\bfseries GAS\+\_\+\+SETB}~-\/2.\+168
+\item 
+\Hypertarget{config_8h_af6fe839157bc922557496a16668b6011}\label{config_8h_af6fe839157bc922557496a16668b6011} 
+\#define {\bfseries MPU6500\+\_\+\+ADDR}~0x68
+\begin{DoxyCompactList}\small\item\em Accelerometer macros / Setup I2C. \end{DoxyCompactList}\item 
+\Hypertarget{config_8h_ae40e86a65d75f2d7e076f6b24602d128}\label{config_8h_ae40e86a65d75f2d7e076f6b24602d128} 
+\#define {\bfseries ACC\+\_\+\+THRESHOLD}~2.\+0
+\begin{DoxyCompactList}\small\item\em Accelerometer fall thresholds. \end{DoxyCompactList}\item 
+\Hypertarget{config_8h_aee19000c0e7b2d1eaa168d3a27f712f2}\label{config_8h_aee19000c0e7b2d1eaa168d3a27f712f2} 
+\#define {\bfseries ANGLE\+\_\+\+THRESHOLD}~60.\+0
+\item 
+\Hypertarget{config_8h_a5dc7aa3c13f62287d90d530d32727eb2}\label{config_8h_a5dc7aa3c13f62287d90d530d32727eb2} 
+\#define {\bfseries MAX\+\_\+\+TIME\+\_\+\+BETWEEN}~2000
+\item 
+\Hypertarget{config_8h_ae0dbc3cd49563f654afe9cfbd740345c}\label{config_8h_ae0dbc3cd49563f654afe9cfbd740345c} 
+\#define {\bfseries STEP\+\_\+\+THRESHOLD}~1.\+2
+\item 
+\Hypertarget{config_8h_a3d83971606e6af70081c58e05794a524}\label{config_8h_a3d83971606e6af70081c58e05794a524} 
+\#define {\bfseries STEP\+\_\+\+DEBOUNCE\+\_\+\+MS}~300
+\item 
+\Hypertarget{config_8h_aaf6b22b89bb364988f4882030a309a99}\label{config_8h_aaf6b22b89bb364988f4882030a309a99} 
+\#define {\bfseries X\+\_\+\+OFFSET}~0.\+0737
+\begin{DoxyCompactList}\small\item\em Calibration offsets for accelerometer. \end{DoxyCompactList}\item 
+\Hypertarget{config_8h_aff6396abd8dad0f793f1a4333682a2be}\label{config_8h_aff6396abd8dad0f793f1a4333682a2be} 
+\#define {\bfseries Y\+\_\+\+OFFSET}~-\/0.\+6132
+\item 
+\Hypertarget{config_8h_a6f842c885a6fa845a3a93012975caa5d}\label{config_8h_a6f842c885a6fa845a3a93012975caa5d} 
+\#define {\bfseries Z\+\_\+\+OFFSET}~-\/0.\+9986
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{config_8h_ae1c899affa3f5b7282b6f09135ecfcc9}\label{config_8h_ae1c899affa3f5b7282b6f09135ecfcc9} 
+Semaphore\+Handle\+\_\+t {\bfseries serial\+Mutex}
+\begin{DoxyCompactList}\small\item\em Serial mutex for thread-\/safe printing. \end{DoxyCompactList}\item 
+\Hypertarget{config_8h_a199855008ba6a44c8952923dfebe8bf5}\label{config_8h_a199855008ba6a44c8952923dfebe8bf5} 
+Semaphore\+Handle\+\_\+t {\bfseries modem\+Mutex}
+\begin{DoxyCompactList}\small\item\em Modem mutex for thread-\/safe modem operations. \end{DoxyCompactList}\item 
+\Hypertarget{config_8h_a8958c418c8e99e16fe486fb17b15380c}\label{config_8h_a8958c418c8e99e16fe486fb17b15380c} 
+Semaphore\+Handle\+\_\+t {\bfseries network\+Event\+Mutex}
+\begin{DoxyCompactList}\small\item\em Mutex for network event handling. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Configuration Header File. 
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{config_8h_a2c509dba12bba99883a5be9341b7a0c5}\index{config.h@{config.h}!DHTTYPE@{DHTTYPE}}
+\index{DHTTYPE@{DHTTYPE}!config.h@{config.h}}
+\doxysubsubsection{\texorpdfstring{DHTTYPE}{DHTTYPE}}
+{\footnotesize\ttfamily \label{config_8h_a2c509dba12bba99883a5be9341b7a0c5} 
+\#define DHTTYPE~DHT22}
+
+
+
+PIN Definitions for RGB LED. 
+
+DHT22 macros 

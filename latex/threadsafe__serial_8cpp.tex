@@ -1,0 +1,100 @@
+\doxysection{src/utils/threadsafe\+\_\+serial.cpp File Reference}
+\hypertarget{threadsafe__serial_8cpp}{}\label{threadsafe__serial_8cpp}\index{src/utils/threadsafe\_serial.cpp@{src/utils/threadsafe\_serial.cpp}}
+{\ttfamily \#include "{}utils/threadsafe\+\_\+serial.\+h"{}}\newline
+{\ttfamily \#include $<$stdarg.\+h$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{threadsafe__serial_8cpp_a66e2a38eee16d6d428686bf55c6d3c5f}{safe\+Print}} (const char \texorpdfstring{$\ast$}{*}message)
+\begin{DoxyCompactList}\small\item\em Thread-\/safe print functions for serial output. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{threadsafe__serial_8cpp_a76da44e81f16f53f2c59fb961843a569}{safe\+Print}} (const String \&message)
+\begin{DoxyCompactList}\small\item\em Thread-\/safe print functions for serial output. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{threadsafe__serial_8cpp_aa2a33e2abc21c32573829bde657382a6}{safe\+Println}} (const char \texorpdfstring{$\ast$}{*}message)
+\begin{DoxyCompactList}\small\item\em Thread-\/safe println functions for serial output. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{threadsafe__serial_8cpp_ab03fb64c9ecac1f70f6accde76b3ff43}{safe\+Println}} (const String \&message)
+\begin{DoxyCompactList}\small\item\em Thread-\/safe println functions for serial output. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{threadsafe__serial_8cpp_a211c3f6179c90047a5c0c7666dcbadb1}{safe\+Printf}} (const char \texorpdfstring{$\ast$}{*}format,...)
+\begin{DoxyCompactList}\small\item\em Thread-\/safe printf function for serial output. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file implements thread-\/safe serial printing functions using Free\+RTOS semaphores. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{threadsafe__serial_8cpp_a66e2a38eee16d6d428686bf55c6d3c5f}\index{threadsafe\_serial.cpp@{threadsafe\_serial.cpp}!safePrint@{safePrint}}
+\index{safePrint@{safePrint}!threadsafe\_serial.cpp@{threadsafe\_serial.cpp}}
+\doxysubsubsection{\texorpdfstring{safePrint()}{safePrint()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{threadsafe__serial_8cpp_a66e2a38eee16d6d428686bf55c6d3c5f} 
+void safe\+Print (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{message}{}\end{DoxyParamCaption})}
+
+
+
+Thread-\/safe print functions for serial output. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & \\
+\hline
+\end{DoxyParams}
+\Hypertarget{threadsafe__serial_8cpp_a76da44e81f16f53f2c59fb961843a569}\index{threadsafe\_serial.cpp@{threadsafe\_serial.cpp}!safePrint@{safePrint}}
+\index{safePrint@{safePrint}!threadsafe\_serial.cpp@{threadsafe\_serial.cpp}}
+\doxysubsubsection{\texorpdfstring{safePrint()}{safePrint()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{threadsafe__serial_8cpp_a76da44e81f16f53f2c59fb961843a569} 
+void safe\+Print (\begin{DoxyParamCaption}\item[{const String \&}]{message}{}\end{DoxyParamCaption})}
+
+
+
+Thread-\/safe print functions for serial output. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & \\
+\hline
+\end{DoxyParams}
+\Hypertarget{threadsafe__serial_8cpp_a211c3f6179c90047a5c0c7666dcbadb1}\index{threadsafe\_serial.cpp@{threadsafe\_serial.cpp}!safePrintf@{safePrintf}}
+\index{safePrintf@{safePrintf}!threadsafe\_serial.cpp@{threadsafe\_serial.cpp}}
+\doxysubsubsection{\texorpdfstring{safePrintf()}{safePrintf()}}
+{\footnotesize\ttfamily \label{threadsafe__serial_8cpp_a211c3f6179c90047a5c0c7666dcbadb1} 
+void safe\+Printf (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{format}{, }\item[{}]{...}{}\end{DoxyParamCaption})}
+
+
+
+Thread-\/safe printf function for serial output. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em format} & \\
+\hline
+{\em ...} & \\
+\hline
+\end{DoxyParams}
+\Hypertarget{threadsafe__serial_8cpp_aa2a33e2abc21c32573829bde657382a6}\index{threadsafe\_serial.cpp@{threadsafe\_serial.cpp}!safePrintln@{safePrintln}}
+\index{safePrintln@{safePrintln}!threadsafe\_serial.cpp@{threadsafe\_serial.cpp}}
+\doxysubsubsection{\texorpdfstring{safePrintln()}{safePrintln()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{threadsafe__serial_8cpp_aa2a33e2abc21c32573829bde657382a6} 
+void safe\+Println (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{message}{}\end{DoxyParamCaption})}
+
+
+
+Thread-\/safe println functions for serial output. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & \\
+\hline
+\end{DoxyParams}
+\Hypertarget{threadsafe__serial_8cpp_ab03fb64c9ecac1f70f6accde76b3ff43}\index{threadsafe\_serial.cpp@{threadsafe\_serial.cpp}!safePrintln@{safePrintln}}
+\index{safePrintln@{safePrintln}!threadsafe\_serial.cpp@{threadsafe\_serial.cpp}}
+\doxysubsubsection{\texorpdfstring{safePrintln()}{safePrintln()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{threadsafe__serial_8cpp_ab03fb64c9ecac1f70f6accde76b3ff43} 
+void safe\+Println (\begin{DoxyParamCaption}\item[{const String \&}]{message}{}\end{DoxyParamCaption})}
+
+
+
+Thread-\/safe println functions for serial output. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & \\
+\hline
+\end{DoxyParams}

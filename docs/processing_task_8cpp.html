@@ -97,6 +97,7 @@ $(function(){initNavTree('processing_task_8cpp.html',''); initResizable(true); }
 
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">processingTask.cpp File Reference</div></div>
@@ -107,8 +108,25 @@ $(function(){initNavTree('processing_task_8cpp.html',''); initResizable(true); }
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="processing_task_8h_source.html">tasks/processingTask.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_sensor_data_8h_source.html">SensorData.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="config_8h_source.html">config.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="threadsafe__serial_8h_source.html">utils/threadsafe_serial.h</a>&quot;</code><br />
 <code>#include &lt;Arduino.h&gt;</code><br />
 </div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a2e4ba70a12e464d5b5278c18d28355f8" id="r_a2e4ba70a12e464d5b5278c18d28355f8"><td class="memItemLeft" align="right" valign="top"><a id="a2e4ba70a12e464d5b5278c18d28355f8" name="a2e4ba70a12e464d5b5278c18d28355f8"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JSON_BUFFER_SIZE</b>&#160;&#160;&#160;512</td></tr>
+<tr class="separator:a2e4ba70a12e464d5b5278c18d28355f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa873360f94cf6c9aa5a550a01556fb5d" id="r_aa873360f94cf6c9aa5a550a01556fb5d"><td class="memItemLeft" align="right" valign="top"><a id="aa873360f94cf6c9aa5a550a01556fb5d" name="aa873360f94cf6c9aa5a550a01556fb5d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>HTTP_QUEUE_SEND_TIMEOUT_MS</b>&#160;&#160;&#160;2000</td></tr>
+<tr class="separator:aa873360f94cf6c9aa5a550a01556fb5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad43ae6256f25492395f75ba69e9ce32d" id="r_ad43ae6256f25492395f75ba69e9ce32d"><td class="memItemLeft" align="right" valign="top"><a id="ad43ae6256f25492395f75ba69e9ce32d" name="ad43ae6256f25492395f75ba69e9ce32d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>HTTP_QUEUE_SEND_RETRIES</b>&#160;&#160;&#160;3</td></tr>
+<tr class="separator:ad43ae6256f25492395f75ba69e9ce32d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b93f0025907942897f560b5cda4189f" id="r_a3b93f0025907942897f560b5cda4189f"><td class="memItemLeft" align="right" valign="top"><a id="a3b93f0025907942897f560b5cda4189f" name="a3b93f0025907942897f560b5cda4189f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>DATA_QUEUE_RECEIVE_TIMEOUT_MS</b>&#160;&#160;&#160;1000</td></tr>
+<tr class="separator:a3b93f0025907942897f560b5cda4189f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:abd240dfc559ccb780b013b790215b20a" id="r_abd240dfc559ccb780b013b790215b20a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd240dfc559ccb780b013b790215b20a">createJson</a> (const <a class="el" href="_sensor_data_8h.html#a4eb5382881826c5b404427fe805a925c">sensor_data_t</a> &amp;data, char *buffer, size_t bufferSize)</td></tr>
@@ -122,11 +140,9 @@ Functions</h2></td></tr>
 Variables</h2></td></tr>
 <tr class="memitem:a2820736c7f6f9a3082102f0acd2cbac1" id="r_a2820736c7f6f9a3082102f0acd2cbac1"><td class="memItemLeft" align="right" valign="top"><a id="a2820736c7f6f9a3082102f0acd2cbac1" name="a2820736c7f6f9a3082102f0acd2cbac1"></a>
 QueueHandle_t&#160;</td><td class="memItemRight" valign="bottom"><b>dataQueue</b></td></tr>
-<tr class="memdesc:a2820736c7f6f9a3082102f0acd2cbac1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queue for sensor data, used by all tasks. <br /></td></tr>
 <tr class="separator:a2820736c7f6f9a3082102f0acd2cbac1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8954cbaccd2b2ba1e6cc1abe9a7a53be" id="r_a8954cbaccd2b2ba1e6cc1abe9a7a53be"><td class="memItemLeft" align="right" valign="top"><a id="a8954cbaccd2b2ba1e6cc1abe9a7a53be" name="a8954cbaccd2b2ba1e6cc1abe9a7a53be"></a>
 QueueHandle_t&#160;</td><td class="memItemRight" valign="bottom"><b>httpQueue</b></td></tr>
-<tr class="memdesc:a8954cbaccd2b2ba1e6cc1abe9a7a53be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queue for HTTP data, used by the communication task. <br /></td></tr>
 <tr class="separator:a8954cbaccd2b2ba1e6cc1abe9a7a53be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>

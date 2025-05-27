@@ -1,9 +1,4 @@
 var searchData=
 [
-  ['main_2ecpp_0',['main.cpp',['../main_8cpp.html',1,'']]],
-  ['main_2eh_1',['main.h',['../main_8h.html',1,'']]],
-  ['mpu6500_5faddr_2',['MPU6500_ADDR',['../main_8h.html#af6fe839157bc922557496a16668b6011',1,'main.h']]],
-  ['mq2_2ecpp_3',['mq2.cpp',['../mq2_8cpp.html',1,'']]],
-  ['mq2_2eh_4',['mq2.h',['../mq2_8h.html',1,'']]],
-  ['mq2sensor_5',['MQ2Sensor',['../class_m_q2_sensor.html',1,'MQ2Sensor'],['../class_m_q2_sensor.html#aae67065132cd8a2dabe0a136c7b4b614',1,'MQ2Sensor::MQ2Sensor()']]]
+  ['loop_0',['loop',['../class_bluetooth_client.html#a815fe66f45becd5c8dce034c24d6c68c',1,'BluetoothClient::loop()'],['../main_8cpp.html#afe461d27b9c48d5921c00d521181f12f',1,'loop():&#160;main.cpp']]]
 ];

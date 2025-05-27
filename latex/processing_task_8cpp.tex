@@ -7,7 +7,24 @@ Processing Task Implementation File.
 
 {\ttfamily \#include "{}tasks/processing\+Task.\+h"{}}\newline
 {\ttfamily \#include "{}Sensor\+Data.\+h"{}}\newline
+{\ttfamily \#include "{}config.\+h"{}}\newline
+{\ttfamily \#include "{}utils/threadsafe\+\_\+serial.\+h"{}}\newline
 {\ttfamily \#include $<$Arduino.\+h$>$}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{processing_task_8cpp_a2e4ba70a12e464d5b5278c18d28355f8}\label{processing_task_8cpp_a2e4ba70a12e464d5b5278c18d28355f8} 
+\#define {\bfseries JSON\+\_\+\+BUFFER\+\_\+\+SIZE}~512
+\item 
+\Hypertarget{processing_task_8cpp_aa873360f94cf6c9aa5a550a01556fb5d}\label{processing_task_8cpp_aa873360f94cf6c9aa5a550a01556fb5d} 
+\#define {\bfseries HTTP\+\_\+\+QUEUE\+\_\+\+SEND\+\_\+\+TIMEOUT\+\_\+\+MS}~2000
+\item 
+\Hypertarget{processing_task_8cpp_ad43ae6256f25492395f75ba69e9ce32d}\label{processing_task_8cpp_ad43ae6256f25492395f75ba69e9ce32d} 
+\#define {\bfseries HTTP\+\_\+\+QUEUE\+\_\+\+SEND\+\_\+\+RETRIES}~3
+\item 
+\Hypertarget{processing_task_8cpp_a3b93f0025907942897f560b5cda4189f}\label{processing_task_8cpp_a3b93f0025907942897f560b5cda4189f} 
+\#define {\bfseries DATA\+\_\+\+QUEUE\+\_\+\+RECEIVE\+\_\+\+TIMEOUT\+\_\+\+MS}~1000
+\end{DoxyCompactItemize}
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -20,10 +37,10 @@ void \mbox{\hyperlink{processing_task_8cpp_ab1ebecae7164264819a31c2e0af86ebc}{pr
 \item 
 \Hypertarget{processing_task_8cpp_a2820736c7f6f9a3082102f0acd2cbac1}\label{processing_task_8cpp_a2820736c7f6f9a3082102f0acd2cbac1} 
 Queue\+Handle\+\_\+t {\bfseries data\+Queue}
-\begin{DoxyCompactList}\small\item\em Queue for sensor data, used by all tasks. \end{DoxyCompactList}\item 
+\item 
 \Hypertarget{processing_task_8cpp_a8954cbaccd2b2ba1e6cc1abe9a7a53be}\label{processing_task_8cpp_a8954cbaccd2b2ba1e6cc1abe9a7a53be} 
 Queue\+Handle\+\_\+t {\bfseries http\+Queue}
-\begin{DoxyCompactList}\small\item\em Queue for HTTP data, used by the communication task. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}

@@ -6,11 +6,20 @@ Communication Task Implementation File.
 
 
 {\ttfamily \#include "{}Sensor\+Data.\+h"{}}\newline
+{\ttfamily \#include "{}Wi\+Fi.\+h"{}}\newline
+{\ttfamily \#include "{}config.\+h"{}}\newline
 {\ttfamily \#include "{}network/network.\+h"{}}\newline
+{\ttfamily \#include "{}utils/threadsafe\+\_\+serial.\+h"{}}\newline
 {\ttfamily \#include $<$Arduino.\+h$>$}\newline
+{\ttfamily \#include $<$Custom\+JWT.\+h$>$}\newline
+{\ttfamily \#include $<$HTTPClient.\+h$>$}\newline
+{\ttfamily \#include $<$Tiny\+Gsm\+Client.\+h$>$}\newline
+{\ttfamily \#include $<$cstring$>$}\newline
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
+void \mbox{\hyperlink{communication_task_8cpp_a60d78548b3ec68fe12402ed6d1f846cb}{send\+Json\+Plain}} (const char \texorpdfstring{$\ast$}{*}url, const char \texorpdfstring{$\ast$}{*}json\+Payload)
+\begin{DoxyCompactList}\small\item\em Send JSON data as plain text to a specified URL. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{communication_task_8cpp_af4e3e1e275109ab342b8a8dce2f8aede}{communication\+Task}} (void \texorpdfstring{$\ast$}{*}pv\+Parameters)
 \begin{DoxyCompactList}\small\item\em communication\+Task function \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsubsection*{Variables}
@@ -18,7 +27,10 @@ void \mbox{\hyperlink{communication_task_8cpp_af4e3e1e275109ab342b8a8dce2f8aede}
 \item 
 \Hypertarget{communication_task_8cpp_a8954cbaccd2b2ba1e6cc1abe9a7a53be}\label{communication_task_8cpp_a8954cbaccd2b2ba1e6cc1abe9a7a53be} 
 Queue\+Handle\+\_\+t {\bfseries http\+Queue}
-\begin{DoxyCompactList}\small\item\em Queue for HTTP data, used by the communication task. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\item 
+\Hypertarget{communication_task_8cpp_a199855008ba6a44c8952923dfebe8bf5}\label{communication_task_8cpp_a199855008ba6a44c8952923dfebe8bf5} 
+Semaphore\+Handle\+\_\+t {\bfseries modem\+Mutex}
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -44,4 +56,20 @@ This function handles communication operations in a Free\+RTOS task. It reads pr
 {\em pv\+Parameters} & \\
 \hline
 \end{DoxyParams}
-\texorpdfstring{$<$}{<} Data structure to hold outgoing data
+\Hypertarget{communication_task_8cpp_a60d78548b3ec68fe12402ed6d1f846cb}\index{communicationTask.cpp@{communicationTask.cpp}!sendJsonPlain@{sendJsonPlain}}
+\index{sendJsonPlain@{sendJsonPlain}!communicationTask.cpp@{communicationTask.cpp}}
+\doxysubsubsection{\texorpdfstring{sendJsonPlain()}{sendJsonPlain()}}
+{\footnotesize\ttfamily \label{communication_task_8cpp_a60d78548b3ec68fe12402ed6d1f846cb} 
+void send\+Json\+Plain (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{url}{, }\item[{const char \texorpdfstring{$\ast$}{*}}]{json\+Payload}{}\end{DoxyParamCaption})}
+
+
+
+Send JSON data as plain text to a specified URL. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em url} & \\
+\hline
+{\em json\+Payload} & \\
+\hline
+\end{DoxyParams}

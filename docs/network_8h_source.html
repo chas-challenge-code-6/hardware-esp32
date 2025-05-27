@@ -99,16 +99,57 @@ $(function(){initNavTree('network_8h_source.html',''); initResizable(true); });
   <div class="headertitle"><div class="title">network.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef NETWORK_H</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define NETWORK_H</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#endif</span></div>
+<a href="network_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#ifndef NETWORK_H</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#define NETWORK_H</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="utilities_8h.html">utilities.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;Arduino.h&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;TinyGsmClient.h&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="foldopen" id="foldopen00022" data-start="{" data-end="};">
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="class_network.html">   22</a></span><span class="keyword">class </span>Network</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>{</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    Network();</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_network.html#a5fe72ffee02b614cf513d3f4f015c7fd">begin</a>();</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="class_network.html#a1d16131e01aa4993affe0359888a948d">enableModem</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keywordtype">bool</span> disableModem() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="class_network.html#aa7b449e10b03de118b11ff0e05214e09">connectWiFi</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *ssid, <span class="keyword">const</span> <span class="keywordtype">char</span> *password);</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="class_network.html#aa9678bec7109228522c16ac24b1334c4">connectLTE</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *apn);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="class_network.html#a8e8bb53f4793e57f8a4afd5dab497d5b">isWiFiConnected</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="class_network.html#a1a7eef6427e5210db500e01358fe0b4d">isLTEConnected</a>();</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="class_network.html#ad98ad9bbc38d09947399fb42c95ca841">isConnected</a>();</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_network.html#a8d69a8c3b9aad6cc4a9a6e3917088bb1">disconnectWiFi</a>();</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_network.html#ab343e6812796ee89c6de2d4261dc4807">disconnectLTE</a>();</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_network.html#a84601cfaa5b14e67396e900ec05196c4">maintainConnection</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *ssid, <span class="keyword">const</span> <span class="keywordtype">char</span> *password, <span class="keyword">const</span> <span class="keywordtype">char</span> *apn);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordtype">bool</span> wifiConnected;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordtype">bool</span> lteConnected;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>};</div>
+</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclass_network_html_a1a7eef6427e5210db500e01358fe0b4d"><div class="ttname"><a href="class_network.html#a1a7eef6427e5210db500e01358fe0b4d">Network::isLTEConnected</a></div><div class="ttdeci">bool isLTEConnected()</div><div class="ttdoc">Checks if the device is connected to LTE network.</div><div class="ttdef"><b>Definition</b> network.cpp:204</div></div>
+<div class="ttc" id="aclass_network_html_a1d16131e01aa4993affe0359888a948d"><div class="ttname"><a href="class_network.html#a1d16131e01aa4993affe0359888a948d">Network::enableModem</a></div><div class="ttdeci">bool enableModem() const</div><div class="ttdoc">Enables the LTE modem.</div><div class="ttdef"><b>Definition</b> network.cpp:92</div></div>
+<div class="ttc" id="aclass_network_html_a5fe72ffee02b614cf513d3f4f015c7fd"><div class="ttname"><a href="class_network.html#a5fe72ffee02b614cf513d3f4f015c7fd">Network::begin</a></div><div class="ttdeci">void begin()</div><div class="ttdoc">Initializes the network hardware.</div><div class="ttdef"><b>Definition</b> network.cpp:28</div></div>
+<div class="ttc" id="aclass_network_html_a84601cfaa5b14e67396e900ec05196c4"><div class="ttname"><a href="class_network.html#a84601cfaa5b14e67396e900ec05196c4">Network::maintainConnection</a></div><div class="ttdeci">void maintainConnection(const char *ssid, const char *password, const char *apn)</div><div class="ttdoc">Maintains the network connection by checking WiFi and LTE status.</div><div class="ttdef"><b>Definition</b> network.cpp:239</div></div>
+<div class="ttc" id="aclass_network_html_a8d69a8c3b9aad6cc4a9a6e3917088bb1"><div class="ttname"><a href="class_network.html#a8d69a8c3b9aad6cc4a9a6e3917088bb1">Network::disconnectWiFi</a></div><div class="ttdeci">void disconnectWiFi()</div><div class="ttdoc">Disconnects from the WiFi network.</div><div class="ttdef"><b>Definition</b> network.cpp:69</div></div>
+<div class="ttc" id="aclass_network_html_a8e8bb53f4793e57f8a4afd5dab497d5b"><div class="ttname"><a href="class_network.html#a8e8bb53f4793e57f8a4afd5dab497d5b">Network::isWiFiConnected</a></div><div class="ttdeci">bool isWiFiConnected() const</div><div class="ttdoc">Checks if the device is connected to WiFi.</div><div class="ttdef"><b>Definition</b> network.cpp:80</div></div>
+<div class="ttc" id="aclass_network_html_aa7b449e10b03de118b11ff0e05214e09"><div class="ttname"><a href="class_network.html#aa7b449e10b03de118b11ff0e05214e09">Network::connectWiFi</a></div><div class="ttdeci">bool connectWiFi(const char *ssid, const char *password)</div><div class="ttdoc">Connects to WiFi network.</div><div class="ttdef"><b>Definition</b> network.cpp:46</div></div>
+<div class="ttc" id="aclass_network_html_aa9678bec7109228522c16ac24b1334c4"><div class="ttname"><a href="class_network.html#aa9678bec7109228522c16ac24b1334c4">Network::connectLTE</a></div><div class="ttdeci">bool connectLTE(const char *apn)</div><div class="ttdoc">Connects to LTE network using the specified APN.</div><div class="ttdef"><b>Definition</b> network.cpp:160</div></div>
+<div class="ttc" id="aclass_network_html_ab343e6812796ee89c6de2d4261dc4807"><div class="ttname"><a href="class_network.html#ab343e6812796ee89c6de2d4261dc4807">Network::disconnectLTE</a></div><div class="ttdeci">void disconnectLTE()</div><div class="ttdoc">Disconnects from the LTE network.</div><div class="ttdef"><b>Definition</b> network.cpp:183</div></div>
+<div class="ttc" id="aclass_network_html_ad98ad9bbc38d09947399fb42c95ca841"><div class="ttname"><a href="class_network.html#ad98ad9bbc38d09947399fb42c95ca841">Network::isConnected</a></div><div class="ttdeci">bool isConnected()</div><div class="ttdoc">Checks if the device is connected to either WiFi or LTE network.</div><div class="ttdef"><b>Definition</b> network.cpp:226</div></div>
+<div class="ttc" id="autilities_8h_html"><div class="ttname"><a href="utilities_8h.html">utilities.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_dafb25a37831a87d2e2e8b780f24e872.html">network</a></li><li class="navelem"><b>network.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_dafb25a37831a87d2e2e8b780f24e872.html">network</a></li><li class="navelem"><a class="el" href="network_8h.html">network.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>

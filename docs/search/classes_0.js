@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['bluetoothclient_0',['BluetoothClient',['../class_bluetooth_client.html',1,'']]]
+  ['battery_0',['Battery',['../class_battery.html',1,'']]],
+  ['bluetoothclient_1',['BluetoothClient',['../class_bluetooth_client.html',1,'']]]
 ];

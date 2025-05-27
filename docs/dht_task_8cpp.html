@@ -97,6 +97,7 @@ $(function(){initNavTree('dht_task_8cpp.html',''); initResizable(true); });
 
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">dhtTask.cpp File Reference</div></div>
@@ -108,10 +109,40 @@ $(function(){initNavTree('dht_task_8cpp.html',''); initResizable(true); });
 <div class="textblock"><code>#include &quot;<a class="el" href="dht_task_8h_source.html">tasks/dhtTask.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_sensor_data_8h_source.html">SensorData.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="dht22_8h_source.html">sensors/dht22.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="threadsafe__serial_8h_source.html">utils/threadsafe_serial.h</a>&quot;</code><br />
 <code>#include &lt;Arduino.h&gt;</code><br />
+<code>#include &lt;cmath&gt;</code><br />
+<code>#include &lt;cstring&gt;</code><br />
 </div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a5cae351e53923bf13348d8e8b15be9d6" id="r_a5cae351e53923bf13348d8e8b15be9d6"><td class="memItemLeft" align="right" valign="top"><a id="a5cae351e53923bf13348d8e8b15be9d6" name="a5cae351e53923bf13348d8e8b15be9d6"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>QUEUE_SEND_TIMEOUT_MS</b>&#160;&#160;&#160;1000</td></tr>
+<tr class="separator:a5cae351e53923bf13348d8e8b15be9d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6461dd72337dd8ad612f669157442bd3" id="r_a6461dd72337dd8ad612f669157442bd3"><td class="memItemLeft" align="right" valign="top"><a id="a6461dd72337dd8ad612f669157442bd3" name="a6461dd72337dd8ad612f669157442bd3"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NETWORK_CONNECTED_BIT</b>&#160;&#160;&#160;BIT0</td></tr>
+<tr class="separator:a6461dd72337dd8ad612f669157442bd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52e59d372a57e734c090258b441e28bd" id="r_a52e59d372a57e734c090258b441e28bd"><td class="memItemLeft" align="right" valign="top"><a id="a52e59d372a57e734c090258b441e28bd" name="a52e59d372a57e734c090258b441e28bd"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>DHT_MIN_TEMP</b>&#160;&#160;&#160;-40.0f</td></tr>
+<tr class="separator:a52e59d372a57e734c090258b441e28bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5b644b6a3f8d8d39deb229f1ad73d89" id="r_ae5b644b6a3f8d8d39deb229f1ad73d89"><td class="memItemLeft" align="right" valign="top"><a id="ae5b644b6a3f8d8d39deb229f1ad73d89" name="ae5b644b6a3f8d8d39deb229f1ad73d89"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>DHT_MAX_TEMP</b>&#160;&#160;&#160;80.0f</td></tr>
+<tr class="separator:ae5b644b6a3f8d8d39deb229f1ad73d89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d98452d59619ee83dcd4dc1ae703d45" id="r_a3d98452d59619ee83dcd4dc1ae703d45"><td class="memItemLeft" align="right" valign="top"><a id="a3d98452d59619ee83dcd4dc1ae703d45" name="a3d98452d59619ee83dcd4dc1ae703d45"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>DHT_MIN_HUM</b>&#160;&#160;&#160;0.0f</td></tr>
+<tr class="separator:a3d98452d59619ee83dcd4dc1ae703d45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbb70b52d88371717126ff2584c0e92d" id="r_abbb70b52d88371717126ff2584c0e92d"><td class="memItemLeft" align="right" valign="top"><a id="abbb70b52d88371717126ff2584c0e92d" name="abbb70b52d88371717126ff2584c0e92d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>DHT_MAX_HUM</b>&#160;&#160;&#160;100.0f</td></tr>
+<tr class="separator:abbb70b52d88371717126ff2584c0e92d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ab6d6d725ba6d9d69cf6e14f188ff1666" id="r_ab6d6d725ba6d9d69cf6e14f188ff1666"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab6d6d725ba6d9d69cf6e14f188ff1666">isValidDHTReading</a> (float temp, float hum)</td></tr>
+<tr class="memdesc:ab6d6d725ba6d9d69cf6e14f188ff1666"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if DHT reading is valid.  <br /></td></tr>
+<tr class="separator:ab6d6d725ba6d9d69cf6e14f188ff1666"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac22bcfcb31b64b2e7e1baa2ddc5441b" id="r_aac22bcfcb31b64b2e7e1baa2ddc5441b"><td class="memItemLeft" align="right" valign="top"><a id="aac22bcfcb31b64b2e7e1baa2ddc5441b" name="aac22bcfcb31b64b2e7e1baa2ddc5441b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>sendDHTData</b> (const <a class="el" href="structsensor__message__t.html">sensor_message_t</a> &amp;msg)</td></tr>
+<tr class="separator:aac22bcfcb31b64b2e7e1baa2ddc5441b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4daeab46406c20cb2296d7898907c41c" id="r_a4daeab46406c20cb2296d7898907c41c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4daeab46406c20cb2296d7898907c41c">dhtTask</a> (void *parameter)</td></tr>
 <tr class="memdesc:a4daeab46406c20cb2296d7898907c41c"><td class="mdescLeft">&#160;</td><td class="mdescRight">DHT Task function.  <br /></td></tr>
 <tr class="separator:a4daeab46406c20cb2296d7898907c41c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -120,8 +151,13 @@ Functions</h2></td></tr>
 Variables</h2></td></tr>
 <tr class="memitem:a2820736c7f6f9a3082102f0acd2cbac1" id="r_a2820736c7f6f9a3082102f0acd2cbac1"><td class="memItemLeft" align="right" valign="top"><a id="a2820736c7f6f9a3082102f0acd2cbac1" name="a2820736c7f6f9a3082102f0acd2cbac1"></a>
 QueueHandle_t&#160;</td><td class="memItemRight" valign="bottom"><b>dataQueue</b></td></tr>
-<tr class="memdesc:a2820736c7f6f9a3082102f0acd2cbac1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queue for sensor data, used by all tasks. <br /></td></tr>
 <tr class="separator:a2820736c7f6f9a3082102f0acd2cbac1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01fe87d0f21810f5e1e1485bb53066d3" id="r_a01fe87d0f21810f5e1e1485bb53066d3"><td class="memItemLeft" align="right" valign="top"><a id="a01fe87d0f21810f5e1e1485bb53066d3" name="a01fe87d0f21810f5e1e1485bb53066d3"></a>
+EventGroupHandle_t&#160;</td><td class="memItemRight" valign="bottom"><b>networkEventGroup</b></td></tr>
+<tr class="separator:a01fe87d0f21810f5e1e1485bb53066d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8958c418c8e99e16fe486fb17b15380c" id="r_a8958c418c8e99e16fe486fb17b15380c"><td class="memItemLeft" align="right" valign="top"><a id="a8958c418c8e99e16fe486fb17b15380c" name="a8958c418c8e99e16fe486fb17b15380c"></a>
+SemaphoreHandle_t&#160;</td><td class="memItemRight" valign="bottom"><b>networkEventMutex</b></td></tr>
+<tr class="separator:a8958c418c8e99e16fe486fb17b15380c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>DHT Task Implementation File. </p>
@@ -144,6 +180,39 @@ QueueHandle_t&#160;</td><td class="memItemRight" valign="bottom"><b>dataQueue</b
 
 <p>DHT Task function. </p>
 <p>This function handles DHT sensor operations in a FreeRTOS task. It reads temperature and humidity data from the DHT sensor and sends it to a queue for processing. The task runs in an infinite loop, waiting for data to be available in the queue. When data is received, it is sent to the network for processing. </p>
+
+</div>
+</div>
+<a id="ab6d6d725ba6d9d69cf6e14f188ff1666" name="ab6d6d725ba6d9d69cf6e14f188ff1666"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6d6d725ba6d9d69cf6e14f188ff1666">&#9670;&#160;</a></span>isValidDHTReading()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool isValidDHTReading </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>temp</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>hum</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check if DHT reading is valid. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">temp</td><td></td></tr>
+    <tr><td class="paramname">hum</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true </dd>
+<dd>
+false </dd></dl>
 
 </div>
 </div>

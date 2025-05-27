@@ -1,0 +1,161 @@
+\doxysection{Network Class Reference}
+\hypertarget{class_network}{}\label{class_network}\index{Network@{Network}}
+
+
+\doxylink{class_network}{Network} class for managing Wi\+Fi and LTE connections.  
+
+
+
+
+{\ttfamily \#include $<$network.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_network_a5fe72ffee02b614cf513d3f4f015c7fd}\label{class_network_a5fe72ffee02b614cf513d3f4f015c7fd} 
+void {\bfseries begin} ()
+\begin{DoxyCompactList}\small\item\em Initializes the network hardware. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_network_a1d16131e01aa4993affe0359888a948d}{enable\+Modem}} () const
+\begin{DoxyCompactList}\small\item\em Enables the LTE modem. \end{DoxyCompactList}\item 
+\Hypertarget{class_network_af1e29fe0e78b0b510260176e6046da93}\label{class_network_af1e29fe0e78b0b510260176e6046da93} 
+bool {\bfseries disable\+Modem} () const
+\item 
+bool \mbox{\hyperlink{class_network_aa7b449e10b03de118b11ff0e05214e09}{connect\+Wi\+Fi}} (const char \texorpdfstring{$\ast$}{*}ssid, const char \texorpdfstring{$\ast$}{*}password)
+\begin{DoxyCompactList}\small\item\em Connects to Wi\+Fi network. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_network_aa9678bec7109228522c16ac24b1334c4}{connect\+LTE}} (const char \texorpdfstring{$\ast$}{*}apn)
+\begin{DoxyCompactList}\small\item\em Connects to LTE network using the specified APN. \end{DoxyCompactList}\item 
+\Hypertarget{class_network_a8e8bb53f4793e57f8a4afd5dab497d5b}\label{class_network_a8e8bb53f4793e57f8a4afd5dab497d5b} 
+bool {\bfseries is\+Wi\+Fi\+Connected} () const
+\begin{DoxyCompactList}\small\item\em Checks if the device is connected to Wi\+Fi. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_network_a1a7eef6427e5210db500e01358fe0b4d}{is\+LTEConnected}} ()
+\begin{DoxyCompactList}\small\item\em Checks if the device is connected to LTE network. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_network_ad98ad9bbc38d09947399fb42c95ca841}{is\+Connected}} ()
+\begin{DoxyCompactList}\small\item\em Checks if the device is connected to either Wi\+Fi or LTE network. \end{DoxyCompactList}\item 
+\Hypertarget{class_network_a8d69a8c3b9aad6cc4a9a6e3917088bb1}\label{class_network_a8d69a8c3b9aad6cc4a9a6e3917088bb1} 
+void {\bfseries disconnect\+Wi\+Fi} ()
+\begin{DoxyCompactList}\small\item\em Disconnects from the Wi\+Fi network. \end{DoxyCompactList}\item 
+\Hypertarget{class_network_ab343e6812796ee89c6de2d4261dc4807}\label{class_network_ab343e6812796ee89c6de2d4261dc4807} 
+void {\bfseries disconnect\+LTE} ()
+\begin{DoxyCompactList}\small\item\em Disconnects from the LTE network. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_network_a84601cfaa5b14e67396e900ec05196c4}{maintain\+Connection}} (const char \texorpdfstring{$\ast$}{*}ssid, const char \texorpdfstring{$\ast$}{*}password, const char \texorpdfstring{$\ast$}{*}apn)
+\begin{DoxyCompactList}\small\item\em Maintains the network connection by checking Wi\+Fi and LTE status. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{class_network}{Network} class for managing Wi\+Fi and LTE connections. 
+
+This class provides methods to manage network connections, including enabling/disabling the modem, connecting to Wi\+Fi and LTE, checking connection status, and maintaining connections. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_network_aa9678bec7109228522c16ac24b1334c4}\index{Network@{Network}!connectLTE@{connectLTE}}
+\index{connectLTE@{connectLTE}!Network@{Network}}
+\doxysubsubsection{\texorpdfstring{connectLTE()}{connectLTE()}}
+{\footnotesize\ttfamily \label{class_network_aa9678bec7109228522c16ac24b1334c4} 
+bool Network\+::connect\+LTE (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{apn}{}\end{DoxyParamCaption})}
+
+
+
+Connects to LTE network using the specified APN. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em apn} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+\Hypertarget{class_network_aa7b449e10b03de118b11ff0e05214e09}\index{Network@{Network}!connectWiFi@{connectWiFi}}
+\index{connectWiFi@{connectWiFi}!Network@{Network}}
+\doxysubsubsection{\texorpdfstring{connectWiFi()}{connectWiFi()}}
+{\footnotesize\ttfamily \label{class_network_aa7b449e10b03de118b11ff0e05214e09} 
+bool Network\+::connect\+Wi\+Fi (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{ssid}{, }\item[{const char \texorpdfstring{$\ast$}{*}}]{password}{}\end{DoxyParamCaption})}
+
+
+
+Connects to Wi\+Fi network. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ssid} & \\
+\hline
+{\em password} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+\Hypertarget{class_network_a1d16131e01aa4993affe0359888a948d}\index{Network@{Network}!enableModem@{enableModem}}
+\index{enableModem@{enableModem}!Network@{Network}}
+\doxysubsubsection{\texorpdfstring{enableModem()}{enableModem()}}
+{\footnotesize\ttfamily \label{class_network_a1d16131e01aa4993affe0359888a948d} 
+bool Network\+::enable\+Modem (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Enables the LTE modem. 
+
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+\Hypertarget{class_network_ad98ad9bbc38d09947399fb42c95ca841}\index{Network@{Network}!isConnected@{isConnected}}
+\index{isConnected@{isConnected}!Network@{Network}}
+\doxysubsubsection{\texorpdfstring{isConnected()}{isConnected()}}
+{\footnotesize\ttfamily \label{class_network_ad98ad9bbc38d09947399fb42c95ca841} 
+bool Network\+::is\+Connected (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Checks if the device is connected to either Wi\+Fi or LTE network. 
+
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+\Hypertarget{class_network_a1a7eef6427e5210db500e01358fe0b4d}\index{Network@{Network}!isLTEConnected@{isLTEConnected}}
+\index{isLTEConnected@{isLTEConnected}!Network@{Network}}
+\doxysubsubsection{\texorpdfstring{isLTEConnected()}{isLTEConnected()}}
+{\footnotesize\ttfamily \label{class_network_a1a7eef6427e5210db500e01358fe0b4d} 
+bool Network\+::is\+LTEConnected (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Checks if the device is connected to LTE network. 
+
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+\Hypertarget{class_network_a84601cfaa5b14e67396e900ec05196c4}\index{Network@{Network}!maintainConnection@{maintainConnection}}
+\index{maintainConnection@{maintainConnection}!Network@{Network}}
+\doxysubsubsection{\texorpdfstring{maintainConnection()}{maintainConnection()}}
+{\footnotesize\ttfamily \label{class_network_a84601cfaa5b14e67396e900ec05196c4} 
+void Network\+::maintain\+Connection (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{ssid}{, }\item[{const char \texorpdfstring{$\ast$}{*}}]{password}{, }\item[{const char \texorpdfstring{$\ast$}{*}}]{apn}{}\end{DoxyParamCaption})}
+
+
+
+Maintains the network connection by checking Wi\+Fi and LTE status. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ssid} & \\
+\hline
+{\em password} & \\
+\hline
+{\em apn} & \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/network/\mbox{\hyperlink{network_8h}{network.\+h}}\item 
+src/network/\mbox{\hyperlink{network_8cpp}{network.\+cpp}}\end{DoxyCompactItemize}

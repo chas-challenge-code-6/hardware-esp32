@@ -1,0 +1,62 @@
+\doxysection{src/tasks/network\+Status\+Task.cpp File Reference}
+\hypertarget{network_status_task_8cpp}{}\label{network_status_task_8cpp}\index{src/tasks/networkStatusTask.cpp@{src/tasks/networkStatusTask.cpp}}
+
+
+\doxylink{class_network}{Network} Status Task Implementation.  
+
+
+{\ttfamily \#include "{}tasks/network\+Status\+Task.\+h"{}}\newline
+{\ttfamily \#include "{}config.\+h"{}}\newline
+{\ttfamily \#include "{}network/network.\+h"{}}\newline
+{\ttfamily \#include "{}utils/threadsafe\+\_\+serial.\+h"{}}\newline
+{\ttfamily \#include $<$Arduino.\+h$>$}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{network_status_task_8cpp_a6461dd72337dd8ad612f669157442bd3}\label{network_status_task_8cpp_a6461dd72337dd8ad612f669157442bd3} 
+\#define {\bfseries NETWORK\+\_\+\+CONNECTED\+\_\+\+BIT}~BIT0
+\begin{DoxyCompactList}\small\item\em \doxylink{class_network}{Network} connected event bit. \end{DoxyCompactList}\item 
+\Hypertarget{network_status_task_8cpp_a80d8265aa07c9c52f9752921d3b5e277}\label{network_status_task_8cpp_a80d8265aa07c9c52f9752921d3b5e277} 
+\#define {\bfseries SYSTEM\+\_\+\+READY\+\_\+\+BIT}~BIT1
+\begin{DoxyCompactList}\small\item\em System ready event bit. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{network_status_task_8cpp_a1d89a4d845e0e5ef835c78000d81daad}{network\+Status\+Task}} (void \texorpdfstring{$\ast$}{*}pv\+Parameters)
+\begin{DoxyCompactList}\small\item\em \doxylink{class_network}{Network} Status Task function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{network_status_task_8cpp_a01fe87d0f21810f5e1e1485bb53066d3}\label{network_status_task_8cpp_a01fe87d0f21810f5e1e1485bb53066d3} 
+Event\+Group\+Handle\+\_\+t {\bfseries network\+Event\+Group}
+\item 
+\Hypertarget{network_status_task_8cpp_a8958c418c8e99e16fe486fb17b15380c}\label{network_status_task_8cpp_a8958c418c8e99e16fe486fb17b15380c} 
+Semaphore\+Handle\+\_\+t {\bfseries network\+Event\+Mutex}
+\item 
+\Hypertarget{network_status_task_8cpp_a2d9a64328e83ad37af17cbeb5e73b5df}\label{network_status_task_8cpp_a2d9a64328e83ad37af17cbeb5e73b5df} 
+\mbox{\hyperlink{class_network}{Network}} {\bfseries network}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{class_network}{Network} Status Task Implementation. 
+
+This file implements the network\+Status\+Task function, which is responsible for managing the network connection status. It checks for system readiness, maintains the Wi\+Fi and LTE connections, and updates the network event group accordingly. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{network_status_task_8cpp_a1d89a4d845e0e5ef835c78000d81daad}\index{networkStatusTask.cpp@{networkStatusTask.cpp}!networkStatusTask@{networkStatusTask}}
+\index{networkStatusTask@{networkStatusTask}!networkStatusTask.cpp@{networkStatusTask.cpp}}
+\doxysubsubsection{\texorpdfstring{networkStatusTask()}{networkStatusTask()}}
+{\footnotesize\ttfamily \label{network_status_task_8cpp_a1d89a4d845e0e5ef835c78000d81daad} 
+void network\+Status\+Task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{pv\+Parameters}{}\end{DoxyParamCaption})}
+
+
+
+\doxylink{class_network}{Network} Status Task function. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pv\+Parameters} & \\
+\hline
+\end{DoxyParams}
+This function runs in a Free\+RTOS task and manages the network connection status. 

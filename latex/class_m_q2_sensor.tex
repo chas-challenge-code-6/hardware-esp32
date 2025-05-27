@@ -16,10 +16,12 @@ Class for the MQ-\/2 gas sensor.
 \begin{DoxyCompactList}\small\item\em Construct a new \doxylink{class_m_q2_sensor}{MQ2\+Sensor} object. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_m_q2_sensor_a438b991a27d6731c263ba9e694f021fb}{update}} ()
 \begin{DoxyCompactList}\small\item\em Updates the MQ2 sensor. \end{DoxyCompactList}\item 
-float \mbox{\hyperlink{class_m_q2_sensor_a85bac5def048c245c887ac27ef16b978}{get\+Value}} ()
+int \mbox{\hyperlink{class_m_q2_sensor_a7f182be62f75d1e610189ae7287fc698}{get\+Value}} ()
 \begin{DoxyCompactList}\small\item\em Gets the value from the MQ2 sensor. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_m_q2_sensor_a262e8dbb3693b9c44e2501e99547cd5c}{begin}} ()
-\begin{DoxyCompactList}\small\item\em Initializes the MQ2 sensor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Initializes the MQ2 sensor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_m_q2_sensor_a7eca20e30d0d9e6f3955940a30993ea1}{calibrate}} ()
+\begin{DoxyCompactList}\small\item\em Calibrates the MQ2 sensor. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -62,11 +64,21 @@ void MQ2\+Sensor\+::begin (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
 
 Initializes the MQ2 sensor. 
 
-Initializes the MQ2 sensor with the given parameters. \Hypertarget{class_m_q2_sensor_a85bac5def048c245c887ac27ef16b978}\index{MQ2Sensor@{MQ2Sensor}!getValue@{getValue}}
+Initializes the MQ2 sensor with the given parameters. \Hypertarget{class_m_q2_sensor_a7eca20e30d0d9e6f3955940a30993ea1}\index{MQ2Sensor@{MQ2Sensor}!calibrate@{calibrate}}
+\index{calibrate@{calibrate}!MQ2Sensor@{MQ2Sensor}}
+\doxysubsubsection{\texorpdfstring{calibrate()}{calibrate()}}
+{\footnotesize\ttfamily \label{class_m_q2_sensor_a7eca20e30d0d9e6f3955940a30993ea1} 
+void MQ2\+Sensor\+::calibrate (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Calibrates the MQ2 sensor. 
+
+Calibrates the MQ2 sensor by averaging 10 readings in clean air. \Hypertarget{class_m_q2_sensor_a7f182be62f75d1e610189ae7287fc698}\index{MQ2Sensor@{MQ2Sensor}!getValue@{getValue}}
 \index{getValue@{getValue}!MQ2Sensor@{MQ2Sensor}}
 \doxysubsubsection{\texorpdfstring{getValue()}{getValue()}}
-{\footnotesize\ttfamily \label{class_m_q2_sensor_a85bac5def048c245c887ac27ef16b978} 
-float MQ2\+Sensor\+::get\+Value (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \label{class_m_q2_sensor_a7f182be62f75d1e610189ae7287fc698} 
+int MQ2\+Sensor\+::get\+Value (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
 
 
 

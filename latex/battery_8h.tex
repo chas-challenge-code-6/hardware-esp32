@@ -1,0 +1,51 @@
+\doxysection{include/battery.h File Reference}
+\hypertarget{battery_8h}{}\label{battery_8h}\index{include/battery.h@{include/battery.h}}
+
+
+\doxylink{class_battery}{Battery} monitoring system for LILYGO ESP32-\/based boards.  
+
+
+{\ttfamily \#include "{}utilities.\+h"{}}\newline
+{\ttfamily \#include "{}config.\+h"{}}\newline
+{\ttfamily \#include $<$Arduino.\+h$>$}\newline
+{\ttfamily \#include $<$Tiny\+Gsm\+Client.\+h$>$}\newline
+{\ttfamily \#include $<$esp32-\/hal-\/adc.\+h$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$algorithm$>$}\newline
+{\ttfamily \#include $<$numeric$>$}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class_battery}{Battery}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{battery_8h_a5899ad18e6bbbba44c8fecc29d5416e1}\label{battery_8h_a5899ad18e6bbbba44c8fecc29d5416e1} 
+\#define {\bfseries LOW\+\_\+\+VOLTAGE\+\_\+\+LEVEL}~3600
+\item 
+\Hypertarget{battery_8h_acbfc0d54a2542e4e9426a7a4ee9eab5e}\label{battery_8h_acbfc0d54a2542e4e9426a7a4ee9eab5e} 
+\#define {\bfseries WARN\+\_\+\+VOLTAGE\+\_\+\+LEVEL}~3700
+\item 
+\Hypertarget{battery_8h_a9b2dff7a9e5d916b5c4c26a9124353d6}\label{battery_8h_a9b2dff7a9e5d916b5c4c26a9124353d6} 
+\#define {\bfseries SLEEP\+\_\+\+MINUTE}~60
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{class_battery}{Battery} monitoring system for LILYGO ESP32-\/based boards. 
+
+Supports\+:
+\begin{DoxyItemize}
+\item LILYGO T-\/\+SIM7670\+G-\/\+S3 (ESP32-\/\+S3 based)
+\item LILYGO T-\/\+A7670 (ESP32 based)
+\end{DoxyItemize}
+
+Features\+:
+\begin{DoxyItemize}
+\item High-\/accuracy voltage readings with 30-\/sample averaging
+\item Outlier removal for stable measurements
+\item Safety voltage thresholds and automatic shutdown
+\item Power management with light/deep sleep modes
+\item \doxylink{class_battery}{Battery} percentage calculation for lithium batteries 
+\end{DoxyItemize}

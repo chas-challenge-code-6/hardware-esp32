@@ -7,12 +7,12 @@
 \DoxyCodeLine{00007\ \textcolor{preprocessor}{\#ifndef\ SENSORDATA\_H}}
 \DoxyCodeLine{00008\ \textcolor{preprocessor}{\#define\ SENSORDATA\_H}}
 \DoxyCodeLine{00009\ }
-\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <Arduino.h>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
 \DoxyCodeLine{00011\ }
-\DoxyCodeLine{00012\ }
-\DoxyCodeLine{00021\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_sensor_data}{SensorData}}}
-\DoxyCodeLine{00022\ \{}
-\DoxyCodeLine{00023\ \ \ \ \ uint8\_t\ device\_battery;}
+\DoxyCodeLine{00020\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_sensor_data}{SensorData}}}
+\DoxyCodeLine{00021\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{int}\ device\_battery;}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{int}\ noise\_level;}
 \DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{float}\ accelZ;}
 \DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{float}\ accelTotal;}
 \DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{float}\ accelPitch;}
@@ -20,17 +20,41 @@
 \DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{bool}\ fall\_detected;}
 \DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{float}\ temperature;}
 \DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{float}\ humidity;}
-\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{float}\ gasLevel;}
-\DoxyCodeLine{00032\ \ \ \ \ uint32\_t\ steps;}
-\DoxyCodeLine{00033\ \ \ \ \ uint16\_t\ heartRate;}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{int}\ gasLevel;}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{int}\ steps;}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{int}\ heartRate;}
 \DoxyCodeLine{00034\ \}\ \mbox{\hyperlink{_sensor_data_8h_a4eb5382881826c5b404427fe805a925c}{sensor\_data\_t}};}
 \DoxyCodeLine{00035\ }
 \DoxyCodeLine{00036\ }
-\DoxyCodeLine{00043\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct}}
-\DoxyCodeLine{00044\ \{}
-\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{char}\ json[256];}
-\DoxyCodeLine{00046\ \}\ \mbox{\hyperlink{structprocessed__data__t}{processed\_data\_t}};}
-\DoxyCodeLine{00047\ }
-\DoxyCodeLine{00048\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00041\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct}}
+\DoxyCodeLine{00042\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ uint8\_t\ device\_battery;}
+\DoxyCodeLine{00044\ \ \ \ \ uint8\_t\ noise\_level;}
+\DoxyCodeLine{00045\ \ \ \ \ uint8\_t\ accelZ;}
+\DoxyCodeLine{00046\ \ \ \ \ uint8\_t\ accelTotal;}
+\DoxyCodeLine{00047\ \ \ \ \ uint8\_t\ accelPitch;}
+\DoxyCodeLine{00048\ \ \ \ \ uint8\_t\ accelRoll;}
+\DoxyCodeLine{00049\ \ \ \ \ uint8\_t\ fall\_detected;}
+\DoxyCodeLine{00050\ \ \ \ \ uint8\_t\ temperature;}
+\DoxyCodeLine{00051\ \ \ \ \ uint8\_t\ humidity;}
+\DoxyCodeLine{00052\ \ \ \ \ uint8\_t\ gasLevel;}
+\DoxyCodeLine{00053\ \ \ \ \ uint8\_t\ steps;}
+\DoxyCodeLine{00054\ \ \ \ \ uint8\_t\ heartRate;}
+\DoxyCodeLine{00055\ \}\ \mbox{\hyperlink{structsensor__data__flags__t}{sensor\_data\_flags\_t}};}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00062\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct}}
+\DoxyCodeLine{00063\ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \mbox{\hyperlink{_sensor_data_8h_a4eb5382881826c5b404427fe805a925c}{sensor\_data\_t}}\ data;}
+\DoxyCodeLine{00065\ \ \ \ \ \mbox{\hyperlink{structsensor__data__flags__t}{sensor\_data\_flags\_t}}\ valid;}
+\DoxyCodeLine{00066\ \}\ \mbox{\hyperlink{structsensor__message__t}{sensor\_message\_t}};}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00075\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct}}
+\DoxyCodeLine{00076\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordtype}{char}\ json[256];}
+\DoxyCodeLine{00078\ \}\ \mbox{\hyperlink{structprocessed__data__t}{processed\_data\_t}};}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

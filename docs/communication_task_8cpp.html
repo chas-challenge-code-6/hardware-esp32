@@ -106,11 +106,21 @@ $(function(){initNavTree('communication_task_8cpp.html',''); initResizable(true)
 <p>Communication Task Implementation File.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="_sensor_data_8h_source.html">SensorData.h</a>&quot;</code><br />
-<code>#include &quot;network/network.h&quot;</code><br />
+<code>#include &quot;WiFi.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="config_8h_source.html">config.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="network_8h_source.html">network/network.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="threadsafe__serial_8h_source.html">utils/threadsafe_serial.h</a>&quot;</code><br />
 <code>#include &lt;Arduino.h&gt;</code><br />
+<code>#include &lt;CustomJWT.h&gt;</code><br />
+<code>#include &lt;HTTPClient.h&gt;</code><br />
+<code>#include &lt;TinyGsmClient.h&gt;</code><br />
+<code>#include &lt;cstring&gt;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a60d78548b3ec68fe12402ed6d1f846cb" id="r_a60d78548b3ec68fe12402ed6d1f846cb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a60d78548b3ec68fe12402ed6d1f846cb">sendJsonPlain</a> (const char *url, const char *jsonPayload)</td></tr>
+<tr class="memdesc:a60d78548b3ec68fe12402ed6d1f846cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send JSON data as plain text to a specified URL.  <br /></td></tr>
+<tr class="separator:a60d78548b3ec68fe12402ed6d1f846cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4e3e1e275109ab342b8a8dce2f8aede" id="r_af4e3e1e275109ab342b8a8dce2f8aede"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af4e3e1e275109ab342b8a8dce2f8aede">communicationTask</a> (void *pvParameters)</td></tr>
 <tr class="memdesc:af4e3e1e275109ab342b8a8dce2f8aede"><td class="mdescLeft">&#160;</td><td class="mdescRight">communicationTask function  <br /></td></tr>
 <tr class="separator:af4e3e1e275109ab342b8a8dce2f8aede"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -119,8 +129,10 @@ Functions</h2></td></tr>
 Variables</h2></td></tr>
 <tr class="memitem:a8954cbaccd2b2ba1e6cc1abe9a7a53be" id="r_a8954cbaccd2b2ba1e6cc1abe9a7a53be"><td class="memItemLeft" align="right" valign="top"><a id="a8954cbaccd2b2ba1e6cc1abe9a7a53be" name="a8954cbaccd2b2ba1e6cc1abe9a7a53be"></a>
 QueueHandle_t&#160;</td><td class="memItemRight" valign="bottom"><b>httpQueue</b></td></tr>
-<tr class="memdesc:a8954cbaccd2b2ba1e6cc1abe9a7a53be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queue for HTTP data, used by the communication task. <br /></td></tr>
 <tr class="separator:a8954cbaccd2b2ba1e6cc1abe9a7a53be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a199855008ba6a44c8952923dfebe8bf5" id="r_a199855008ba6a44c8952923dfebe8bf5"><td class="memItemLeft" align="right" valign="top"><a id="a199855008ba6a44c8952923dfebe8bf5" name="a199855008ba6a44c8952923dfebe8bf5"></a>
+SemaphoreHandle_t&#160;</td><td class="memItemRight" valign="bottom"><b>modemMutex</b></td></tr>
+<tr class="separator:a199855008ba6a44c8952923dfebe8bf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Communication Task Implementation File. </p>
@@ -149,7 +161,36 @@ QueueHandle_t&#160;</td><td class="memItemRight" valign="bottom"><b>httpQueue</b
   </table>
   </dd>
 </dl>
-<p>&lt; Data structure to hold outgoing data</p>
+
+</div>
+</div>
+<a id="a60d78548b3ec68fe12402ed6d1f846cb" name="a60d78548b3ec68fe12402ed6d1f846cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60d78548b3ec68fe12402ed6d1f846cb">&#9670;&#160;</a></span>sendJsonPlain()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sendJsonPlain </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>url</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>jsonPayload</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Send JSON data as plain text to a specified URL. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">url</td><td></td></tr>
+    <tr><td class="paramname">jsonPayload</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

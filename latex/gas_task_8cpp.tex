@@ -6,12 +6,26 @@ Gas Task Implementation File.
 
 
 {\ttfamily \#include "{}tasks/gas\+Task.\+h"{}}\newline
-{\ttfamily \#include "{}sensors/mq2.\+h"{}}\newline
 {\ttfamily \#include "{}Sensor\+Data.\+h"{}}\newline
+{\ttfamily \#include "{}sensors/mq2.\+h"{}}\newline
+{\ttfamily \#include "{}utils/threadsafe\+\_\+serial.\+h"{}}\newline
 {\ttfamily \#include $<$Arduino.\+h$>$}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$cstring$>$}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{gas_task_8cpp_a5cae351e53923bf13348d8e8b15be9d6}\label{gas_task_8cpp_a5cae351e53923bf13348d8e8b15be9d6} 
+\#define {\bfseries QUEUE\+\_\+\+SEND\+\_\+\+TIMEOUT\+\_\+\+MS}~1000
+\item 
+\Hypertarget{gas_task_8cpp_a6461dd72337dd8ad612f669157442bd3}\label{gas_task_8cpp_a6461dd72337dd8ad612f669157442bd3} 
+\#define {\bfseries NETWORK\+\_\+\+CONNECTED\+\_\+\+BIT}~BIT0
+\end{DoxyCompactItemize}
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
+void \mbox{\hyperlink{gas_task_8cpp_a3e9c406e6acd1421354d760036dee3d5}{send\+Gas\+Data}} (const \mbox{\hyperlink{structsensor__message__t}{sensor\+\_\+message\+\_\+t}} \&msg)
+\begin{DoxyCompactList}\small\item\em Send Gas Data. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{gas_task_8cpp_aa6f3fed5954a53eeb9e3e55b44824951}{gas\+Task}} (void \texorpdfstring{$\ast$}{*}parameter)
 \begin{DoxyCompactList}\small\item\em Gas Task function. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsubsection*{Variables}
@@ -19,7 +33,13 @@ void \mbox{\hyperlink{gas_task_8cpp_aa6f3fed5954a53eeb9e3e55b44824951}{gas\+Task
 \item 
 \Hypertarget{gas_task_8cpp_a2820736c7f6f9a3082102f0acd2cbac1}\label{gas_task_8cpp_a2820736c7f6f9a3082102f0acd2cbac1} 
 Queue\+Handle\+\_\+t {\bfseries data\+Queue}
-\begin{DoxyCompactList}\small\item\em Queue for sensor data, used by all tasks. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\item 
+\Hypertarget{gas_task_8cpp_a01fe87d0f21810f5e1e1485bb53066d3}\label{gas_task_8cpp_a01fe87d0f21810f5e1e1485bb53066d3} 
+Event\+Group\+Handle\+\_\+t {\bfseries network\+Event\+Group}
+\item 
+\Hypertarget{gas_task_8cpp_a8958c418c8e99e16fe486fb17b15380c}\label{gas_task_8cpp_a8958c418c8e99e16fe486fb17b15380c} 
+Semaphore\+Handle\+\_\+t {\bfseries network\+Event\+Mutex}
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -43,5 +63,20 @@ This function handles gas sensor operations in a Free\+RTOS task. It reads gas c
 
 \begin{DoxyParams}{Parameters}
 {\em parameter} & \\
+\hline
+\end{DoxyParams}
+\Hypertarget{gas_task_8cpp_a3e9c406e6acd1421354d760036dee3d5}\index{gasTask.cpp@{gasTask.cpp}!sendGasData@{sendGasData}}
+\index{sendGasData@{sendGasData}!gasTask.cpp@{gasTask.cpp}}
+\doxysubsubsection{\texorpdfstring{sendGasData()}{sendGasData()}}
+{\footnotesize\ttfamily \label{gas_task_8cpp_a3e9c406e6acd1421354d760036dee3d5} 
+void send\+Gas\+Data (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structsensor__message__t}{sensor\+\_\+message\+\_\+t}} \&}]{msg}{}\end{DoxyParamCaption})}
+
+
+
+Send Gas Data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & \\
 \hline
 \end{DoxyParams}

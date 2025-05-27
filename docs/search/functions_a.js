@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['update_0',['update',['../class_sensor_accelerometer.html#a17c03f73c132933ee8d40917f3781176',1,'SensorAccelerometer::update()'],['../class_sensor_d_h_t.html#ae937e8b2e4eae672c7cff79367803f66',1,'SensorDHT::update()'],['../class_m_q2_sensor.html#a438b991a27d6731c263ba9e694f021fb',1,'MQ2Sensor::update()']]]
+  ['onconnect_0',['onConnect',['../class_bluetooth_client.html#a7696b85902ed1c82431925af95c9b98e',1,'BluetoothClient']]],
+  ['ondisconnect_1',['onDisconnect',['../class_bluetooth_client.html#af84bc85e67e05d6c8652b31774b0d2fe',1,'BluetoothClient']]],
+  ['onresult_2',['onResult',['../class_scan_callbacks.html#a633d8e55b380f5d6c9924b08c6b60368',1,'ScanCallbacks']]]
 ];

@@ -1,0 +1,33 @@
+\doxysection{src/network/network.cpp File Reference}
+\hypertarget{network_8cpp}{}\label{network_8cpp}\index{src/network/network.cpp@{src/network/network.cpp}}
+{\ttfamily \#include "{}network/network.\+h"{}}\newline
+{\ttfamily \#include "{}config.\+h"{}}\newline
+{\ttfamily \#include "{}utils/threadsafe\+\_\+serial.\+h"{}}\newline
+{\ttfamily \#include $<$Arduino.\+h$>$}\newline
+{\ttfamily \#include $<$Tiny\+GSM.\+h$>$}\newline
+{\ttfamily \#include $<$Wi\+Fi.\+h$>$}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{network_8cpp_a6461dd72337dd8ad612f669157442bd3}\label{network_8cpp_a6461dd72337dd8ad612f669157442bd3} 
+\#define {\bfseries NETWORK\+\_\+\+CONNECTED\+\_\+\+BIT}~BIT0
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{network_8cpp_aff0f0d09453b6d806d0cc3f3b77d638d}\label{network_8cpp_aff0f0d09453b6d806d0cc3f3b77d638d} 
+Tiny\+Gsm {\bfseries modem}
+\item 
+\Hypertarget{network_8cpp_a01fe87d0f21810f5e1e1485bb53066d3}\label{network_8cpp_a01fe87d0f21810f5e1e1485bb53066d3} 
+Event\+Group\+Handle\+\_\+t {\bfseries network\+Event\+Group}
+\item 
+\Hypertarget{network_8cpp_a199855008ba6a44c8952923dfebe8bf5}\label{network_8cpp_a199855008ba6a44c8952923dfebe8bf5} 
+Semaphore\+Handle\+\_\+t {\bfseries modem\+Mutex}
+\item 
+\Hypertarget{network_8cpp_a8958c418c8e99e16fe486fb17b15380c}\label{network_8cpp_a8958c418c8e99e16fe486fb17b15380c} 
+Semaphore\+Handle\+\_\+t {\bfseries network\+Event\+Mutex}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{class_network}{Network} management for Wi\+Fi and LTE connections 

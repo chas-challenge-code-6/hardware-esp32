@@ -10,10 +10,9 @@
 #ifndef SENSORS_DHT22
 #define SENSORS_DHT22
 
-#include "main.h"
+#include "config.h"
 #include <Arduino.h>
 #include <DHT.h>
-
 
 /**
  * @class SensorDHT

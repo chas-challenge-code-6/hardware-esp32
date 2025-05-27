@@ -7,7 +7,7 @@
 \DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ SENSOR\_MQ2}}
 \DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ SENSOR\_MQ2}}
 \DoxyCodeLine{00012\ }
-\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{main_8h}{main.h}}"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{config_8h}{config.h}}"{}}}
 \DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <Arduino.h>}}
 \DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <MQUnifiedsensor.h>}}
 \DoxyCodeLine{00016\ }
@@ -19,13 +19,14 @@
 \DoxyCodeLine{00028\ \ \ \ \ \mbox{\hyperlink{class_m_q2_sensor_aae67065132cd8a2dabe0a136c7b4b614}{MQ2Sensor}}(uint8\_t\ pin,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *board\ =\ \textcolor{stringliteral}{"{}ESP-\/32"{}},\ \textcolor{keywordtype}{float}\ voltageResolution\ =\ 3.3,}
 \DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint8\_t\ adcBitResolution\ =\ 12,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *type\ =\ \textcolor{stringliteral}{"{}MQ-\/2"{}});}
 \DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_m_q2_sensor_a438b991a27d6731c263ba9e694f021fb}{update}}();}
-\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{class_m_q2_sensor_a85bac5def048c245c887ac27ef16b978}{getValue}}();}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_m_q2_sensor_a7f182be62f75d1e610189ae7287fc698}{getValue}}();}
 \DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_m_q2_sensor_a262e8dbb3693b9c44e2501e99547cd5c}{begin}}();}
-\DoxyCodeLine{00033\ }
-\DoxyCodeLine{00034\ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00035\ \ \ \ \ MQUnifiedsensor\ mq2;}
-\DoxyCodeLine{00036\ \};}
-\DoxyCodeLine{00037\ }
-\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_m_q2_sensor_a7eca20e30d0d9e6f3955940a30993ea1}{calibrate}}();}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00036\ \ \ \ \ MQUnifiedsensor\ mq2;}
+\DoxyCodeLine{00037\ \};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

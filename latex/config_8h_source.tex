@@ -1,0 +1,119 @@
+\doxysection{config.\+h}
+\hypertarget{config_8h_source}{}\label{config_8h_source}\index{include/config.h@{include/config.h}}
+\mbox{\hyperlink{config_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#ifndef\ CONFIG\_H}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ CONFIG\_H}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <freertos/FreeRTOS.h>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <freertos/semphr.h>}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#define\ DEBUG\ 0}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ fallback\ to\ secrets.h.default}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#ifdef\ \_\_has\_include}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\ \ \ \ \#if\ \_\_has\_include("{}secrets.h"{})}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \#include\ "{}secrets.h"{}}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \#define\ USING\_SECRETS\_H}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\ \ \ \ \#elif\ \_\_has\_include("{}secrets.h.default"{})}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \#include\ "{}secrets.h.default"{}}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \#warning\ "{}secrets.h\ not\ found,\ using\ secrets.h.default.\ Please\ copy\ secrets.h.default\ to\ secrets.h\ and\ configure\ your\ settings."{}}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \#define\ USING\_SECRETS\_DEFAULT}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\ \ \ \ \#else}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \#error\ "{}Neither\ secrets.h\ nor\ secrets.h.default\ found.\ Please\ ensure\ secrets.h.default\ exists."{}}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{comment}{//\ Fallback\ for\ compilers\ that\ don't\ support\ \_\_has\_include}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\ \ \ \ \#include\ "{}secrets.h.default"{}}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\ \ \ \ \#warning\ "{}Compiler\ doesn't\ support\ \_\_has\_include,\ using\ secrets.h.default\ as\ fallback."{}}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\ \ \ \ \#define\ USING\_SECRETS\_DEFAULT}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{comment}{//\ DEVICE\_ID\ for\ API}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#define\ DEVICE\_ID\ "{}SENTINEL-\/001"{}\ <}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{comment}{//\ Mutex\ declarations}}
+\DoxyCodeLine{00039\ \textcolor{keyword}{extern}\ SemaphoreHandle\_t\ \mbox{\hyperlink{main_8cpp_ae1c899affa3f5b7282b6f09135ecfcc9}{serialMutex}};\ }
+\DoxyCodeLine{00040\ \textcolor{keyword}{extern}\ SemaphoreHandle\_t\ \mbox{\hyperlink{main_8cpp_a199855008ba6a44c8952923dfebe8bf5}{modemMutex}};\ }
+\DoxyCodeLine{00041\ \textcolor{keyword}{extern}\ SemaphoreHandle\_t\ \mbox{\hyperlink{main_8cpp_a8958c418c8e99e16fe486fb17b15380c}{networkEventMutex}};\ }
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \textcolor{comment}{//\ Modem\ settings\ (NETWORK\_APN\ is\ set\ in\ secrets.h)}}
+\DoxyCodeLine{00044\ \textcolor{comment}{//\ \#define\ TINY\_GSM\_RX\_BUFFER\ 1024}}
+\DoxyCodeLine{00045\ \textcolor{comment}{//\ \#define\ LILYGO\_T\_A7670\ //temp}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#define\ TINY\_GSM\_USE\_GPRS\ true}}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#define\ TINY\_GSM\_USE\_WIFI\ false}}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#ifdef\ LILYGO\_T\_A7670}}
+\DoxyCodeLine{00055\ \textcolor{comment}{//\ RGB\ macros}}
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#define\ RGB\_RED\_PIN\ 16}}
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#define\ RGB\_GREEN\_PIN\ 15}}
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#define\ RGB\_BLUE\_PIN\ 7}}
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#elif\ LILYGO\_T\_SIM7670G\_S3}}
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\#define\ RGB\_RED\_PIN\ 13}}
+\DoxyCodeLine{00061\ \textcolor{preprocessor}{\#define\ RGB\_GREEN\_PIN\ 14}}
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\#define\ RGB\_BLUE\_PIN\ 21}}
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#define\ DHTTYPE\ DHT22}}
+\DoxyCodeLine{00070\ \textcolor{preprocessor}{\#ifdef\ LILYGO\_T\_A7670}}
+\DoxyCodeLine{00071\ \textcolor{preprocessor}{\#define\ DHT\_PIN\ 32}}
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#elif\ LILYGO\_T\_SIM7670G\_S3}}
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#define\ DHT\_PIN\ 7}}
+\DoxyCodeLine{00074\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\#define\ TEMP\_DELTA\_THRESHOLD\ 0.1}}
+\DoxyCodeLine{00076\ \textcolor{preprocessor}{\#define\ HUM\_DELTA\_THRESHOLD\ 1.0}}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00082\ \textcolor{preprocessor}{\#define\ STRAP\_NAME\ "{}POLAR\ H9\ EC351E2B"{}}}
+\DoxyCodeLine{00083\ \textcolor{preprocessor}{\#define\ STRAP\_ADDRESS\ "{}a0:9e:1a:ec:35:1e"{}}}
+\DoxyCodeLine{00084\ \textcolor{preprocessor}{\#define\ HEARTRATE\_SERVICE\_UUID\ "{}180D"{}}}
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#define\ HEARTRATE\_CHAR\_UUID\ "{}2A37"{}}}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00091\ \textcolor{preprocessor}{\#ifdef\ LILYGO\_T\_A7670}}
+\DoxyCodeLine{00092\ \textcolor{preprocessor}{\#define\ GAS\_PIN\ (32)}}
+\DoxyCodeLine{00093\ \textcolor{preprocessor}{\#elif\ LILYGO\_T\_SIM7670G\_S3}}
+\DoxyCodeLine{00094\ \textcolor{preprocessor}{\#define\ GAS\_PIN\ (15)}}
+\DoxyCodeLine{00095\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00096\ \textcolor{comment}{//\ \#define\ GAS\_BOARD\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ "{}ESP-\/32"{}}}
+\DoxyCodeLine{00097\ \textcolor{comment}{//\ \#define\ GAS\_TYPE\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ "{}MQ-\/2"{}}}
+\DoxyCodeLine{00098\ \textcolor{comment}{//\ \#define\ GAS\_VOLTAGE\_RESOLUTION\ \ 12}}
+\DoxyCodeLine{00099\ \textcolor{comment}{//\ \#define\ GAS\_ADC\_BIT\_RESOLUTION\ \ 12}}
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{\#define\ GAS\_RATIO\_CLEANAIR\ 9.83}}
+\DoxyCodeLine{00101\ \textcolor{preprocessor}{\#define\ GAS\_DELTA\_THRESHOLD\ 5.0}}
+\DoxyCodeLine{00102\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00103\ \textcolor{comment}{\ \ \ \ Exponential\ regression:}}
+\DoxyCodeLine{00104\ \textcolor{comment}{\ \ \ \ Gas\ \ \ \ |\ a\ \ \ \ \ \ |\ b}}
+\DoxyCodeLine{00105\ \textcolor{comment}{\ \ \ \ H2\ \ \ \ \ |\ 987.99\ |\ -\/2.162}}
+\DoxyCodeLine{00106\ \textcolor{comment}{\ \ \ \ LPG\ \ \ \ |\ 574.25\ |\ -\/2.222}}
+\DoxyCodeLine{00107\ \textcolor{comment}{\ \ \ \ CO\ \ \ \ \ |\ 36974\ \ |\ -\/3.109}}
+\DoxyCodeLine{00108\ \textcolor{comment}{\ \ \ \ Alcohol|\ 3616.1\ |\ -\/2.675}}
+\DoxyCodeLine{00109\ \textcolor{comment}{\ \ \ \ Propane|\ 658.71\ |\ -\/2.168}}
+\DoxyCodeLine{00110\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00111\ \textcolor{preprocessor}{\#define\ GAS\_SETA\ 658.71}}
+\DoxyCodeLine{00112\ \textcolor{preprocessor}{\#define\ GAS\_SETB\ -\/2.168}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00119\ \textcolor{preprocessor}{\#ifdef\ LILYGO\_T\_A7670}}
+\DoxyCodeLine{00120\ \textcolor{preprocessor}{\#define\ SDA\_PIN\ 21}}
+\DoxyCodeLine{00121\ \textcolor{preprocessor}{\#define\ SCL\_PIN\ 22}}
+\DoxyCodeLine{00122\ \textcolor{preprocessor}{\#elif\ LILYGO\_T\_SIM7670G\_S3}}
+\DoxyCodeLine{00123\ \textcolor{preprocessor}{\#define\ SDA\_PIN\ 6}}
+\DoxyCodeLine{00124\ \textcolor{preprocessor}{\#define\ SCL\_PIN\ 5}}
+\DoxyCodeLine{00125\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00127\ \textcolor{preprocessor}{\#define\ MPU6500\_ADDR\ 0x68}}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00133\ \textcolor{preprocessor}{\#define\ ACC\_THRESHOLD\ 2.0}}
+\DoxyCodeLine{00134\ \textcolor{preprocessor}{\#define\ ANGLE\_THRESHOLD\ 60.0}}
+\DoxyCodeLine{00135\ \textcolor{preprocessor}{\#define\ MAX\_TIME\_BETWEEN\ 2000}}
+\DoxyCodeLine{00136\ \textcolor{preprocessor}{\#define\ STEP\_THRESHOLD\ 1.2}}
+\DoxyCodeLine{00137\ \textcolor{preprocessor}{\#define\ STEP\_DEBOUNCE\_MS\ 300}}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00143\ \textcolor{preprocessor}{\#define\ X\_OFFSET\ 0.0737}}
+\DoxyCodeLine{00144\ \textcolor{preprocessor}{\#define\ Y\_OFFSET\ -\/0.6132}}
+\DoxyCodeLine{00145\ \textcolor{preprocessor}{\#define\ Z\_OFFSET\ -\/0.9986}}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

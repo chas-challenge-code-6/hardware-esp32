@@ -8,10 +8,23 @@ Accelerometer Task Implementation.
 {\ttfamily \#include "{}tasks/accelerometer\+Task.\+h"{}}\newline
 {\ttfamily \#include "{}Sensor\+Data.\+h"{}}\newline
 {\ttfamily \#include "{}sensors/accelerometer.\+h"{}}\newline
+{\ttfamily \#include "{}utils/threadsafe\+\_\+serial.\+h"{}}\newline
 {\ttfamily \#include $<$Arduino.\+h$>$}\newline
+{\ttfamily \#include $<$cstring$>$}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{accelerometer_task_8cpp_a5cae351e53923bf13348d8e8b15be9d6}\label{accelerometer_task_8cpp_a5cae351e53923bf13348d8e8b15be9d6} 
+\#define {\bfseries QUEUE\+\_\+\+SEND\+\_\+\+TIMEOUT\+\_\+\+MS}~1000
+\item 
+\Hypertarget{accelerometer_task_8cpp_a6461dd72337dd8ad612f669157442bd3}\label{accelerometer_task_8cpp_a6461dd72337dd8ad612f669157442bd3} 
+\#define {\bfseries NETWORK\+\_\+\+CONNECTED\+\_\+\+BIT}~BIT0
+\end{DoxyCompactItemize}
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
+void \mbox{\hyperlink{accelerometer_task_8cpp_a9bc7fbbd3011352225909a8930a71ed4}{send\+Accel\+Data}} (const \mbox{\hyperlink{structsensor__message__t}{sensor\+\_\+message\+\_\+t}} \&msg)
+\begin{DoxyCompactList}\small\item\em Send accelerometer data to the queue. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{accelerometer_task_8cpp_ac7a3902b1ec1ce2fb2e880b24759c517}{accel\+Task}} (void \texorpdfstring{$\ast$}{*}pv\+Parameters)
 \begin{DoxyCompactList}\small\item\em Accelerometer task function. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsubsection*{Variables}
@@ -19,7 +32,13 @@ void \mbox{\hyperlink{accelerometer_task_8cpp_ac7a3902b1ec1ce2fb2e880b24759c517}
 \item 
 \Hypertarget{accelerometer_task_8cpp_a2820736c7f6f9a3082102f0acd2cbac1}\label{accelerometer_task_8cpp_a2820736c7f6f9a3082102f0acd2cbac1} 
 Queue\+Handle\+\_\+t {\bfseries data\+Queue}
-\begin{DoxyCompactList}\small\item\em Queue for sensor data, used by all tasks. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\item 
+\Hypertarget{accelerometer_task_8cpp_a01fe87d0f21810f5e1e1485bb53066d3}\label{accelerometer_task_8cpp_a01fe87d0f21810f5e1e1485bb53066d3} 
+Event\+Group\+Handle\+\_\+t {\bfseries network\+Event\+Group}
+\item 
+\Hypertarget{accelerometer_task_8cpp_a8958c418c8e99e16fe486fb17b15380c}\label{accelerometer_task_8cpp_a8958c418c8e99e16fe486fb17b15380c} 
+Semaphore\+Handle\+\_\+t {\bfseries network\+Event\+Mutex}
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -45,5 +64,20 @@ This function initializes the accelerometer and continuously reads data from it.
 
 \begin{DoxyParams}{Parameters}
 {\em pv\+Parameters} & \\
+\hline
+\end{DoxyParams}
+\Hypertarget{accelerometer_task_8cpp_a9bc7fbbd3011352225909a8930a71ed4}\index{accelerometerTask.cpp@{accelerometerTask.cpp}!sendAccelData@{sendAccelData}}
+\index{sendAccelData@{sendAccelData}!accelerometerTask.cpp@{accelerometerTask.cpp}}
+\doxysubsubsection{\texorpdfstring{sendAccelData()}{sendAccelData()}}
+{\footnotesize\ttfamily \label{accelerometer_task_8cpp_a9bc7fbbd3011352225909a8930a71ed4} 
+void send\+Accel\+Data (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structsensor__message__t}{sensor\+\_\+message\+\_\+t}} \&}]{msg}{}\end{DoxyParamCaption})}
+
+
+
+Send accelerometer data to the queue. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & \\
 \hline
 \end{DoxyParams}

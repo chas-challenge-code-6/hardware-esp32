@@ -1,0 +1,41 @@
+\doxysection{threadsafe\+\_\+serial.\+h}
+\hypertarget{threadsafe__serial_8h_source}{}\label{threadsafe__serial_8h_source}\index{include/utils/threadsafe\_serial.h@{include/utils/threadsafe\_serial.h}}
+\mbox{\hyperlink{threadsafe__serial_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#ifndef\ THREADSAFE\_SERIAL\_H}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ THREADSAFE\_SERIAL\_H}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <Arduino.h>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <freertos/FreeRTOS.h>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <freertos/semphr.h>}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{extern}\ SemaphoreHandle\_t\ \mbox{\hyperlink{main_8cpp_ae1c899affa3f5b7282b6f09135ecfcc9}{serialMutex}};}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{threadsafe__serial_8h_a66e2a38eee16d6d428686bf55c6d3c5f}{safePrint}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ message);}
+\DoxyCodeLine{00018\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{threadsafe__serial_8h_a66e2a38eee16d6d428686bf55c6d3c5f}{safePrint}}(\textcolor{keyword}{const}\ String\&\ message);}
+\DoxyCodeLine{00019\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{threadsafe__serial_8h_aa2a33e2abc21c32573829bde657382a6}{safePrintln}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ message);}
+\DoxyCodeLine{00020\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{threadsafe__serial_8h_aa2a33e2abc21c32573829bde657382a6}{safePrintln}}(\textcolor{keyword}{const}\ String\&\ message);}
+\DoxyCodeLine{00021\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{threadsafe__serial_8h_a211c3f6179c90047a5c0c7666dcbadb1}{safePrintf}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ format,\ ...);}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00035\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{threadsafe__serial_8h_a66e2a38eee16d6d428686bf55c6d3c5f}{safePrint}}(\textcolor{keyword}{const}\ T\&\ value)\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordflow}{if}\ (xSemaphoreTake(\mbox{\hyperlink{main_8cpp_ae1c899affa3f5b7282b6f09135ecfcc9}{serialMutex}},\ pdMS\_TO\_TICKS(1000))\ ==\ pdTRUE)\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ Serial.print(value);}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ xSemaphoreGive(\mbox{\hyperlink{main_8cpp_ae1c899affa3f5b7282b6f09135ecfcc9}{serialMutex}});}
+\DoxyCodeLine{00039\ \ \ \ \ \}}
+\DoxyCodeLine{00040\ \}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00051\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00052\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{threadsafe__serial_8h_aa2a33e2abc21c32573829bde657382a6}{safePrintln}}(\textcolor{keyword}{const}\ T\&\ value)\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{if}\ (xSemaphoreTake(\mbox{\hyperlink{main_8cpp_ae1c899affa3f5b7282b6f09135ecfcc9}{serialMutex}},\ pdMS\_TO\_TICKS(1000))\ ==\ pdTRUE)\ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ Serial.println(value);}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ xSemaphoreGive(\mbox{\hyperlink{main_8cpp_ae1c899affa3f5b7282b6f09135ecfcc9}{serialMutex}});}
+\DoxyCodeLine{00056\ \ \ \ \ \}}
+\DoxyCodeLine{00057\ \}}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

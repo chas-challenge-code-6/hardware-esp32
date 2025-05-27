@@ -5,39 +5,60 @@
 Main File.  
 
 
-{\ttfamily \#include "{}main.\+h"{}}\newline
 {\ttfamily \#include "{}Sensor\+Data.\+h"{}}\newline
+{\ttfamily \#include "{}config.\+h"{}}\newline
 {\ttfamily \#include "{}network/bluetooth.\+h"{}}\newline
 {\ttfamily \#include "{}tasks/accelerometer\+Task.\+h"{}}\newline
+{\ttfamily \#include "{}tasks/battery\+Task.\+h"{}}\newline
 {\ttfamily \#include "{}tasks/bluetooth\+Task.\+h"{}}\newline
 {\ttfamily \#include "{}tasks/communication\+Task.\+h"{}}\newline
 {\ttfamily \#include "{}tasks/dht\+Task.\+h"{}}\newline
 {\ttfamily \#include "{}tasks/gas\+Task.\+h"{}}\newline
+{\ttfamily \#include "{}tasks/network\+Status\+Task.\+h"{}}\newline
 {\ttfamily \#include "{}tasks/processing\+Task.\+h"{}}\newline
+{\ttfamily \#include "{}utilities.\+h"{}}\newline
+{\ttfamily \#include $<$Tiny\+Gsm\+Client.\+h$>$}\newline
+{\ttfamily \#include $<$Wi\+Fi.\+h$>$}\newline
 {\ttfamily \#include $<$Arduino.\+h$>$}\newline
 {\ttfamily \#include $<$Wire.\+h$>$}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{main_8cpp_a80d8265aa07c9c52f9752921d3b5e277}\label{main_8cpp_a80d8265aa07c9c52f9752921d3b5e277} 
+\#define {\bfseries SYSTEM\+\_\+\+READY\+\_\+\+BIT}~BIT1
+\end{DoxyCompactItemize}
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{main_8cpp_a4fc01d736fe50cf5b977f755b675f11d}{setup}} ()
+\Hypertarget{main_8cpp_a27efdcb8c676e099b1bf4473e4beb331}\label{main_8cpp_a27efdcb8c676e099b1bf4473e4beb331} 
+Tiny\+Gsm {\bfseries modem} (Serial\+AT)
+\item 
+\Hypertarget{main_8cpp_a4fc01d736fe50cf5b977f755b675f11d}\label{main_8cpp_a4fc01d736fe50cf5b977f755b675f11d} 
+void {\bfseries setup} ()
 \item 
 void \mbox{\hyperlink{main_8cpp_afe461d27b9c48d5921c00d521181f12f}{loop}} ()
 \begin{DoxyCompactList}\small\item\em Main loop. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-\Hypertarget{main_8cpp_a50ef38cb2acae374a91ebef550610711}\label{main_8cpp_a50ef38cb2acae374a91ebef550610711} 
-\mbox{\hyperlink{class_bluetooth_client}{Bluetooth\+Client}} {\bfseries b\+Client}
-\begin{DoxyCompactList}\small\item\em Bluetooth client object. \end{DoxyCompactList}\item 
 \Hypertarget{main_8cpp_a2820736c7f6f9a3082102f0acd2cbac1}\label{main_8cpp_a2820736c7f6f9a3082102f0acd2cbac1} 
 Queue\+Handle\+\_\+t {\bfseries data\+Queue}
-\begin{DoxyCompactList}\small\item\em Queue for sensor data, used by all tasks. \end{DoxyCompactList}\item 
+\item 
 \Hypertarget{main_8cpp_a8954cbaccd2b2ba1e6cc1abe9a7a53be}\label{main_8cpp_a8954cbaccd2b2ba1e6cc1abe9a7a53be} 
 Queue\+Handle\+\_\+t {\bfseries http\+Queue}
-\begin{DoxyCompactList}\small\item\em Queue for HTTP data, used by the communication task. \end{DoxyCompactList}\item 
+\item 
 \Hypertarget{main_8cpp_a01fe87d0f21810f5e1e1485bb53066d3}\label{main_8cpp_a01fe87d0f21810f5e1e1485bb53066d3} 
 Event\+Group\+Handle\+\_\+t {\bfseries network\+Event\+Group}
-\begin{DoxyCompactList}\small\item\em Event group for network events. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\item 
+\Hypertarget{main_8cpp_ae1c899affa3f5b7282b6f09135ecfcc9}\label{main_8cpp_ae1c899affa3f5b7282b6f09135ecfcc9} 
+Semaphore\+Handle\+\_\+t {\bfseries serial\+Mutex}
+\begin{DoxyCompactList}\small\item\em Serial mutex for thread-\/safe printing. \end{DoxyCompactList}\item 
+\Hypertarget{main_8cpp_a199855008ba6a44c8952923dfebe8bf5}\label{main_8cpp_a199855008ba6a44c8952923dfebe8bf5} 
+Semaphore\+Handle\+\_\+t {\bfseries modem\+Mutex}
+\begin{DoxyCompactList}\small\item\em Modem mutex for thread-\/safe modem operations. \end{DoxyCompactList}\item 
+\Hypertarget{main_8cpp_a8958c418c8e99e16fe486fb17b15380c}\label{main_8cpp_a8958c418c8e99e16fe486fb17b15380c} 
+Semaphore\+Handle\+\_\+t {\bfseries network\+Event\+Mutex}
+\begin{DoxyCompactList}\small\item\em Mutex for network event handling. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -56,16 +77,4 @@ void loop (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
 
 Main loop. 
 
-The main loop is empty as all tasks are handled in Free\+RTOS tasks. The loop function is required by the Arduino framework, but it does not perform any operations. \Hypertarget{main_8cpp_a4fc01d736fe50cf5b977f755b675f11d}\index{main.cpp@{main.cpp}!setup@{setup}}
-\index{setup@{setup}!main.cpp@{main.cpp}}
-\doxysubsubsection{\texorpdfstring{setup()}{setup()}}
-{\footnotesize\ttfamily \label{main_8cpp_a4fc01d736fe50cf5b977f755b675f11d} 
-void setup (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
-
-\texorpdfstring{$<$}{<} Initialize I2C
-
-\texorpdfstring{$<$}{<} Event group for network events
-
-\texorpdfstring{$<$}{<} Queue for sensor data, used by all tasks
-
-\texorpdfstring{$<$}{<} Queue for HTTP data, used by the communication task
+The main loop is empty as all tasks are handled in Free\+RTOS tasks. The loop function is required by the Arduino framework, but it does not perform any operations. 

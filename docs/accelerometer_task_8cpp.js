@@ -1,5 +1,5 @@
 var accelerometer_task_8cpp =
 [
     [ "accelTask", "accelerometer_task_8cpp.html#ac7a3902b1ec1ce2fb2e880b24759c517", null ],
-    [ "dataQueue", "accelerometer_task_8cpp.html#a2820736c7f6f9a3082102f0acd2cbac1", null ]
+    [ "sendAccelData", "accelerometer_task_8cpp.html#a9bc7fbbd3011352225909a8930a71ed4", null ]
 ];

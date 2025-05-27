@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['processingtask_0',['processingTask',['../processing_task_8cpp.html#ab1ebecae7164264819a31c2e0af86ebc',1,'processingTask(void *pvParameters):&#160;processingTask.cpp'],['../processing_task_8h.html#ab1ebecae7164264819a31c2e0af86ebc',1,'processingTask(void *pvParameters):&#160;processingTask.cpp']]]
+  ['maintainconnection_0',['maintainConnection',['../class_network.html#a84601cfaa5b14e67396e900ec05196c4',1,'Network']]],
+  ['mq2sensor_1',['MQ2Sensor',['../class_m_q2_sensor.html#aae67065132cd8a2dabe0a136c7b4b614',1,'MQ2Sensor']]]
 ];

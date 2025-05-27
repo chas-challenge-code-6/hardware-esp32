@@ -97,6 +97,7 @@ $(function(){initNavTree('main_8cpp.html',''); initResizable(true); });
 
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">main.cpp File Reference</div></div>
@@ -105,21 +106,36 @@ $(function(){initNavTree('main_8cpp.html',''); initResizable(true); });
 
 <p>Main File.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="main_8h_source.html">main.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_sensor_data_8h_source.html">SensorData.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="_sensor_data_8h_source.html">SensorData.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="config_8h_source.html">config.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="bluetooth_8h_source.html">network/bluetooth.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="accelerometer_task_8h_source.html">tasks/accelerometerTask.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="battery_task_8h_source.html">tasks/batteryTask.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="bluetooth_task_8h_source.html">tasks/bluetoothTask.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="communication_task_8h_source.html">tasks/communicationTask.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="dht_task_8h_source.html">tasks/dhtTask.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="gas_task_8h_source.html">tasks/gasTask.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="network_status_task_8h_source.html">tasks/networkStatusTask.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="processing_task_8h_source.html">tasks/processingTask.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="utilities_8h_source.html">utilities.h</a>&quot;</code><br />
+<code>#include &lt;TinyGsmClient.h&gt;</code><br />
+<code>#include &lt;WiFi.h&gt;</code><br />
 <code>#include &lt;Arduino.h&gt;</code><br />
 <code>#include &lt;Wire.h&gt;</code><br />
 </div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a80d8265aa07c9c52f9752921d3b5e277" id="r_a80d8265aa07c9c52f9752921d3b5e277"><td class="memItemLeft" align="right" valign="top"><a id="a80d8265aa07c9c52f9752921d3b5e277" name="a80d8265aa07c9c52f9752921d3b5e277"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SYSTEM_READY_BIT</b>&#160;&#160;&#160;BIT1</td></tr>
+<tr class="separator:a80d8265aa07c9c52f9752921d3b5e277"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a4fc01d736fe50cf5b977f755b675f11d" id="r_a4fc01d736fe50cf5b977f755b675f11d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4fc01d736fe50cf5b977f755b675f11d">setup</a> ()</td></tr>
+<tr class="memitem:a27efdcb8c676e099b1bf4473e4beb331" id="r_a27efdcb8c676e099b1bf4473e4beb331"><td class="memItemLeft" align="right" valign="top"><a id="a27efdcb8c676e099b1bf4473e4beb331" name="a27efdcb8c676e099b1bf4473e4beb331"></a>
+TinyGsm&#160;</td><td class="memItemRight" valign="bottom"><b>modem</b> (SerialAT)</td></tr>
+<tr class="separator:a27efdcb8c676e099b1bf4473e4beb331"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fc01d736fe50cf5b977f755b675f11d" id="r_a4fc01d736fe50cf5b977f755b675f11d"><td class="memItemLeft" align="right" valign="top"><a id="a4fc01d736fe50cf5b977f755b675f11d" name="a4fc01d736fe50cf5b977f755b675f11d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setup</b> ()</td></tr>
 <tr class="separator:a4fc01d736fe50cf5b977f755b675f11d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe461d27b9c48d5921c00d521181f12f" id="r_afe461d27b9c48d5921c00d521181f12f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afe461d27b9c48d5921c00d521181f12f">loop</a> ()</td></tr>
 <tr class="memdesc:afe461d27b9c48d5921c00d521181f12f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main loop.  <br /></td></tr>
@@ -127,22 +143,27 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a50ef38cb2acae374a91ebef550610711" id="r_a50ef38cb2acae374a91ebef550610711"><td class="memItemLeft" align="right" valign="top"><a id="a50ef38cb2acae374a91ebef550610711" name="a50ef38cb2acae374a91ebef550610711"></a>
-<a class="el" href="class_bluetooth_client.html">BluetoothClient</a>&#160;</td><td class="memItemRight" valign="bottom"><b>bClient</b></td></tr>
-<tr class="memdesc:a50ef38cb2acae374a91ebef550610711"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bluetooth client object. <br /></td></tr>
-<tr class="separator:a50ef38cb2acae374a91ebef550610711"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2820736c7f6f9a3082102f0acd2cbac1" id="r_a2820736c7f6f9a3082102f0acd2cbac1"><td class="memItemLeft" align="right" valign="top"><a id="a2820736c7f6f9a3082102f0acd2cbac1" name="a2820736c7f6f9a3082102f0acd2cbac1"></a>
 QueueHandle_t&#160;</td><td class="memItemRight" valign="bottom"><b>dataQueue</b></td></tr>
-<tr class="memdesc:a2820736c7f6f9a3082102f0acd2cbac1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queue for sensor data, used by all tasks. <br /></td></tr>
 <tr class="separator:a2820736c7f6f9a3082102f0acd2cbac1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8954cbaccd2b2ba1e6cc1abe9a7a53be" id="r_a8954cbaccd2b2ba1e6cc1abe9a7a53be"><td class="memItemLeft" align="right" valign="top"><a id="a8954cbaccd2b2ba1e6cc1abe9a7a53be" name="a8954cbaccd2b2ba1e6cc1abe9a7a53be"></a>
 QueueHandle_t&#160;</td><td class="memItemRight" valign="bottom"><b>httpQueue</b></td></tr>
-<tr class="memdesc:a8954cbaccd2b2ba1e6cc1abe9a7a53be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queue for HTTP data, used by the communication task. <br /></td></tr>
 <tr class="separator:a8954cbaccd2b2ba1e6cc1abe9a7a53be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01fe87d0f21810f5e1e1485bb53066d3" id="r_a01fe87d0f21810f5e1e1485bb53066d3"><td class="memItemLeft" align="right" valign="top"><a id="a01fe87d0f21810f5e1e1485bb53066d3" name="a01fe87d0f21810f5e1e1485bb53066d3"></a>
 EventGroupHandle_t&#160;</td><td class="memItemRight" valign="bottom"><b>networkEventGroup</b></td></tr>
-<tr class="memdesc:a01fe87d0f21810f5e1e1485bb53066d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Event group for network events. <br /></td></tr>
 <tr class="separator:a01fe87d0f21810f5e1e1485bb53066d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1c899affa3f5b7282b6f09135ecfcc9" id="r_ae1c899affa3f5b7282b6f09135ecfcc9"><td class="memItemLeft" align="right" valign="top"><a id="ae1c899affa3f5b7282b6f09135ecfcc9" name="ae1c899affa3f5b7282b6f09135ecfcc9"></a>
+SemaphoreHandle_t&#160;</td><td class="memItemRight" valign="bottom"><b>serialMutex</b></td></tr>
+<tr class="memdesc:ae1c899affa3f5b7282b6f09135ecfcc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serial mutex for thread-safe printing. <br /></td></tr>
+<tr class="separator:ae1c899affa3f5b7282b6f09135ecfcc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a199855008ba6a44c8952923dfebe8bf5" id="r_a199855008ba6a44c8952923dfebe8bf5"><td class="memItemLeft" align="right" valign="top"><a id="a199855008ba6a44c8952923dfebe8bf5" name="a199855008ba6a44c8952923dfebe8bf5"></a>
+SemaphoreHandle_t&#160;</td><td class="memItemRight" valign="bottom"><b>modemMutex</b></td></tr>
+<tr class="memdesc:a199855008ba6a44c8952923dfebe8bf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modem mutex for thread-safe modem operations. <br /></td></tr>
+<tr class="separator:a199855008ba6a44c8952923dfebe8bf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8958c418c8e99e16fe486fb17b15380c" id="r_a8958c418c8e99e16fe486fb17b15380c"><td class="memItemLeft" align="right" valign="top"><a id="a8958c418c8e99e16fe486fb17b15380c" name="a8958c418c8e99e16fe486fb17b15380c"></a>
+SemaphoreHandle_t&#160;</td><td class="memItemRight" valign="bottom"><b>networkEventMutex</b></td></tr>
+<tr class="memdesc:a8958c418c8e99e16fe486fb17b15380c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutex for network event handling. <br /></td></tr>
+<tr class="separator:a8958c418c8e99e16fe486fb17b15380c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Main File. </p>
@@ -165,27 +186,6 @@ EventGroupHandle_t&#160;</td><td class="memItemRight" valign="bottom"><b>network
 
 <p>Main loop. </p>
 <p>The main loop is empty as all tasks are handled in FreeRTOS tasks. The loop function is required by the Arduino framework, but it does not perform any operations. </p>
-
-</div>
-</div>
-<a id="a4fc01d736fe50cf5b977f755b675f11d" name="a4fc01d736fe50cf5b977f755b675f11d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4fc01d736fe50cf5b977f755b675f11d">&#9670;&#160;</a></span>setup()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void setup </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>&lt; Initialize I2C</p>
-<p>&lt; Event group for network events</p>
-<p>&lt; Queue for sensor data, used by all tasks</p>
-<p>&lt; Queue for HTTP data, used by the communication task</p>
 
 </div>
 </div>

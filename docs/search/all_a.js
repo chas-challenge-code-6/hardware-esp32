@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['processed_5fdata_5ft_0',['processed_data_t',['../structprocessed__data__t.html',1,'']]],
-  ['processingtask_1',['processingTask',['../processing_task_8cpp.html#ab1ebecae7164264819a31c2e0af86ebc',1,'processingTask(void *pvParameters):&#160;processingTask.cpp'],['../processing_task_8h.html#ab1ebecae7164264819a31c2e0af86ebc',1,'processingTask(void *pvParameters):&#160;processingTask.cpp']]],
-  ['processingtask_2ecpp_2',['processingTask.cpp',['../processing_task_8cpp.html',1,'']]],
-  ['processingtask_2eh_3',['processingTask.h',['../processing_task_8h.html',1,'']]]
+  ['onconnect_0',['onConnect',['../class_bluetooth_client.html#a7696b85902ed1c82431925af95c9b98e',1,'BluetoothClient']]],
+  ['ondisconnect_1',['onDisconnect',['../class_bluetooth_client.html#af84bc85e67e05d6c8652b31774b0d2fe',1,'BluetoothClient']]],
+  ['onresult_2',['onResult',['../class_scan_callbacks.html#a633d8e55b380f5d6c9924b08c6b60368',1,'ScanCallbacks']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['processed_5fdata_5ft_0',['processed_data_t',['../structprocessed__data__t.html',1,'']]]
+  ['network_0',['Network',['../class_network.html',1,'']]]
 ];

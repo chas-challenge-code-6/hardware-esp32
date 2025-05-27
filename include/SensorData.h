@@ -7,8 +7,7 @@
 #ifndef SENSORDATA_H
 #define SENSORDATA_H
 
-#include <Arduino.h>
-
+#include <stdint.h>
 
 /** 
  * @brief Sensor Data Structure
@@ -20,7 +19,8 @@
  */
 typedef struct SensorData
 {
-    uint8_t device_battery;
+    int device_battery;
+    int noise_level;
     float accelZ;
     float accelTotal;
     float accelPitch;
@@ -28,10 +28,42 @@ typedef struct SensorData
     bool fall_detected;
     float temperature;
     float humidity;
-    float gasLevel;
-    uint32_t steps;
-    uint16_t heartRate;
+    int gasLevel;
+    int steps;
+    int heartRate;
 } sensor_data_t;
+
+
+/**
+ * @brief Sensor Data Flags Structure
+ * 
+ */
+typedef struct
+{
+    uint8_t device_battery;
+    uint8_t noise_level;
+    uint8_t accelZ;
+    uint8_t accelTotal;
+    uint8_t accelPitch;
+    uint8_t accelRoll;
+    uint8_t fall_detected;
+    uint8_t temperature;
+    uint8_t humidity;
+    uint8_t gasLevel;
+    uint8_t steps;
+    uint8_t heartRate;
+} sensor_data_flags_t;
+
+
+/**
+ * @brief Sensor Message Structure
+ * 
+ */
+typedef struct
+{
+    sensor_data_t data;
+    sensor_data_flags_t valid;
+} sensor_message_t;
 
 
 /**

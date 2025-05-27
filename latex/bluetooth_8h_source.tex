@@ -11,38 +11,37 @@
 \DoxyCodeLine{00013\ }
 \DoxyCodeLine{00014\ }
 \DoxyCodeLine{00019\ }
-\DoxyCodeLine{00020\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_bluetooth_client_a5ee534b5d9823be1e297f037c50beaf6}{BluetoothClient}}\ :\ \textcolor{keyword}{public}\ NimBLEClientCallbacks\ \{}
-\DoxyCodeLine{00021\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00022\ \ \ \ \ \mbox{\hyperlink{class_bluetooth_client_a5ee534b5d9823be1e297f037c50beaf6}{BluetoothClient}}();}
-\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_bluetooth_client_a63986488bbd9b846d2b622480449c7b5}{begin}}();}
-\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_bluetooth_client_a815fe66f45becd5c8dce034c24d6c68c}{loop}}();}
-\DoxyCodeLine{00025\ }
-\DoxyCodeLine{00026\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{class_bluetooth_client_ad2404931f4ebb2e42129355de4cdd5d2}{getHeartRate}}()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00027\ }
-\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_bluetooth_client_a7696b85902ed1c82431925af95c9b98e}{onConnect}}(NimBLEClient*\ pClient)\ \textcolor{keyword}{override};}
-\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_bluetooth_client_af84bc85e67e05d6c8652b31774b0d2fe}{onDisconnect}}(NimBLEClient*\ pClient,\ \textcolor{keywordtype}{int}\ reason)\ \textcolor{keyword}{override};}
-\DoxyCodeLine{00030\ }
-\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_bluetooth_client_a2ae007581f4644ec996c83f6c4db065d}{setConnectFlag}}(\textcolor{keyword}{const}\ NimBLEAdvertisedDevice*\ device);}
+\DoxyCodeLine{00020\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_bluetooth_client_a5ee534b5d9823be1e297f037c50beaf6}{BluetoothClient}}\ :\ \textcolor{keyword}{public}\ NimBLEClientCallbacks}
+\DoxyCodeLine{00021\ \{}
+\DoxyCodeLine{00022\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00023\ \ \ \ \ \mbox{\hyperlink{class_bluetooth_client_a5ee534b5d9823be1e297f037c50beaf6}{BluetoothClient}}();}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_bluetooth_client_a63986488bbd9b846d2b622480449c7b5}{begin}}();}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_bluetooth_client_a815fe66f45becd5c8dce034c24d6c68c}{loop}}();}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{class_bluetooth_client_ad2404931f4ebb2e42129355de4cdd5d2}{getHeartRate}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_bluetooth_client_a7696b85902ed1c82431925af95c9b98e}{onConnect}}(NimBLEClient\ *pClient)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_bluetooth_client_af84bc85e67e05d6c8652b31774b0d2fe}{onDisconnect}}(NimBLEClient\ *pClient,\ \textcolor{keywordtype}{int}\ reason)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_bluetooth_client_a2ae007581f4644ec996c83f6c4db065d}{setConnectFlag}}(\textcolor{keyword}{const}\ NimBLEAdvertisedDevice\ *device);}
 \DoxyCodeLine{00032\ }
 \DoxyCodeLine{00033\ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{void}\ onHeartRateNotify(NimBLERemoteCharacteristic*,\ uint8\_t*,\ \textcolor{keywordtype}{size\_t},\ \textcolor{keywordtype}{bool});}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{void}\ onHeartRateNotify(NimBLERemoteCharacteristic\ *,\ uint8\_t\ *,\ \textcolor{keywordtype}{size\_t},\ \textcolor{keywordtype}{bool});}
 \DoxyCodeLine{00035\ }
 \DoxyCodeLine{00036\ \ \ \ \ uint8\_t\ heartRate\ =\ -\/1;}
 \DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{bool}\ doConnect\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{const}\ NimBLEAdvertisedDevice*\ advDevice\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{const}\ NimBLEAdvertisedDevice\ *advDevice\ =\ \textcolor{keyword}{nullptr};}
 \DoxyCodeLine{00039\ \};}
 \DoxyCodeLine{00040\ }
-\DoxyCodeLine{00041\ }
-\DoxyCodeLine{00046\ }
-\DoxyCodeLine{00047\ \textcolor{keyword}{class\ }ScanCallbacks\ :\ \textcolor{keyword}{public}\ NimBLEScanCallbacks\ \{}
-\DoxyCodeLine{00048\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00049\ \ \ \ \ ScanCallbacks(\mbox{\hyperlink{class_bluetooth_client}{BluetoothClient}}*\ client)\ :\ client(client)\ \{\}}
-\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_scan_callbacks_a633d8e55b380f5d6c9924b08c6b60368}{onResult}}(\textcolor{keyword}{const}\ NimBLEAdvertisedDevice*\ advertisedDevice)\ \textcolor{keyword}{override};}
-\DoxyCodeLine{00051\ }
-\DoxyCodeLine{00052\ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00053\ \ \ \ \ \mbox{\hyperlink{class_bluetooth_client}{BluetoothClient}}*\ client;}
-\DoxyCodeLine{00054\ \};}
-\DoxyCodeLine{00055\ }
-\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00045\ \textcolor{keyword}{class\ }ScanCallbacks\ :\ \textcolor{keyword}{public}\ NimBLEScanCallbacks}
+\DoxyCodeLine{00046\ \{}
+\DoxyCodeLine{00047\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00048\ \ \ \ \ ScanCallbacks(\mbox{\hyperlink{class_bluetooth_client}{BluetoothClient}}\ *client)\ :\ client(client)\ \{\}}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_scan_callbacks_a633d8e55b380f5d6c9924b08c6b60368}{onResult}}(\textcolor{keyword}{const}\ NimBLEAdvertisedDevice\ *advertisedDevice)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00052\ \ \ \ \ \mbox{\hyperlink{class_bluetooth_client}{BluetoothClient}}\ *client;}
+\DoxyCodeLine{00053\ \};}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

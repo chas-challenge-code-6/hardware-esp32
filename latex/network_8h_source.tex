@@ -1,10 +1,38 @@
 \doxysection{network.\+h}
 \hypertarget{network_8h_source}{}\label{network_8h_source}\index{include/network/network.h@{include/network/network.h}}
-
+\mbox{\hyperlink{network_8h}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ NETWORK\_H}}
-\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ NETWORK\_H}}
-\DoxyCodeLine{00003\ }
-\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#ifndef\ NETWORK\_H}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#define\ NETWORK\_H}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{utilities_8h}{utilities.h}}"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <Arduino.h>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <TinyGsmClient.h>}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{class\ }Network}
+\DoxyCodeLine{00023\ \{}
+\DoxyCodeLine{00024\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ \ \ Network();}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_network_a5fe72ffee02b614cf513d3f4f015c7fd}{begin}}();}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_network_a1d16131e01aa4993affe0359888a948d}{enableModem}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{bool}\ disableModem()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_network_aa7b449e10b03de118b11ff0e05214e09}{connectWiFi}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *ssid,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *password);}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_network_aa9678bec7109228522c16ac24b1334c4}{connectLTE}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *apn);}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_network_a8e8bb53f4793e57f8a4afd5dab497d5b}{isWiFiConnected}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_network_a1a7eef6427e5210db500e01358fe0b4d}{isLTEConnected}}();}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_network_ad98ad9bbc38d09947399fb42c95ca841}{isConnected}}();}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_network_a8d69a8c3b9aad6cc4a9a6e3917088bb1}{disconnectWiFi}}();}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_network_ab343e6812796ee89c6de2d4261dc4807}{disconnectLTE}}();}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_network_a84601cfaa5b14e67396e900ec05196c4}{maintainConnection}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *ssid,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *password,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *apn);}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{bool}\ wifiConnected;}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{bool}\ lteConnected;}
+\DoxyCodeLine{00041\ \};}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

@@ -1,0 +1,68 @@
+\doxysection{src/tasks/battery\+Task.cpp File Reference}
+\hypertarget{battery_task_8cpp}{}\label{battery_task_8cpp}\index{src/tasks/batteryTask.cpp@{src/tasks/batteryTask.cpp}}
+
+
+\doxylink{class_battery}{Battery} Task Implementation File.  
+
+
+{\ttfamily \#include "{}tasks/battery\+Task.\+h"{}}\newline
+{\ttfamily \#include "{}Sensor\+Data.\+h"{}}\newline
+{\ttfamily \#include "{}battery.\+h"{}}\newline
+{\ttfamily \#include "{}config.\+h"{}}\newline
+{\ttfamily \#include "{}utils/threadsafe\+\_\+serial.\+h"{}}\newline
+{\ttfamily \#include $<$Arduino.\+h$>$}\newline
+{\ttfamily \#include $<$cstring$>$}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{battery_task_8cpp_a5cae351e53923bf13348d8e8b15be9d6}\label{battery_task_8cpp_a5cae351e53923bf13348d8e8b15be9d6} 
+\#define {\bfseries QUEUE\+\_\+\+SEND\+\_\+\+TIMEOUT\+\_\+\+MS}~1000
+\item 
+\Hypertarget{battery_task_8cpp_a6461dd72337dd8ad612f669157442bd3}\label{battery_task_8cpp_a6461dd72337dd8ad612f669157442bd3} 
+\#define {\bfseries NETWORK\+\_\+\+CONNECTED\+\_\+\+BIT}~BIT0
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{battery_task_8cpp_ad434756b69fb8e8df22561b462ef45d6}\label{battery_task_8cpp_ad434756b69fb8e8df22561b462ef45d6} 
+void {\bfseries send\+Battery\+Data} (const \mbox{\hyperlink{structsensor__message__t}{sensor\+\_\+message\+\_\+t}} \&msg)
+\item 
+void \mbox{\hyperlink{battery_task_8cpp_ad4b3ba3957a967ee7281390b4c55750e}{battery\+Task}} (void \texorpdfstring{$\ast$}{*}parameter)
+\begin{DoxyCompactList}\small\item\em \doxylink{class_battery}{Battery} Task function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{battery_task_8cpp_a2820736c7f6f9a3082102f0acd2cbac1}\label{battery_task_8cpp_a2820736c7f6f9a3082102f0acd2cbac1} 
+Queue\+Handle\+\_\+t {\bfseries data\+Queue}
+\item 
+\Hypertarget{battery_task_8cpp_a01fe87d0f21810f5e1e1485bb53066d3}\label{battery_task_8cpp_a01fe87d0f21810f5e1e1485bb53066d3} 
+Event\+Group\+Handle\+\_\+t {\bfseries network\+Event\+Group}
+\item 
+\Hypertarget{battery_task_8cpp_a8958c418c8e99e16fe486fb17b15380c}\label{battery_task_8cpp_a8958c418c8e99e16fe486fb17b15380c} 
+Semaphore\+Handle\+\_\+t {\bfseries network\+Event\+Mutex}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{class_battery}{Battery} Task Implementation File. 
+
+This file contains the implementation of the battery\+Task function, which is used to handle battery monitoring operations in a Free\+RTOS task. The task is responsible for reading battery voltage and percentage data from the \doxylink{class_battery}{Battery} class and sending it to a queue for processing. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{battery_task_8cpp_ad4b3ba3957a967ee7281390b4c55750e}\index{batteryTask.cpp@{batteryTask.cpp}!batteryTask@{batteryTask}}
+\index{batteryTask@{batteryTask}!batteryTask.cpp@{batteryTask.cpp}}
+\doxysubsubsection{\texorpdfstring{batteryTask()}{batteryTask()}}
+{\footnotesize\ttfamily \label{battery_task_8cpp_ad4b3ba3957a967ee7281390b4c55750e} 
+void battery\+Task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{parameter}{}\end{DoxyParamCaption})}
+
+
+
+\doxylink{class_battery}{Battery} Task function. 
+
+This function handles battery monitoring operations in a Free\+RTOS task. It reads battery voltage and percentage data from the \doxylink{class_battery}{Battery} class and sends it to a queue for processing. The task runs in an infinite loop, monitoring battery status and sending updates when the battery level changes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em parameter} & Task parameter (unused) \\
+\hline
+\end{DoxyParams}

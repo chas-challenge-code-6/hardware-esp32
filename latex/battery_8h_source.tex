@@ -1,0 +1,50 @@
+\doxysection{battery.\+h}
+\hypertarget{battery_8h_source}{}\label{battery_8h_source}\index{include/battery.h@{include/battery.h}}
+\mbox{\hyperlink{battery_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#ifndef\ BATTERY\_H}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#define\ BATTERY\_H}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{utilities_8h}{utilities.h}}"{}}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{config_8h}{config.h}}"{}}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ <Arduino.h>}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ <TinyGsmClient.h>}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ <esp32-\/hal-\/adc.h>}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ <numeric>}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ Voltage\ thresholds}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#define\ LOW\_VOLTAGE\_LEVEL\ \ \ \ \ \ \ 3600\ \ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ Sleep\ shutdown\ voltage\ (mV)}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#define\ WARN\_VOLTAGE\_LEVEL\ \ \ \ \ \ 3700\ \ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ Warning\ voltage\ (mV)}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#define\ SLEEP\_MINUTE\ \ \ \ \ \ \ \ \ \ \ \ 60\ \ \ \ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ Sleep\ time,\ unit\ /\ minute}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_battery}{Battery}}}
+\DoxyCodeLine{00035\ \{}
+\DoxyCodeLine{00036\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{static}\ uint32\_t\ getBatteryVoltageAverage();\ \textcolor{comment}{//\ Static\ method\ for\ accurate\ voltage\ reading}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{comment}{//\ Functions\ for\ monitoring\ battery\ status}}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_battery_ae22175033a63ac6cf222973f2498d193}{begin}}();}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{class_battery_a986eb57b5635ea2a7edf49aafb959edb}{getBatteryStatus}}();\ \textcolor{comment}{//\ Returns\ percentage\ as\ float}}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_battery_a85c665c96b912e5d66ff5464182c0dd1}{percent}}();\ \textcolor{comment}{//\ Returns\ percentage\ as\ int\ (for\ batteryTask\ compatibility)}}
+\DoxyCodeLine{00044\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{class_battery_a9af794bcf1190f911f039c0fc1b5e773}{getBatteryVoltage}}();\ \textcolor{comment}{//\ Returns\ voltage\ in\ mV}}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{class_battery_a63577a5d458094efc4d24a00f052682b}{readVoltage}}();\ \textcolor{comment}{//\ Returns\ voltage\ in\ volts\ (for\ batteryTask\ compatibility)}}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_battery_a2bac55ef0e14aafaae59d99656783209}{getUpdate}}();}
+\DoxyCodeLine{00047\ \ \ \ \ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{comment}{//\ Functions\ for\ power\ management}}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_battery_ac2617553d64bf098b5cc6a28197be695}{powerSaveMode}}();}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_battery_a1f25e0494c5a6c8e44a2f5cfa9c39013}{deepSleep}}(uint32\_t\ ms);}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_battery_a6241cc5b65bf4972f5800941d920df7a}{isPowerOn}}(\textcolor{keywordtype}{int}\ pin);}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_battery_a13ee84b37a360c77a26e3f07cb5547ee}{turnOnPower}}(\textcolor{keywordtype}{int}\ pin);}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_battery_a13e2f9fbc69df2352694edd07c290648}{turnOffPower}}(\textcolor{keywordtype}{int}\ pin);}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_battery_aa8ef1a7a2d37d6d7df5f55bda8b804db}{safetyShutdown}}();\ \textcolor{comment}{//\ Fixed\ to\ use\ actual\ voltage\ reading}}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_battery_a8093bd39769c524e3a082bcd58cdfe64}{setRGB}}(\textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_battery_a85c665c96b912e5d66ff5464182c0dd1}{percent}});}
+\DoxyCodeLine{00056\ \};}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

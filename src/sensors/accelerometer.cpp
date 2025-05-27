@@ -107,13 +107,3 @@ float SensorAccelerometer::getRoll() const
 {
     return this->accelRoll;
 }
-
-/**
- * @brief Gets the number of steps from the accelerometer
- * 
- * @return float Number of steps
- */
-float SensorAccelerometer::getSteps() const
-{
-    return steps;
-}

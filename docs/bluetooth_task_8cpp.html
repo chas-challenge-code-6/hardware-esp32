@@ -97,6 +97,7 @@ $(function(){initNavTree('bluetooth_task_8cpp.html',''); initResizable(true); })
 
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">bluetoothTask.cpp File Reference</div></div>
@@ -104,26 +105,41 @@ $(function(){initNavTree('bluetooth_task_8cpp.html',''); initResizable(true); })
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="bluetooth_task_8h_source.html">tasks/bluetoothTask.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_sensor_data_8h_source.html">SensorData.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="main_8h_source.html">main.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="config_8h_source.html">config.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="bluetooth_8h_source.html">network/bluetooth.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="threadsafe__serial_8h_source.html">utils/threadsafe_serial.h</a>&quot;</code><br />
 <code>#include &lt;Arduino.h&gt;</code><br />
+<code>#include &lt;cstring&gt;</code><br />
 </div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a5cae351e53923bf13348d8e8b15be9d6" id="r_a5cae351e53923bf13348d8e8b15be9d6"><td class="memItemLeft" align="right" valign="top"><a id="a5cae351e53923bf13348d8e8b15be9d6" name="a5cae351e53923bf13348d8e8b15be9d6"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>QUEUE_SEND_TIMEOUT_MS</b>&#160;&#160;&#160;1000</td></tr>
+<tr class="separator:a5cae351e53923bf13348d8e8b15be9d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6461dd72337dd8ad612f669157442bd3" id="r_a6461dd72337dd8ad612f669157442bd3"><td class="memItemLeft" align="right" valign="top"><a id="a6461dd72337dd8ad612f669157442bd3" name="a6461dd72337dd8ad612f669157442bd3"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NETWORK_CONNECTED_BIT</b>&#160;&#160;&#160;BIT0</td></tr>
+<tr class="separator:a6461dd72337dd8ad612f669157442bd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a1460ba357d9d9c430e2f393de1ad49bd" id="r_a1460ba357d9d9c430e2f393de1ad49bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1460ba357d9d9c430e2f393de1ad49bd">sendBluetoothData</a> (const <a class="el" href="structsensor__message__t.html">sensor_message_t</a> &amp;msg)</td></tr>
+<tr class="memdesc:a1460ba357d9d9c430e2f393de1ad49bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send Bluetooth data to the queue.  <br /></td></tr>
+<tr class="separator:a1460ba357d9d9c430e2f393de1ad49bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e86e63f661ecc625c30b78187a68375" id="r_a6e86e63f661ecc625c30b78187a68375"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6e86e63f661ecc625c30b78187a68375">bluetoothTask</a> (void *pvParameters)</td></tr>
 <tr class="memdesc:a6e86e63f661ecc625c30b78187a68375"><td class="mdescLeft">&#160;</td><td class="mdescRight">bluetoothTask function  <br /></td></tr>
 <tr class="separator:a6e86e63f661ecc625c30b78187a68375"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a50ef38cb2acae374a91ebef550610711" id="r_a50ef38cb2acae374a91ebef550610711"><td class="memItemLeft" align="right" valign="top"><a id="a50ef38cb2acae374a91ebef550610711" name="a50ef38cb2acae374a91ebef550610711"></a>
-<a class="el" href="class_bluetooth_client.html">BluetoothClient</a>&#160;</td><td class="memItemRight" valign="bottom"><b>bClient</b></td></tr>
-<tr class="memdesc:a50ef38cb2acae374a91ebef550610711"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bluetooth client object. <br /></td></tr>
-<tr class="separator:a50ef38cb2acae374a91ebef550610711"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2820736c7f6f9a3082102f0acd2cbac1" id="r_a2820736c7f6f9a3082102f0acd2cbac1"><td class="memItemLeft" align="right" valign="top"><a id="a2820736c7f6f9a3082102f0acd2cbac1" name="a2820736c7f6f9a3082102f0acd2cbac1"></a>
 QueueHandle_t&#160;</td><td class="memItemRight" valign="bottom"><b>dataQueue</b></td></tr>
-<tr class="memdesc:a2820736c7f6f9a3082102f0acd2cbac1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queue for sensor data, used by all tasks. <br /></td></tr>
 <tr class="separator:a2820736c7f6f9a3082102f0acd2cbac1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01fe87d0f21810f5e1e1485bb53066d3" id="r_a01fe87d0f21810f5e1e1485bb53066d3"><td class="memItemLeft" align="right" valign="top"><a id="a01fe87d0f21810f5e1e1485bb53066d3" name="a01fe87d0f21810f5e1e1485bb53066d3"></a>
+EventGroupHandle_t&#160;</td><td class="memItemRight" valign="bottom"><b>networkEventGroup</b></td></tr>
+<tr class="separator:a01fe87d0f21810f5e1e1485bb53066d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8958c418c8e99e16fe486fb17b15380c" id="r_a8958c418c8e99e16fe486fb17b15380c"><td class="memItemLeft" align="right" valign="top"><a id="a8958c418c8e99e16fe486fb17b15380c" name="a8958c418c8e99e16fe486fb17b15380c"></a>
+SemaphoreHandle_t&#160;</td><td class="memItemRight" valign="bottom"><b>networkEventMutex</b></td></tr>
+<tr class="separator:a8958c418c8e99e16fe486fb17b15380c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This file contains the implementation of the bluetoothTask function, which is used to handle Bluetooth operations in a FreeRTOS task. </p>
@@ -148,6 +164,31 @@ QueueHandle_t&#160;</td><td class="memItemRight" valign="bottom"><b>dataQueue</b
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pvParameters</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1460ba357d9d9c430e2f393de1ad49bd" name="a1460ba357d9d9c430e2f393de1ad49bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1460ba357d9d9c430e2f393de1ad49bd">&#9670;&#160;</a></span>sendBluetoothData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sendBluetoothData </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structsensor__message__t.html">sensor_message_t</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>msg</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Send Bluetooth data to the queue. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">msg</td><td></td></tr>
   </table>
   </dd>
 </dl>

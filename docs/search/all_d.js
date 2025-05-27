@@ -1,5 +1,26 @@
 var searchData=
 [
-  ['update_0',['update',['../class_sensor_accelerometer.html#a17c03f73c132933ee8d40917f3781176',1,'SensorAccelerometer::update()'],['../class_sensor_d_h_t.html#ae937e8b2e4eae672c7cff79367803f66',1,'SensorDHT::update()'],['../class_m_q2_sensor.html#a438b991a27d6731c263ba9e694f021fb',1,'MQ2Sensor::update()']]],
-  ['utilities_2eh_1',['utilities.h',['../utilities_8h.html',1,'']]]
+  ['safeprint_0',['safePrint',['../threadsafe__serial_8cpp.html#a66e2a38eee16d6d428686bf55c6d3c5f',1,'safePrint(const char *message):&#160;threadsafe_serial.cpp'],['../threadsafe__serial_8cpp.html#a76da44e81f16f53f2c59fb961843a569',1,'safePrint(const String &amp;message):&#160;threadsafe_serial.cpp'],['../threadsafe__serial_8h.html#a66e2a38eee16d6d428686bf55c6d3c5f',1,'safePrint(const char *message):&#160;threadsafe_serial.cpp'],['../threadsafe__serial_8h.html#a76da44e81f16f53f2c59fb961843a569',1,'safePrint(const String &amp;message):&#160;threadsafe_serial.cpp'],['../threadsafe__serial_8h.html#a9c916697d7af7926730f596fd1dec260',1,'safePrint(const T &amp;value):&#160;threadsafe_serial.h']]],
+  ['safeprintf_1',['safePrintf',['../threadsafe__serial_8cpp.html#a211c3f6179c90047a5c0c7666dcbadb1',1,'safePrintf(const char *format,...):&#160;threadsafe_serial.cpp'],['../threadsafe__serial_8h.html#a211c3f6179c90047a5c0c7666dcbadb1',1,'safePrintf(const char *format,...):&#160;threadsafe_serial.cpp']]],
+  ['safeprintln_2',['safePrintln',['../threadsafe__serial_8cpp.html#aa2a33e2abc21c32573829bde657382a6',1,'safePrintln(const char *message):&#160;threadsafe_serial.cpp'],['../threadsafe__serial_8cpp.html#ab03fb64c9ecac1f70f6accde76b3ff43',1,'safePrintln(const String &amp;message):&#160;threadsafe_serial.cpp'],['../threadsafe__serial_8h.html#aa2a33e2abc21c32573829bde657382a6',1,'safePrintln(const char *message):&#160;threadsafe_serial.cpp'],['../threadsafe__serial_8h.html#ab03fb64c9ecac1f70f6accde76b3ff43',1,'safePrintln(const String &amp;message):&#160;threadsafe_serial.cpp'],['../threadsafe__serial_8h.html#a1ac2ab2dafbab86fc659b1c36d74125e',1,'safePrintln(const T &amp;value):&#160;threadsafe_serial.h']]],
+  ['safetyshutdown_3',['safetyShutdown',['../class_battery.html#aa8ef1a7a2d37d6d7df5f55bda8b804db',1,'Battery']]],
+  ['scancallbacks_4',['ScanCallbacks',['../class_scan_callbacks.html',1,'']]],
+  ['sda_5fpin_5',['SDA_PIN',['../main_8h.html#a526d580d324bce60a3e964066fae77e3',1,'main.h']]],
+  ['sendacceldata_6',['sendAccelData',['../accelerometer_task_8cpp.html#a9bc7fbbd3011352225909a8930a71ed4',1,'accelerometerTask.cpp']]],
+  ['sendbluetoothdata_7',['sendBluetoothData',['../bluetooth_task_8cpp.html#a1460ba357d9d9c430e2f393de1ad49bd',1,'bluetoothTask.cpp']]],
+  ['sendgasdata_8',['sendGasData',['../gas_task_8cpp.html#a3e9c406e6acd1421354d760036dee3d5',1,'gasTask.cpp']]],
+  ['sendjsonplain_9',['sendJsonPlain',['../communication_task_8cpp.html#a60d78548b3ec68fe12402ed6d1f846cb',1,'communicationTask.cpp']]],
+  ['sensor_5fdata_5fflags_5ft_10',['sensor_data_flags_t',['../structsensor__data__flags__t.html',1,'']]],
+  ['sensor_5fdata_5ft_11',['sensor_data_t',['../_sensor_data_8h.html#a4eb5382881826c5b404427fe805a925c',1,'SensorData.h']]],
+  ['sensor_5fmessage_5ft_12',['sensor_message_t',['../structsensor__message__t.html',1,'']]],
+  ['sensoraccelerometer_13',['SensorAccelerometer',['../class_sensor_accelerometer.html',1,'']]],
+  ['sensordata_14',['SensorData',['../struct_sensor_data.html',1,'']]],
+  ['sensordata_2eh_15',['SensorData.h',['../_sensor_data_8h.html',1,'']]],
+  ['sensordht_16',['SensorDHT',['../class_sensor_d_h_t.html',1,'']]],
+  ['serialmutex_17',['serialMutex',['../main_8cpp.html#ae1c899affa3f5b7282b6f09135ecfcc9',1,'serialMutex:&#160;main.cpp'],['../config_8h.html#ae1c899affa3f5b7282b6f09135ecfcc9',1,'serialMutex:&#160;main.cpp'],['../threadsafe__serial_8h.html#ae1c899affa3f5b7282b6f09135ecfcc9',1,'serialMutex:&#160;main.cpp']]],
+  ['setconnectflag_18',['setConnectFlag',['../class_bluetooth_client.html#a2ae007581f4644ec996c83f6c4db065d',1,'BluetoothClient']]],
+  ['setrgb_19',['setRGB',['../class_battery.html#a8093bd39769c524e3a082bcd58cdfe64',1,'Battery']]],
+  ['setup_20',['setup',['../class_sensor_accelerometer.html#aec2832c3f5b65fd8b4d342ce16757d7b',1,'SensorAccelerometer']]],
+  ['strap_5fname_21',['STRAP_NAME',['../config_8h.html#a73ae3dcddc8b754bc9c8db0cd4b96b7e',1,'STRAP_NAME:&#160;config.h'],['../main_8h.html#a73ae3dcddc8b754bc9c8db0cd4b96b7e',1,'STRAP_NAME:&#160;main.h']]],
+  ['system_5fready_5fbit_22',['SYSTEM_READY_BIT',['../network_status_task_8cpp.html#a80d8265aa07c9c52f9752921d3b5e277',1,'networkStatusTask.cpp']]]
 ];

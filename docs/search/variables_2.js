@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['httpqueue_0',['httpQueue',['../main_8cpp.html#a8954cbaccd2b2ba1e6cc1abe9a7a53be',1,'httpQueue:&#160;main.cpp'],['../communication_task_8cpp.html#a8954cbaccd2b2ba1e6cc1abe9a7a53be',1,'httpQueue:&#160;main.cpp'],['../processing_task_8cpp.html#a8954cbaccd2b2ba1e6cc1abe9a7a53be',1,'httpQueue:&#160;main.cpp']]]
+  ['serialmutex_0',['serialMutex',['../main_8cpp.html#ae1c899affa3f5b7282b6f09135ecfcc9',1,'serialMutex:&#160;main.cpp'],['../config_8h.html#ae1c899affa3f5b7282b6f09135ecfcc9',1,'serialMutex:&#160;main.cpp'],['../threadsafe__serial_8h.html#ae1c899affa3f5b7282b6f09135ecfcc9',1,'serialMutex:&#160;main.cpp']]]
 ];

@@ -1,0 +1,176 @@
+\doxysection{Battery Class Reference}
+\hypertarget{class_battery}{}\label{class_battery}\index{Battery@{Battery}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_battery_ae22175033a63ac6cf222973f2498d193}\label{class_battery_ae22175033a63ac6cf222973f2498d193} 
+void {\bfseries begin} ()
+\begin{DoxyCompactList}\small\item\em Initializes the battery monitoring system. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{class_battery_a986eb57b5635ea2a7edf49aafb959edb}{get\+Battery\+Status}} ()
+\begin{DoxyCompactList}\small\item\em Gets the battery status as a percentage based on the voltage. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_battery_a85c665c96b912e5d66ff5464182c0dd1}{percent}} ()
+\begin{DoxyCompactList}\small\item\em Gets the battery percentage based on the voltage. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{class_battery_a9af794bcf1190f911f039c0fc1b5e773}{get\+Battery\+Voltage}} ()
+\begin{DoxyCompactList}\small\item\em Gets the current battery voltage in millivolts. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{class_battery_a63577a5d458094efc4d24a00f052682b}{read\+Voltage}} ()
+\begin{DoxyCompactList}\small\item\em Reads the battery voltage in volts. \end{DoxyCompactList}\item 
+\Hypertarget{class_battery_a2bac55ef0e14aafaae59d99656783209}\label{class_battery_a2bac55ef0e14aafaae59d99656783209} 
+void {\bfseries get\+Update} ()
+\begin{DoxyCompactList}\small\item\em Gets the battery update every 10 seconds. \end{DoxyCompactList}\item 
+\Hypertarget{class_battery_ac2617553d64bf098b5cc6a28197be695}\label{class_battery_ac2617553d64bf098b5cc6a28197be695} 
+void {\bfseries power\+Save\+Mode} ()
+\begin{DoxyCompactList}\small\item\em Enters power save mode by putting the device into deep sleep for a short duration. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_battery_a1f25e0494c5a6c8e44a2f5cfa9c39013}{deep\+Sleep}} (uint32\+\_\+t ms)
+\begin{DoxyCompactList}\small\item\em Puts the device into deep sleep mode for a specified duration. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_battery_a6241cc5b65bf4972f5800941d920df7a}{is\+Power\+On}} (int pin)
+\begin{DoxyCompactList}\small\item\em Checks if the power pin is on. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_battery_a13ee84b37a360c77a26e3f07cb5547ee}{turn\+On\+Power}} (int pin)
+\begin{DoxyCompactList}\small\item\em Turns on the power pin. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_battery_a13e2f9fbc69df2352694edd07c290648}{turn\+Off\+Power}} (int pin)
+\begin{DoxyCompactList}\small\item\em Turns off the power pin. \end{DoxyCompactList}\item 
+\Hypertarget{class_battery_aa8ef1a7a2d37d6d7df5f55bda8b804db}\label{class_battery_aa8ef1a7a2d37d6d7df5f55bda8b804db} 
+void {\bfseries safety\+Shutdown} ()
+\begin{DoxyCompactList}\small\item\em Initiates a safety shutdown due to low battery voltage. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_battery_a8093bd39769c524e3a082bcd58cdfe64}{set\+RGB}} (int \mbox{\hyperlink{class_battery_a85c665c96b912e5d66ff5464182c0dd1}{percent}})
+\begin{DoxyCompactList}\small\item\em Sets the RGB LED color based on battery percentage. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_battery_a1f25e0494c5a6c8e44a2f5cfa9c39013}\index{Battery@{Battery}!deepSleep@{deepSleep}}
+\index{deepSleep@{deepSleep}!Battery@{Battery}}
+\doxysubsubsection{\texorpdfstring{deepSleep()}{deepSleep()}}
+{\footnotesize\ttfamily \label{class_battery_a1f25e0494c5a6c8e44a2f5cfa9c39013} 
+void Battery\+::deep\+Sleep (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{ms}{}\end{DoxyParamCaption})}
+
+
+
+Puts the device into deep sleep mode for a specified duration. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ms} & Duration in milliseconds \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_battery_a986eb57b5635ea2a7edf49aafb959edb}\index{Battery@{Battery}!getBatteryStatus@{getBatteryStatus}}
+\index{getBatteryStatus@{getBatteryStatus}!Battery@{Battery}}
+\doxysubsubsection{\texorpdfstring{getBatteryStatus()}{getBatteryStatus()}}
+{\footnotesize\ttfamily \label{class_battery_a986eb57b5635ea2a7edf49aafb959edb} 
+float Battery\+::get\+Battery\+Status (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Gets the battery status as a percentage based on the voltage. 
+
+\begin{DoxyReturn}{Returns}
+float 
+\end{DoxyReturn}
+\Hypertarget{class_battery_a9af794bcf1190f911f039c0fc1b5e773}\index{Battery@{Battery}!getBatteryVoltage@{getBatteryVoltage}}
+\index{getBatteryVoltage@{getBatteryVoltage}!Battery@{Battery}}
+\doxysubsubsection{\texorpdfstring{getBatteryVoltage()}{getBatteryVoltage()}}
+{\footnotesize\ttfamily \label{class_battery_a9af794bcf1190f911f039c0fc1b5e773} 
+uint32\+\_\+t Battery\+::get\+Battery\+Voltage (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Gets the current battery voltage in millivolts. 
+
+\begin{DoxyReturn}{Returns}
+uint32\+\_\+t 
+\end{DoxyReturn}
+\Hypertarget{class_battery_a6241cc5b65bf4972f5800941d920df7a}\index{Battery@{Battery}!isPowerOn@{isPowerOn}}
+\index{isPowerOn@{isPowerOn}!Battery@{Battery}}
+\doxysubsubsection{\texorpdfstring{isPowerOn()}{isPowerOn()}}
+{\footnotesize\ttfamily \label{class_battery_a6241cc5b65bf4972f5800941d920df7a} 
+bool Battery\+::is\+Power\+On (\begin{DoxyParamCaption}\item[{int}]{pin}{}\end{DoxyParamCaption})}
+
+
+
+Checks if the power pin is on. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pin} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+\Hypertarget{class_battery_a85c665c96b912e5d66ff5464182c0dd1}\index{Battery@{Battery}!percent@{percent}}
+\index{percent@{percent}!Battery@{Battery}}
+\doxysubsubsection{\texorpdfstring{percent()}{percent()}}
+{\footnotesize\ttfamily \label{class_battery_a85c665c96b912e5d66ff5464182c0dd1} 
+int Battery\+::percent (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Gets the battery percentage based on the voltage. 
+
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+\Hypertarget{class_battery_a63577a5d458094efc4d24a00f052682b}\index{Battery@{Battery}!readVoltage@{readVoltage}}
+\index{readVoltage@{readVoltage}!Battery@{Battery}}
+\doxysubsubsection{\texorpdfstring{readVoltage()}{readVoltage()}}
+{\footnotesize\ttfamily \label{class_battery_a63577a5d458094efc4d24a00f052682b} 
+float Battery\+::read\+Voltage (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Reads the battery voltage in volts. 
+
+\begin{DoxyReturn}{Returns}
+float 
+\end{DoxyReturn}
+\Hypertarget{class_battery_a8093bd39769c524e3a082bcd58cdfe64}\index{Battery@{Battery}!setRGB@{setRGB}}
+\index{setRGB@{setRGB}!Battery@{Battery}}
+\doxysubsubsection{\texorpdfstring{setRGB()}{setRGB()}}
+{\footnotesize\ttfamily \label{class_battery_a8093bd39769c524e3a082bcd58cdfe64} 
+void Battery\+::set\+RGB (\begin{DoxyParamCaption}\item[{int}]{percent}{}\end{DoxyParamCaption})}
+
+
+
+Sets the RGB LED color based on battery percentage. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em percent} & \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_battery_a13e2f9fbc69df2352694edd07c290648}\index{Battery@{Battery}!turnOffPower@{turnOffPower}}
+\index{turnOffPower@{turnOffPower}!Battery@{Battery}}
+\doxysubsubsection{\texorpdfstring{turnOffPower()}{turnOffPower()}}
+{\footnotesize\ttfamily \label{class_battery_a13e2f9fbc69df2352694edd07c290648} 
+void Battery\+::turn\+Off\+Power (\begin{DoxyParamCaption}\item[{int}]{pin}{}\end{DoxyParamCaption})}
+
+
+
+Turns off the power pin. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pin} & \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_battery_a13ee84b37a360c77a26e3f07cb5547ee}\index{Battery@{Battery}!turnOnPower@{turnOnPower}}
+\index{turnOnPower@{turnOnPower}!Battery@{Battery}}
+\doxysubsubsection{\texorpdfstring{turnOnPower()}{turnOnPower()}}
+{\footnotesize\ttfamily \label{class_battery_a13ee84b37a360c77a26e3f07cb5547ee} 
+void Battery\+::turn\+On\+Power (\begin{DoxyParamCaption}\item[{int}]{pin}{}\end{DoxyParamCaption})}
+
+
+
+Turns on the power pin. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pin} & \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{battery_8h}{battery.\+h}}\item 
+src/battery/\mbox{\hyperlink{battery_8cpp}{battery.\+cpp}}\end{DoxyCompactItemize}

@@ -8,9 +8,38 @@ DHT Task Implementation File.
 {\ttfamily \#include "{}tasks/dht\+Task.\+h"{}}\newline
 {\ttfamily \#include "{}Sensor\+Data.\+h"{}}\newline
 {\ttfamily \#include "{}sensors/dht22.\+h"{}}\newline
+{\ttfamily \#include "{}utils/threadsafe\+\_\+serial.\+h"{}}\newline
 {\ttfamily \#include $<$Arduino.\+h$>$}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$cstring$>$}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{dht_task_8cpp_a5cae351e53923bf13348d8e8b15be9d6}\label{dht_task_8cpp_a5cae351e53923bf13348d8e8b15be9d6} 
+\#define {\bfseries QUEUE\+\_\+\+SEND\+\_\+\+TIMEOUT\+\_\+\+MS}~1000
+\item 
+\Hypertarget{dht_task_8cpp_a6461dd72337dd8ad612f669157442bd3}\label{dht_task_8cpp_a6461dd72337dd8ad612f669157442bd3} 
+\#define {\bfseries NETWORK\+\_\+\+CONNECTED\+\_\+\+BIT}~BIT0
+\item 
+\Hypertarget{dht_task_8cpp_a52e59d372a57e734c090258b441e28bd}\label{dht_task_8cpp_a52e59d372a57e734c090258b441e28bd} 
+\#define {\bfseries DHT\+\_\+\+MIN\+\_\+\+TEMP}~-\/40.\+0f
+\item 
+\Hypertarget{dht_task_8cpp_ae5b644b6a3f8d8d39deb229f1ad73d89}\label{dht_task_8cpp_ae5b644b6a3f8d8d39deb229f1ad73d89} 
+\#define {\bfseries DHT\+\_\+\+MAX\+\_\+\+TEMP}~80.\+0f
+\item 
+\Hypertarget{dht_task_8cpp_a3d98452d59619ee83dcd4dc1ae703d45}\label{dht_task_8cpp_a3d98452d59619ee83dcd4dc1ae703d45} 
+\#define {\bfseries DHT\+\_\+\+MIN\+\_\+\+HUM}~0.\+0f
+\item 
+\Hypertarget{dht_task_8cpp_abbb70b52d88371717126ff2584c0e92d}\label{dht_task_8cpp_abbb70b52d88371717126ff2584c0e92d} 
+\#define {\bfseries DHT\+\_\+\+MAX\+\_\+\+HUM}~100.\+0f
+\end{DoxyCompactItemize}
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{dht_task_8cpp_ab6d6d725ba6d9d69cf6e14f188ff1666}{is\+Valid\+DHTReading}} (float temp, float hum)
+\begin{DoxyCompactList}\small\item\em Check if DHT reading is valid. \end{DoxyCompactList}\item 
+\Hypertarget{dht_task_8cpp_aac22bcfcb31b64b2e7e1baa2ddc5441b}\label{dht_task_8cpp_aac22bcfcb31b64b2e7e1baa2ddc5441b} 
+void {\bfseries send\+DHTData} (const \mbox{\hyperlink{structsensor__message__t}{sensor\+\_\+message\+\_\+t}} \&msg)
 \item 
 void \mbox{\hyperlink{dht_task_8cpp_a4daeab46406c20cb2296d7898907c41c}{dht\+Task}} (void \texorpdfstring{$\ast$}{*}parameter)
 \begin{DoxyCompactList}\small\item\em DHT Task function. \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -19,7 +48,13 @@ void \mbox{\hyperlink{dht_task_8cpp_a4daeab46406c20cb2296d7898907c41c}{dht\+Task
 \item 
 \Hypertarget{dht_task_8cpp_a2820736c7f6f9a3082102f0acd2cbac1}\label{dht_task_8cpp_a2820736c7f6f9a3082102f0acd2cbac1} 
 Queue\+Handle\+\_\+t {\bfseries data\+Queue}
-\begin{DoxyCompactList}\small\item\em Queue for sensor data, used by all tasks. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\item 
+\Hypertarget{dht_task_8cpp_a01fe87d0f21810f5e1e1485bb53066d3}\label{dht_task_8cpp_a01fe87d0f21810f5e1e1485bb53066d3} 
+Event\+Group\+Handle\+\_\+t {\bfseries network\+Event\+Group}
+\item 
+\Hypertarget{dht_task_8cpp_a8958c418c8e99e16fe486fb17b15380c}\label{dht_task_8cpp_a8958c418c8e99e16fe486fb17b15380c} 
+Semaphore\+Handle\+\_\+t {\bfseries network\+Event\+Mutex}
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -38,4 +73,25 @@ void dht\+Task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]
 
 DHT Task function. 
 
-This function handles DHT sensor operations in a Free\+RTOS task. It reads temperature and humidity data from the DHT sensor and sends it to a queue for processing. The task runs in an infinite loop, waiting for data to be available in the queue. When data is received, it is sent to the network for processing. 
+This function handles DHT sensor operations in a Free\+RTOS task. It reads temperature and humidity data from the DHT sensor and sends it to a queue for processing. The task runs in an infinite loop, waiting for data to be available in the queue. When data is received, it is sent to the network for processing. \Hypertarget{dht_task_8cpp_ab6d6d725ba6d9d69cf6e14f188ff1666}\index{dhtTask.cpp@{dhtTask.cpp}!isValidDHTReading@{isValidDHTReading}}
+\index{isValidDHTReading@{isValidDHTReading}!dhtTask.cpp@{dhtTask.cpp}}
+\doxysubsubsection{\texorpdfstring{isValidDHTReading()}{isValidDHTReading()}}
+{\footnotesize\ttfamily \label{dht_task_8cpp_ab6d6d725ba6d9d69cf6e14f188ff1666} 
+bool is\+Valid\+DHTReading (\begin{DoxyParamCaption}\item[{float}]{temp}{, }\item[{float}]{hum}{}\end{DoxyParamCaption})}
+
+
+
+Check if DHT reading is valid. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em temp} & \\
+\hline
+{\em hum} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}

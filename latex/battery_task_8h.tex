@@ -1,0 +1,35 @@
+\doxysection{include/tasks/battery\+Task.h File Reference}
+\hypertarget{battery_task_8h}{}\label{battery_task_8h}\index{include/tasks/batteryTask.h@{include/tasks/batteryTask.h}}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{battery_task_8h_ad4b3ba3957a967ee7281390b4c55750e}{battery\+Task}} (void \texorpdfstring{$\ast$}{*}parameter)
+\begin{DoxyCompactList}\small\item\em \doxylink{class_battery}{Battery} Task function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{class_battery}{Battery} Task Header File 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{battery_task_8h_ad4b3ba3957a967ee7281390b4c55750e}\index{batteryTask.h@{batteryTask.h}!batteryTask@{batteryTask}}
+\index{batteryTask@{batteryTask}!batteryTask.h@{batteryTask.h}}
+\doxysubsubsection{\texorpdfstring{batteryTask()}{batteryTask()}}
+{\footnotesize\ttfamily \label{battery_task_8h_ad4b3ba3957a967ee7281390b4c55750e} 
+void battery\+Task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{parameter}{}\end{DoxyParamCaption})}
+
+
+
+\doxylink{class_battery}{Battery} Task function. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em parameter} & \\
+\hline
+\end{DoxyParams}
+This function handles battery monitoring operations in a Free\+RTOS task. It reads battery voltage and percentage data from the \doxylink{class_battery}{Battery} class and sends it to a queue for processing. The task runs in an infinite loop, monitoring battery status and sending updates when the battery level changes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em parameter} & Task parameter (unused) \\
+\hline
+\end{DoxyParams}
