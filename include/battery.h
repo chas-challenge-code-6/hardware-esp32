@@ -18,6 +18,7 @@
 #define BATTERY_H
 
 #include "utilities.h"
+#include "config.h"
 #include <Arduino.h>
 #include <TinyGsmClient.h>
 #include <esp32-hal-adc.h>

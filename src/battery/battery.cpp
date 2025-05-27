@@ -167,3 +167,33 @@ void Battery::powerSaveMode()
     deepSleep(10000); // 10 seconds
     safePrintln("Woke up from deep sleep!");
 }
+
+void BatteryMonitor::setRGB(int percent)
+{
+
+   if (percent < 20)
+    {
+        // Set RGB LED to red
+        Serial.println("Battery is low, setting RGB to red");
+        // Add code to set RGB LED to red
+        digitalWrite(RED_PIN, HIGH);
+        digitalWrite(GREEN_PIN, LOW);
+    }
+    else if (percent < 50)
+    {
+        // Set RGB LED to yellow
+        Serial.println("Battery is medium, setting RGB to yellow");
+        // Add code to set RGB LED to yellow
+        digitalWrite(RED_PIN, HIGH);
+        digitalWrite(GREEN_PIN, HIGH);
+    }
+    else
+    {
+        // Set RGB LED to green
+        Serial.println("Battery is good, setting RGB to green");
+        // Add code to set RGB LED to green
+        // Example: digitalWrite for RGB pins (replace with your actual pin numbers)
+        digitalWrite(RED_PIN, LOW);
+        digitalWrite(GREEN_PIN, HIGH);
+    }
+}
