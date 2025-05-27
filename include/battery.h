@@ -50,6 +50,7 @@ public:
     void turnOnPower(int pin);
     void turnOffPower(int pin);
     void safetyShutdown();
+    void setRGB(int percent);
 };
 
 #endif

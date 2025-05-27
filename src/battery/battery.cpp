@@ -164,3 +164,20 @@ void Battery::powerSaveMode()
     deepSleep(10000);
     safePrintln("Woke up from deep sleep!");
 }
+
+void Battery::setRGB(int percent)
+{
+    if (percent <= 20) {
+        analogWrite(RGB_GREEN_PIN, 0);
+        analogWrite(RGB_RED_PIN, 255);
+        analogWrite(RGB_BLUE_PIN, 0);
+    } else if (percent <= 50) {
+        analogWrite(RGB_GREEN_PIN, 255);
+        analogWrite(RGB_RED_PIN, 255);
+        analogWrite(RGB_BLUE_PIN, 0);
+    } else {
+        analogWrite(RGB_GREEN_PIN, 255);
+        analogWrite(RGB_RED_PIN, 0);    
+        analogWrite(RGB_BLUE_PIN, 0);
+    }
+}
