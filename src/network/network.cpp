@@ -278,6 +278,7 @@ bool Network::connectLTE(const char *apn)
     safePrint("[Network] Connecting to APN: ");
     safePrintln(apn);
 
+    /*
     if (!modem.gprsConnect(apn, "", ""))
     {
         safePrintln("[Network] GPRS connection failed, disabling modem");
@@ -285,18 +286,20 @@ bool Network::connectLTE(const char *apn)
         return false;
     }
     safePrintln("[Network] GPRS connection successful");
-
-    /*
-            if (!modem.waitForNetwork())
-            {
-                safePrintln(" fail");
-                vTaskDelay(pdMS_TO_TICKS(10000));
-                return false;
-            }
     */
 
-    if (modem.isNetworkConnected() && modem.isGprsConnected())
-    // if (modem.isGprsConnected())
+    if (!modem.setNetworkActive())
+    {
+        safePrintln("[Network] Enable network failed!");
+    }
+
+    String ipAddress = modem.getLocalIP();
+    safePrint("Network IP: ");
+    safePrintln(ipAddress);
+
+    //if (modem.isNetworkConnected() && modem.isGprsConnected())
+    if (modem.isGprsConnected())
+    //if (modem.isNetworkConnected())
     {
         safePrintln("[Network] LTE connection established successfully");
         lteConnected = true;
@@ -320,14 +323,15 @@ void Network::disconnectLTE()
 
 bool Network::isLTEConnected()
 {
-    // Only check modem status if it's enabled
     if (!modemEnabled)
     {
         lteConnected = false;
         return false;
     }
     
-    bool result = modem.isNetworkConnected() && modem.isGprsConnected();
+    //bool result = modem.isNetworkConnected() && modem.isGprsConnected();
+    bool result = modem.isGprsConnected();
+    //bool result = modem.isNetworkConnected();
     lteConnected = result;
     return result;
 }
@@ -340,7 +344,7 @@ bool Network::isConnected()
 void Network::maintainConnection(const char *ssid, const char *password, const char *apn)
 {
     static int wifiScanAttempts = 0;
-    static const int MIN_WIFI_ATTEMPTS = 5;
+    static const int MIN_WIFI_ATTEMPTS = 3;
     static unsigned long lastLteAttempt = 0;
     static const unsigned long LTE_RETRY_COOLDOWN = 60000;
     static bool lastWifiState = false;
@@ -407,7 +411,6 @@ void Network::maintainConnection(const char *ssid, const char *password, const c
             safePrintln(String(MIN_WIFI_ATTEMPTS));
         }
 
-        // Only attempt LTE if enough time has passed since last attempt
         if (wifiScanAttempts >= MIN_WIFI_ATTEMPTS)
         {
             unsigned long currentTime = millis();

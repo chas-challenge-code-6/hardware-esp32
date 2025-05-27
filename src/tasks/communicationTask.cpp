@@ -16,7 +16,6 @@
 #include "network/network.h"
 #include "utils/threadsafe_serial.h"
 #include <Arduino.h>
-#include <ArduinoHttpClient.h>
 #include <CustomJWT.h>
 #include <HTTPClient.h>
 #include <TinyGSM.h>
@@ -81,65 +80,39 @@ void sendJsonPlainLTE(const char *url, const char *jsonPayload)
 {
     if (xSemaphoreTake(modemMutex, pdMS_TO_TICKS(10000)) == pdTRUE)
     {
-        TinyGsmClient client(modem);
+        safePrint("[CommTask] LTE Plain HTTP POST to: ");
+        safePrintln(url);
+        safePrint("[CommTask] Payload size: ");
+        safePrintln(strlen(jsonPayload));
 
-        String fullUrl = String(url);
-        String host, path;
-        int port = 80;
-        bool isHttps = false;
-
-        if (fullUrl.startsWith("https://"))
+        if (!modem.https_begin())
         {
-            isHttps = true;
-            port = 443;
-            fullUrl = fullUrl.substring(8);
-        }
-        else if (fullUrl.startsWith("http://"))
-        {
-            fullUrl = fullUrl.substring(7);
-        }
-        else
-        {
-            safePrintln("[CommTask] Invalid URL scheme. Must start with http:// or https://");
+            safePrintln("[CommTask] Failed to initialize HTTPS for LTE");
             xSemaphoreGive(modemMutex);
             return;
         }
 
-        int pathIndex = fullUrl.indexOf('/');
-        if (pathIndex > 0)
+        // Set URL
+        if (!modem.https_set_url(url))
         {
-            host = fullUrl.substring(0, pathIndex);
-            path = fullUrl.substring(pathIndex);
-        }
-        else
-        {
-            host = fullUrl;
-            path = "/";
+            safePrintln("[CommTask] Failed to set URL for LTE request");
+            modem.https_end();
+            xSemaphoreGive(modemMutex);
+            return;
         }
 
-        int portIndex = host.indexOf(':');
-        if (portIndex > 0)
-        {
-            port = host.substring(portIndex + 1).toInt();
-            host = host.substring(0, portIndex);
-        }
+        modem.https_set_accept_type("application/json");
+        modem.https_add_header("Content-Type", "application/json");
+        modem.https_set_user_agent("ESP32-Sentinel/1.0");
 
-        HttpClient httpClient(client, host.c_str(), port);
-
-        httpClient.beginRequest();
-        httpClient.post(path.c_str());
-        httpClient.sendHeader("Content-Type", "application/json");
-        httpClient.sendHeader("Content-Length", strlen(jsonPayload));
-        httpClient.endRequest();
-        httpClient.write((const byte *)jsonPayload, strlen(jsonPayload));
-
-        int statusCode = httpClient.responseStatusCode();
-        String response = httpClient.responseBody();
+        int httpCode = modem.https_post(String(jsonPayload));
 
         safePrint("[CommTask] HTTP LTE: ");
-        safePrintln(statusCode);
-        if (statusCode > 0)
+        safePrintln(httpCode);
+
+        if (httpCode == 200)
         {
+            String response = modem.https_body();
             if (response.length() > 50)
             {
                 safePrint("[CommTask] Response: ");
@@ -153,11 +126,17 @@ void sendJsonPlainLTE(const char *url, const char *jsonPayload)
         }
         else
         {
-            safePrintln("[CommTask] Error sending HTTP POST over LTE");
+            safePrint("[CommTask] HTTP error code: ");
+            safePrintln(httpCode);
+            String response = modem.https_body();
+            if (response.length() > 0)
+            {
+                safePrint("[CommTask] Error response: ");
+                safePrintln(response);
+            }
         }
 
-        httpClient.stop();
-
+        modem.https_end();
         xSemaphoreGive(modemMutex);
     }
     else
@@ -190,10 +169,8 @@ void sendJsonJWTWiFi(const char *url, const char *jsonPayload, CustomJWT &jwt)
     int httpResponseCode = -1;
 
     char jwtClaims[256];
-    snprintf(
-        jwtClaims, sizeof(jwtClaims),
-        "{\"iss\":\"esp32-sensor\",\"sub\":\"sensor-data\",\"device_id\":\"%s\"}",
-        DEVICE_ID);
+    snprintf(jwtClaims, sizeof(jwtClaims),
+             "{\"iss\":\"esp32-sensor\",\"sub\":\"sensor-data\",\"device_id\":\"%s\"}", DEVICE_ID);
 
     if (!jwt.encodeJWT(jwtClaims))
     {
@@ -243,14 +220,19 @@ void sendJsonJWTWiFi(const char *url, const char *jsonPayload, CustomJWT &jwt)
     if (httpResponseCode > 0)
     {
         String response = http.getString();
-        if (httpResponseCode == 401) {
+        if (httpResponseCode == 401)
+        {
             safePrintln("[CommTask] AUTHENTICATION ERROR 401!");
             safePrint("[CommTask] Full response: ");
             safePrintln(response);
-        } else if (response.length() > 50) {
+        }
+        else if (response.length() > 50)
+        {
             safePrint("[CommTask] Response: ");
             safePrintln(response.substring(0, 50) + "...");
-        } else {
+        }
+        else
+        {
             safePrint("[CommTask] Response: ");
             safePrintln(response);
         }
@@ -264,12 +246,9 @@ void sendJsonJWTWiFi(const char *url, const char *jsonPayload, CustomJWT &jwt)
 
 void sendJsonJWTLTE(const char *url, const char *jsonPayload, CustomJWT &jwt)
 {
-    // Use simple claims without time validation to avoid sync issues
     char jwtClaims[256];
-    snprintf(
-        jwtClaims, sizeof(jwtClaims),
-        "{\"iss\":\"esp32-sensor\",\"sub\":\"sensor-data\",\"device_id\":\"%s\"}",
-        DEVICE_ID);
+    snprintf(jwtClaims, sizeof(jwtClaims),
+             "{\"iss\":\"esp32-sensor\",\"sub\":\"sensor-data\",\"device_id\":\"%s\"}", DEVICE_ID);
 
     if (!jwt.encodeJWT(jwtClaims))
     {
@@ -285,85 +264,70 @@ void sendJsonJWTLTE(const char *url, const char *jsonPayload, CustomJWT &jwt)
 
     if (xSemaphoreTake(modemMutex, pdMS_TO_TICKS(10000)) == pdTRUE)
     {
-        TinyGsmClient client(modem);
+        safePrint("[CommTask] LTE JWT HTTP POST to: ");
+        safePrintln(url);
+        safePrint("[CommTask] Payload size: ");
+        safePrintln(strlen(jsonPayload));
 
-        String fullUrl = String(url);
-        String host, path;
-        int port = 80;
-        bool isHttps = false;
-
-        if (fullUrl.startsWith("https://"))
+        if (!modem.https_begin())
         {
-            isHttps = true;
-            port = 443;
-            fullUrl = fullUrl.substring(8);
-        }
-        else if (fullUrl.startsWith("http://"))
-        {
-            fullUrl = fullUrl.substring(7);
-        }
-        else
-        {
-            safePrintln("[CommTask] Invalid URL scheme. Must start with http:// or https://");
+            safePrintln("[CommTask] Failed to initialize HTTPS for LTE JWT");
             xSemaphoreGive(modemMutex);
             return;
         }
 
-        int pathIndex = fullUrl.indexOf('/');
-        if (pathIndex > 0)
+        if (!modem.https_set_url(url))
         {
-            host = fullUrl.substring(0, pathIndex);
-            path = fullUrl.substring(pathIndex);
-        }
-        else
-        {
-            host = fullUrl;
-            path = "/";
+            safePrintln("[CommTask] Failed to set URL for LTE JWT request");
+            modem.https_end();
+            xSemaphoreGive(modemMutex);
+            return;
         }
 
-        int portIndex = host.indexOf(':');
-        if (portIndex > 0)
-        {
-            port = host.substring(portIndex + 1).toInt();
-            host = host.substring(0, portIndex);
-        }
+        modem.https_set_accept_type("application/json");
+        modem.https_add_header("Content-Type", "application/json");
+        modem.https_add_header("Authorization", "Bearer " + token);
+        modem.https_set_user_agent("ESP32-Sentinel/1.0");
 
-        HttpClient httpClient(client, host.c_str(), port);
-
-        httpClient.beginRequest();
-        httpClient.post(path.c_str());
-        httpClient.sendHeader("Content-Type", "application/json");
-        httpClient.sendHeader("Authorization", "Bearer " + token);
-        httpClient.sendHeader("Content-Length", strlen(jsonPayload));
-        httpClient.endRequest();
-        httpClient.write((const byte *)jsonPayload, strlen(jsonPayload));
-
-        int statusCode = httpClient.responseStatusCode();
-        String response = httpClient.responseBody();
+        int httpCode = modem.https_post(String(jsonPayload));
 
         safePrint("[CommTask] HTTP LTE (JWT): ");
-        safePrintln(statusCode);
-        if (statusCode > 0)
+        safePrintln(httpCode);
+
+        if (httpCode == 200)
         {
-            if (statusCode == 401) {
-                safePrintln("[CommTask] AUTHENTICATION ERROR 401 (LTE)!");
-                safePrint("[CommTask] Full response: ");
-                safePrintln(response);
-            } else if (response.length() > 50) {
+            String response = modem.https_body();
+            if (response.length() > 50)
+            {
                 safePrint("[CommTask] Response: ");
                 safePrintln(response.substring(0, 50) + "...");
-            } else {
+            }
+            else
+            {
                 safePrint("[CommTask] Response: ");
                 safePrintln(response);
             }
         }
+        else if (httpCode == 401)
+        {
+            safePrintln("[CommTask] AUTHENTICATION ERROR 401 (LTE)!");
+            String response = modem.https_body();
+            safePrint("[CommTask] Full response: ");
+            safePrintln(response);
+        }
         else
         {
-            safePrintln("[CommTask] Error sending HTTP POST with JWT over LTE");
+            safePrint("[CommTask] HTTP error code: ");
+            safePrintln(httpCode);
+            String response = modem.https_body();
+            if (response.length() > 0)
+            {
+                safePrint("[CommTask] Error response: ");
+                safePrintln(response);
+            }
         }
 
-        httpClient.stop();
-
+        modem.https_end();
         xSemaphoreGive(modemMutex);
     }
     else
