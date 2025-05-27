@@ -4,7 +4,7 @@
  *
  * @details This file contains the implementation of the batteryTask function, which is used to
  * handle battery monitoring operations in a FreeRTOS task. The task is responsible for reading
- * battery voltage and percentage data from the BatteryMonitor and sending it to a queue for
+ * battery voltage and percentage data from the Battery class and sending it to a queue for
  * processing.
  *
  */
@@ -52,7 +52,7 @@ void sendBatteryData(const sensor_message_t &msg)
  * @brief Battery Task function
  *
  * @details This function handles battery monitoring operations in a FreeRTOS task. It reads battery
- * voltage and percentage data from the BatteryMonitor and sends it to a queue for processing. The
+ * voltage and percentage data from the Battery class and sends it to a queue for processing. The
  * task runs in an infinite loop, monitoring battery status and sending updates when the battery
  * level changes.
  *
@@ -63,7 +63,9 @@ void batteryTask(void *parameter)
     sensor_message_t msg;
     memset(&msg, 0, sizeof(msg));
 
-    BatteryMonitor battery(BOARD_BAT_ADC_PIN);
+    Battery battery;
+    battery.begin();
+
     int oldBatteryPercent = -1;
     int newBatteryPercent = 0;
     float voltage = 0.0;
@@ -77,6 +79,22 @@ void batteryTask(void *parameter)
         voltage = battery.readVoltage();       // in Volts
         newBatteryPercent = battery.percent(); // in %
 
+        // Check for critically low voltage (using the same thresholds as Battery class)
+        uint32_t voltage_mv = voltage * 1000;
+        if (voltage_mv < LOW_VOLTAGE_LEVEL)
+        {
+            safePrint("[Battery Task] CRITICAL: Low battery voltage detected: ");
+            safePrint(voltage_mv);
+            safePrintln(" mV - System should enter deep sleep");
+        }
+        else if (voltage_mv < WARN_VOLTAGE_LEVEL)
+        {
+            safePrint("[Battery Task] WARNING: Low battery voltage: ");
+            safePrint(voltage_mv);
+            safePrintln(" mV");
+        }
+
+        // Send data when battery percentage changes by 1% or more
         if (oldBatteryPercent == -1 || abs(newBatteryPercent - oldBatteryPercent) >= 1)
         {
             msg.data.device_battery = newBatteryPercent;
@@ -86,7 +104,9 @@ void batteryTask(void *parameter)
 
             safePrint("[Battery Task] Voltage: ");
             safePrint(voltage);
-            safePrint(" V, Percent: ");
+            safePrint(" V (");
+            safePrint(voltage_mv);
+            safePrint(" mV), Percent: ");
             safePrint(newBatteryPercent);
             safePrintln(" %");
 
