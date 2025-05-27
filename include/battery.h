@@ -44,7 +44,7 @@ public:
     uint32_t getBatteryVoltage(); // Returns voltage in mV
     float readVoltage(); // Returns voltage in volts (for batteryTask compatibility)
     void getUpdate();
-
+    
     // Functions for power management
     void powerSaveMode();
     void deepSleep(uint32_t ms);
@@ -52,6 +52,7 @@ public:
     void turnOnPower(int pin);
     void turnOffPower(int pin);
     void safetyShutdown(); // Fixed to use actual voltage reading
+    void setRGB(int percent);
 };
 
 #endif
