@@ -51,10 +51,13 @@ See [LilyGO T-A76XX repo](https://github.com/Xinyuan-LilyGO/LilyGO-T-A76XX) and 
    - Copy `include/secrets.h.default` to `include/secrets.h` and configure your network credentials
    - Review `include/config.h` for additional system configuration options
 5. **Build and upload:**
+
    ```sh
    pio run -t upload
    ```
+
 6. **Monitor serial output:**
+
    ```sh
    pio device monitor
    ```
