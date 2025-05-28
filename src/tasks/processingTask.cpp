@@ -43,22 +43,23 @@ extern QueueHandle_t httpQueue;
  */
 bool createJson(const sensor_data_t &data, char *buffer, size_t bufferSize)
 {
-    int len = snprintf(buffer, bufferSize,
-                       "{\"device_id\": \"%s\", \"sensors\": { "
-                       "\"steps\": %d, "
-                       "\"temperature\": %.2f, "
-                       "\"humidity\": %d, "
-                       "\"gas\": { \"ppm\": %d }, "
-                       "\"fall_detected\": %d, "
-                       "\"device_battery\": %d, "
-                       "\"watch_battery\": \"0\", "
-                       "\"heart_rate\": %d, "
-                       "\"noise_level\": %d } }",
-                       DEVICE_ID, data.steps, data.temperature, (int)data.humidity, (int)data.gasLevel,
-                       data.fall_detected, data.device_battery, data.heartRate, data.noise_level);
+    int len =
+        snprintf(buffer, bufferSize,
+                 "{\"device_id\": \"%s\", \"sensors\": { "
+                 "\"steps\": %d, "
+                 "\"temperature\": %.2f, "
+                 "\"humidity\": %d, "
+                 "\"gas\": { \"ppm\": %d }, "
+                 "\"fall_detected\": %d, "
+                 "\"device_battery\": %d, "
+                 "\"watch_battery\": \"0\", "
+                 "\"heart_rate\": %d, "
+                 "\"noise_level\": %d } }",
+                 DEVICE_ID, data.steps, data.temperature, (int)data.humidity, (int)data.gasLevel,
+                 data.fall_detected, data.device_battery, data.heartRate, data.noise_level);
     if (len < 0 || len >= (int)bufferSize)
     {
-        Serial.println("[Proc Task] JSON creation failed or truncated.");
+        safePrintln("[Proc Task] JSON creation failed or truncated.");
         return false;
     }
     return true;
@@ -124,9 +125,9 @@ void processingTask(void *pvParameters)
                 buffer[sizeof(buffer) - 1] = '\0';
 
                 // Debug print json
-                Serial.println("[Proc Task] JSON to be sent to server:");
-                Serial.println(buffer);
-                Serial.println("----------------------------------------");
+                safePrintln("[Proc Task] JSON to be sent to server:");
+                safePrintln(buffer);
+                safePrintln("----------------------------------------");
 
                 memset(&processedData, 0, sizeof(processedData));
                 strncpy(processedData.json, buffer, sizeof(processedData.json) - 1);
@@ -146,7 +147,7 @@ void processingTask(void *pvParameters)
                         retries++;
                         if (retries >= HTTP_QUEUE_SEND_RETRIES)
                         {
-                            Serial.println(
+                            safePrintln(
                                 "[Proc Task] Failed to send JSON to HTTP queue after retries.");
                         }
                     }
