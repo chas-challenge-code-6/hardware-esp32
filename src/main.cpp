@@ -11,7 +11,6 @@
 
 #include "SensorData.h"
 #include "config.h"
-#include "network/bluetooth.h"
 #include "tasks/accelerometerTask.h"
 #include "tasks/batteryTask.h"
 #include "tasks/bluetoothTask.h"

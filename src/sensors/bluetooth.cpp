@@ -6,13 +6,13 @@
  * manage Bluetooth connections and notifications.
  */
 
-#include "network/bluetooth.h"
+#include "sensors/bluetooth.h"
 #include "config.h"
 #include "utils/threadsafe_serial.h"
 #include <Arduino.h>
 #include <NimBLEDevice.h>
 
-static BluetoothClient *g_btClient = nullptr;
+static BluetoothClient* g_btClient = nullptr;
 
 /**
  * @brief Construct a new Bluetooth Client object
@@ -30,7 +30,7 @@ BluetoothClient::BluetoothClient()
  *
  * @details This function sets the connect flag and stores the advertised device.
  */
-void BluetoothClient::setConnectFlag(const NimBLEAdvertisedDevice *device)
+void BluetoothClient::setConnectFlag(const NimBLEAdvertisedDevice* device)
 {
     doConnect = true;
     advDevice = device;
@@ -45,7 +45,7 @@ void BluetoothClient::begin()
 {
     NimBLEDevice::init("");
     NimBLEDevice::setPower(ESP_PWR_LVL_P9);
-    NimBLEScan *pScan = NimBLEDevice::getScan();
+    NimBLEScan* pScan = NimBLEDevice::getScan();
     pScan->setScanCallbacks(new ScanCallbacks(this));
     pScan->setActiveScan(true);
     safePrintln("[BT] Scanning...");
@@ -61,23 +61,25 @@ void BluetoothClient::loop()
 {
     if (doConnect)
     {
-        NimBLEClient *pClient = NimBLEDevice::createClient();
+        NimBLEClient* pClient = NimBLEDevice::createClient();
         pClient->setClientCallbacks(this, false);
 
         if (pClient->connect(advDevice))
         {
-            NimBLERemoteService *heartRateService = pClient->getService(HEARTRATE_SERVICE_UUID);
+            NimBLERemoteService* heartRateService = pClient->getService(HEARTRATE_SERVICE_UUID);
 
             if (heartRateService)
             {
-                NimBLERemoteCharacteristic *heartRateChar =
+                NimBLERemoteCharacteristic* heartRateChar =
                     heartRateService->getCharacteristic(HEARTRATE_CHAR_UUID);
                 if (heartRateChar && heartRateChar->canNotify())
                 {
                     safePrintln("[BT] Connected & subscribed");
-                    heartRateChar->subscribe(true, [this](NimBLERemoteCharacteristic *c,
-                                                          uint8_t *data, size_t len, bool isNotify)
-                                             { this->onHeartRateNotify(c, data, len, isNotify); });
+                    heartRateChar->subscribe(true, [this](NimBLERemoteCharacteristic* c,
+                        uint8_t* data, size_t len, bool isNotify)
+                        {
+                            this->onHeartRateNotify(c, data, len, isNotify);
+                        });
                 }
             }
             else
@@ -103,7 +105,7 @@ void BluetoothClient::loop()
  *
  * @details This function is called when the client successfully connects to a device.
  */
-void BluetoothClient::onConnect(NimBLEClient *pClient)
+void BluetoothClient::onConnect(NimBLEClient* pClient)
 {
     // meh
 }
@@ -116,7 +118,7 @@ void BluetoothClient::onConnect(NimBLEClient *pClient)
  *
  * @details This function is called when the client disconnects from a device.
  */
-void BluetoothClient::onDisconnect(NimBLEClient *pClient, int reason)
+void BluetoothClient::onDisconnect(NimBLEClient* pClient, int reason)
 {
     safePrintf("[BT] Disconnected (reason=%d)\n", reason);
     NimBLEDevice::getScan()->start(0, false);
@@ -149,8 +151,8 @@ uint8_t BluetoothClient::getHeartRate() const
  *
  * @details This function is called when a heart rate notification is received.
  */
-void BluetoothClient::onHeartRateNotify(NimBLERemoteCharacteristic *, uint8_t *data, size_t len,
-                                        bool)
+void BluetoothClient::onHeartRateNotify(NimBLERemoteCharacteristic*, uint8_t* data, size_t len,
+    bool)
 {
     if (len > 0)
     {
@@ -173,7 +175,7 @@ void BluetoothClient::onHeartRateNotify(NimBLERemoteCharacteristic *, uint8_t *d
  *
  * @details This function is called when a scan result is found.
  */
-void ScanCallbacks::onResult(const NimBLEAdvertisedDevice *advertisedDevice)
+void ScanCallbacks::onResult(const NimBLEAdvertisedDevice* advertisedDevice)
 {
     std::string advAddr = advertisedDevice->getAddress().toString();
     std::string targetAddr = STRAP_ADDRESS;

@@ -10,22 +10,23 @@
 #ifndef WIFI_TASK_H
 #define WIFI_TASK_H
 
+#include <cstring>
 #include <CustomJWT.h>
 
-/**
- * @brief Send JSON data via HTTP POST
- * @param url The target URL
- * @param jsonPayload The JSON data to send
- */
-void sendJsonPlain(const char *url, const char *jsonPayload);
+ /**
+  * @brief Send JSON data via HTTP POST
+  * @param url The target URL
+  * @param jsonPayload The JSON data to send
+  */
+void sendJsonPlain(const char* url, const char* jsonPayload);
 
 /**
  * @brief Send JSON data via HTTP POST with JWT authentication
- * @param url The target URL  
+ * @param url The target URL
  * @param jsonPayload The JSON data to send
  * @param jwt JWT instance for authentication
  */
-void sendJsonJWT(const char *url, const char *jsonPayload, CustomJWT &jwt);
+void sendJsonJWT(const char* url, const char* jsonPayload, CustomJWT& jwt);
 
 /**
  * @brief communicationTask function
@@ -37,6 +38,6 @@ void sendJsonJWT(const char *url, const char *jsonPayload, CustomJWT &jwt);
  *
  * @param pvParameters
  */
-void communicationTask(void *pvParameters);
+void communicationTask(void* pvParameters);
 
 #endif

@@ -10,7 +10,7 @@
 #include "tasks/bluetoothTask.h"
 #include "SensorData.h"
 #include "config.h"
-#include "network/bluetooth.h"
+#include "sensors/bluetooth.h"
 #include "utils/threadsafe_serial.h"
 #include <Arduino.h>
 #include <cstring>
@@ -22,7 +22,7 @@ extern EventGroupHandle_t networkEventGroup;
 extern SemaphoreHandle_t networkEventMutex;
 #define NETWORK_CONNECTED_BIT BIT0
 
-void sendBluetoothData(const sensor_message_t &msg)
+void sendBluetoothData(const sensor_message_t& msg)
 {
     EventBits_t bits;
 
@@ -54,7 +54,7 @@ void sendBluetoothData(const sensor_message_t &msg)
  *
  * @param pvParameters
  */
-void bluetoothTask(void *pvParameters)
+void bluetoothTask(void* pvParameters)
 {
     sensor_message_t msg;
     memset(&msg, 0, sizeof(msg));
