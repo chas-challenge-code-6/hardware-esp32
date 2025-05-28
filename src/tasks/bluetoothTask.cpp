@@ -60,25 +60,41 @@ void bluetoothTask(void* pvParameters)
     memset(&msg, 0, sizeof(msg));
 
     BluetoothClient bClient;
-    int oldHeartRate = -1;
-    int newHeartRate = 0;
+    int16_t oldHeartRate = -1;
+    int16_t newHeartRate = 0;
+    uint32_t lastDataTime = 0;
+    const uint32_t DATA_TIMEOUT_MS = 30000;
 
     bClient.begin();
 
     while (true)
     {
-        bClient.loop(); // rewrite to use eventgroup
+        bClient.loop();
 
         newHeartRate = bClient.getHeartRate();
-        if (oldHeartRate == -1 || newHeartRate != oldHeartRate)
+
+        // validate, heart rate couuuuld possibly go beyond 255, but that shit is cray cray
+        if (newHeartRate > 0 && newHeartRate < 255)
         {
-            msg.data.heartRate = newHeartRate;
-            msg.valid.heartRate = 1;
-            sendBluetoothData(msg);
-            safePrint("[BT Task] HR: ");
-            safePrintln(newHeartRate);
-            oldHeartRate = newHeartRate;
+            lastDataTime = millis();
+
+            if (oldHeartRate == -1 || newHeartRate != oldHeartRate)
+            {
+                memset(&msg, 0, sizeof(msg));
+                msg.data.heartRate = newHeartRate;
+                msg.valid.heartRate = 1;
+                sendBluetoothData(msg);
+                safePrint("[BT Task] HR: ");
+                safePrintln(newHeartRate);
+                oldHeartRate = newHeartRate;
+            }
         }
-        vTaskDelay(pdMS_TO_TICKS(10000));
+        else if (millis() - lastDataTime > DATA_TIMEOUT_MS && lastDataTime > 0)
+        {
+            safePrintln("[BT Task] No valid heart rate data for 30 seconds");
+            lastDataTime = millis();
+        }
+
+        vTaskDelay(pdMS_TO_TICKS(2000));
     }
 }
