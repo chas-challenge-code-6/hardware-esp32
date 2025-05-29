@@ -54,9 +54,19 @@ bool createJson(const sensor_data_t &data, char *buffer, size_t bufferSize)
                  "\"device_battery\": %d, "
                  "\"watch_battery\": \"0\", "
                  "\"heart_rate\": %d, "
-                 "\"noise_level\": %d } }",
+                 "\"noise_level\": %d, "
+                 "\"gps\": { "
+                 "\"latitude\": %.6f, "
+                 "\"longitude\": %.6f, "
+                 "\"speed\": %.2f, "
+                 "\"altitude\": %.2f, "
+                 "\"accuracy\": %.2f, "
+                 "\"satellites\": %d "
+                 "} } }",
                  DEVICE_ID, data.steps, data.temperature, (int)data.humidity, (int)data.gasLevel,
-                 data.fall_detected, data.device_battery, data.heartRate, data.noise_level);
+                 data.fall_detected, data.device_battery, data.heartRate, data.noise_level,
+                 data.latitude, data.longitude, data.gps_speed, data.gps_altitude, 
+                 data.gps_accuracy, data.gps_satellites);
     if (len < 0 || len >= (int)bufferSize)
     {
         safePrintln("[Proc Task] JSON creation failed or truncated.");
@@ -91,6 +101,18 @@ static void updateLatestData(sensor_data_t &latest, const sensor_message_t &inco
         latest.steps = incoming.data.steps;
     if (incoming.valid.temperature)
         latest.temperature = incoming.data.temperature;
+    if (incoming.valid.latitude)
+        latest.latitude = incoming.data.latitude;
+    if (incoming.valid.longitude)
+        latest.longitude = incoming.data.longitude;
+    if (incoming.valid.gps_speed)
+        latest.gps_speed = incoming.data.gps_speed;
+    if (incoming.valid.gps_altitude)
+        latest.gps_altitude = incoming.data.gps_altitude;
+    if (incoming.valid.gps_accuracy)
+        latest.gps_accuracy = incoming.data.gps_accuracy;
+    if (incoming.valid.gps_satellites)
+        latest.gps_satellites = incoming.data.gps_satellites;
 }
 
 /**

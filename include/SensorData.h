@@ -31,6 +31,12 @@ typedef struct SensorData
     float gasLevel;
     int steps;
     int heartRate;
+    float latitude;
+    float longitude;
+    float gps_speed;      // km/h
+    float gps_altitude;   // meters
+    float gps_accuracy;   // meters
+    int gps_satellites;   // number of visible satellites
 } sensor_data_t;
 
 typedef struct
@@ -47,6 +53,12 @@ typedef struct
     uint8_t gasLevel;
     uint8_t steps;
     uint8_t heartRate;
+    bool latitude;
+    bool longitude;
+    bool gps_speed;
+    bool gps_altitude;
+    bool gps_accuracy;
+    bool gps_satellites;
 } sensor_data_flags_t;
 
 typedef struct

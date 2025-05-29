@@ -19,6 +19,7 @@
 #include "tasks/gasTask.h"
 #include "tasks/networkStatusTask.h"
 #include "tasks/processingTask.h"
+#include "tasks/gpsTask.h"
 #include "utilities.h"
 #include <TinyGsmClient.h>
 #include <WiFi.h>
@@ -70,6 +71,7 @@ void setup()
     xTaskCreatePinnedToCore(networkStatusTask, "networkStatusTask", 8192, NULL, 1, NULL, 1);
     xTaskCreate(processingTask, "Process", 4096, NULL, 1, NULL);
     xTaskCreate(batteryTask, "Battery Task", 4096, NULL, 1, NULL);
+    xTaskCreate(gpsTask, "GPSTask", 8192, NULL, 1, NULL);
 
     if (xSemaphoreTake(networkEventMutex, pdMS_TO_TICKS(1000)) == pdTRUE)
     {
