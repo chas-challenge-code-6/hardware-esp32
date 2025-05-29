@@ -32,6 +32,7 @@ extern QueueHandle_t httpQueue;
  * - gas
  * - fall_detected
  * - device_battery
+ * - strap_battery
  * - heart_rate
  * - noise_level
  *
@@ -47,8 +48,8 @@ bool createJson(const sensor_data_t &data, char *buffer, size_t bufferSize)
                        "{\"device_id\": \"%s\", \"sensors\": { "
                        "\"steps\": %d, "
                        "\"temperature\": %.2f, "
-                       "\"humidity\": %d, "
-                       "\"gas\": { \"ppm\": %d }, "
+                       "\"humidity\": %.2f, "
+                       "\"gas\": { \"ppm\": %.2f }, "
                        "\"fall_detected\": %d, "
                        "\"device_battery\": %d, "
                        "\"strap_battery\": \"0\", "
@@ -64,6 +65,7 @@ bool createJson(const sensor_data_t &data, char *buffer, size_t bufferSize)
     return true;
 }
 
+// we send empty data in struct so validation is needed to not overwite with null
 static void updateLatestData(sensor_data_t &latest, const sensor_message_t &incoming)
 {
     if (incoming.valid.accelPitch)
