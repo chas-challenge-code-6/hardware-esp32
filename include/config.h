@@ -8,21 +8,22 @@
 
 // fallback to secrets.h.default
 #ifdef __has_include
-    #if __has_include("secrets.h")
-        #include "secrets.h"
-        #define USING_SECRETS_H
-    #elif __has_include("secrets.h.default")
-        #include "secrets.h.default"
-        #warning "secrets.h not found, using secrets.h.default. Please copy secrets.h.default to secrets.h and configure your settings."
-        #define USING_SECRETS_DEFAULT
-    #else
-        #error "Neither secrets.h nor secrets.h.default found. Please ensure secrets.h.default exists."
-    #endif
+#if __has_include("secrets.h")
+#include "secrets.h"
+#define USING_SECRETS_H
+#elif __has_include("secrets.h.default")
+#include "secrets.h.default"
+#warning                                                                                           \
+    "secrets.h not found, using secrets.h.default. Please copy secrets.h.default to secrets.h and configure your settings."
+#define USING_SECRETS_DEFAULT
 #else
-    // Fallback for compilers that don't support __has_include
-    #include "secrets.h.default"
-    #warning "Compiler doesn't support __has_include, using secrets.h.default as fallback."
-    #define USING_SECRETS_DEFAULT
+#error "Neither secrets.h nor secrets.h.default found. Please ensure secrets.h.default exists."
+#endif
+#else
+// Fallback for compilers that don't support __has_include
+#include "secrets.h.default"
+#warning "Compiler doesn't support __has_include, using secrets.h.default as fallback."
+#define USING_SECRETS_DEFAULT
 #endif
 
 // DEVICE_ID for API
@@ -33,9 +34,9 @@
 #define USE_BACKEND_AUTH
 
 // Authentication settings
-#define AUTH_TIMEOUT_MS 15000
+#define AUTH_TIMEOUT_MS 15000 // backend kan ibland ta upp till 50 sek men catchas på retry
 #define AUTH_RETRY_ATTEMPTS 3
-#define TOKEN_REFRESH_MARGIN_MS 300000 // 5 minuter
+#define TOKEN_REFRESH_MARGIN_MS 300000  // 5 minuter
 #define DEFAULT_TOKEN_EXPIRY_MS 3600000 // 1 timme
 
 // Mutex declarations
