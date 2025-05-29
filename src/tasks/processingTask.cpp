@@ -43,20 +43,19 @@ extern QueueHandle_t httpQueue;
  */
 bool createJson(const sensor_data_t &data, char *buffer, size_t bufferSize)
 {
-    int len =
-        snprintf(buffer, bufferSize,
-                 "{\"device_id\": \"%s\", \"sensors\": { "
-                 "\"steps\": %d, "
-                 "\"temperature\": %.2f, "
-                 "\"humidity\": %d, "
-                 "\"gas\": { \"ppm\": %d }, "
-                 "\"fall_detected\": %d, "
-                 "\"device_battery\": %d, "
-                 "\"watch_battery\": \"0\", "
-                 "\"heart_rate\": %d, "
-                 "\"noise_level\": %d } }",
-                 DEVICE_ID, data.steps, data.temperature, (int)data.humidity, (int)data.gasLevel,
-                 data.fall_detected, data.device_battery, data.heartRate, data.noise_level);
+    int len = snprintf(buffer, bufferSize,
+                       "{\"device_id\": \"%s\", \"sensors\": { "
+                       "\"steps\": %d, "
+                       "\"temperature\": %.2f, "
+                       "\"humidity\": %d, "
+                       "\"gas\": { \"ppm\": %d }, "
+                       "\"fall_detected\": %d, "
+                       "\"device_battery\": %d, "
+                       "\"strap_battery\": \"0\", "
+                       "\"heart_rate\": %d, "
+                       "\"noise_level\": %d } }",
+                       DEVICE_ID, data.steps, data.temperature, data.humidity, data.gasLevel,
+                       data.fall_detected, data.device_battery, data.heartRate, data.noise_level);
     if (len < 0 || len >= (int)bufferSize)
     {
         safePrintln("[Proc Task] JSON creation failed or truncated.");
