@@ -5,6 +5,8 @@
 #include <Arduino.h>
 #include <TinyGSM.h>
 #include <WiFi.h>
+#include <cstdint>
+#include <sys/types.h>
 
 extern TinyGsm modem;
 extern EventGroupHandle_t networkEventGroup;
@@ -297,9 +299,9 @@ bool Network::connectLTE(const char *apn)
     safePrint("Network IP: ");
     safePrintln(ipAddress);
 
-    //if (modem.isNetworkConnected() && modem.isGprsConnected())
+    // if (modem.isNetworkConnected() && modem.isGprsConnected())
     if (modem.isGprsConnected())
-    //if (modem.isNetworkConnected())
+    // if (modem.isNetworkConnected())
     {
         safePrintln("[Network] LTE connection established successfully");
         lteConnected = true;
@@ -328,10 +330,10 @@ bool Network::isLTEConnected()
         lteConnected = false;
         return false;
     }
-    
-    //bool result = modem.isNetworkConnected() && modem.isGprsConnected();
+
+    // bool result = modem.isNetworkConnected() && modem.isGprsConnected();
     bool result = modem.isGprsConnected();
-    //bool result = modem.isNetworkConnected();
+    // bool result = modem.isNetworkConnected();
     lteConnected = result;
     return result;
 }
@@ -343,10 +345,10 @@ bool Network::isConnected()
 
 void Network::maintainConnection(const char *ssid, const char *password, const char *apn)
 {
-    static int wifiScanAttempts = 0;
-    static const int MIN_WIFI_ATTEMPTS = 3;
-    static unsigned long lastLteAttempt = 0;
-    static const unsigned long LTE_RETRY_COOLDOWN = 60000;
+    static int16_t wifiScanAttempts = 0;
+    static const int8_t MIN_WIFI_ATTEMPTS = 3;
+    static uint32_t lastLteAttempt = 0;
+    static const uint32_t LTE_RETRY_COOLDOWN = 60000;
     static bool lastWifiState = false;
 
     bool currentWiFiStatus = isWiFiConnected();
@@ -373,8 +375,8 @@ void Network::maintainConnection(const char *ssid, const char *password, const c
     else
     {
         safePrintln("[Network] WiFi not connected, scanning for networks...");
-        int n = WiFi.scanNetworks(false, false, false, 300, 0, ssid);
-        bool ssidFound = (n > 0);
+        int found = WiFi.scanNetworks(false, false, false, 300, 0, ssid);
+        bool ssidFound = (found > 0);
 
         if (ssidFound)
         {
@@ -413,24 +415,26 @@ void Network::maintainConnection(const char *ssid, const char *password, const c
 
         if (wifiScanAttempts >= MIN_WIFI_ATTEMPTS)
         {
-            unsigned long currentTime = millis();
-            
+            uint32_t currentTime = millis();
+
             if (!isLTEConnected())
             {
                 if (lastLteAttempt == 0 || (currentTime - lastLteAttempt) >= LTE_RETRY_COOLDOWN)
                 {
-                    safePrintln("[Network] Minimum WiFi attempts reached, trying LTE as fallback...");
+                    safePrintln(
+                        "[Network] Minimum WiFi attempts reached, trying LTE as fallback...");
                     lastLteAttempt = currentTime;
                     bool lteSuccess = connectLTE(apn);
-                    
+
                     if (!lteSuccess)
                     {
-                        safePrintln("[Network] LTE connection failed, will retry after cooldown period");
+                        safePrintln(
+                            "[Network] LTE connection failed, will retry after cooldown period");
                     }
                 }
                 else
                 {
-                    unsigned long timeRemaining = LTE_RETRY_COOLDOWN - (currentTime - lastLteAttempt);
+                    uint32_t timeRemaining = LTE_RETRY_COOLDOWN - (currentTime - lastLteAttempt);
                     safePrint("[Network] LTE cooldown active, ");
                     safePrint(String(timeRemaining / 1000));
                     safePrintln(" seconds remaining");

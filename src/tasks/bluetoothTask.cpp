@@ -22,7 +22,7 @@ extern EventGroupHandle_t networkEventGroup;
 extern SemaphoreHandle_t networkEventMutex;
 #define NETWORK_CONNECTED_BIT BIT0
 
-void sendBluetoothData(const sensor_message_t& msg)
+void sendBluetoothData(const sensor_message_t &msg)
 {
     EventBits_t bits;
 
@@ -54,7 +54,7 @@ void sendBluetoothData(const sensor_message_t& msg)
  *
  * @param pvParameters
  */
-void bluetoothTask(void* pvParameters)
+void bluetoothTask(void *pvParameters)
 {
     sensor_message_t msg;
     memset(&msg, 0, sizeof(msg));
@@ -67,7 +67,7 @@ void bluetoothTask(void* pvParameters)
 
     while (true)
     {
-        bClient.loop(); // rewrite to use eventgroup
+        bClient.loop();
 
         newHeartRate = bClient.getHeartRate();
         if (oldHeartRate == -1 || newHeartRate != oldHeartRate)
