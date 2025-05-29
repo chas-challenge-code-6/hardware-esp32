@@ -23,8 +23,8 @@ fi
 echo "Token received: $TOKEN"
 
 echo "Posting test data..."
-curl -s -X GET "$BASE_URL/api/data/latest" \
-  -H "Authorization: Bearer $TOKEN" | jq . \
+curl -X POST "$BASE_URL/api/data" \
+  -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
   "device_id": "SENTINEL-001",
@@ -32,11 +32,11 @@ curl -s -X GET "$BASE_URL/api/data/latest" \
     "steps": 18,
     "temperature": 28.50,
     "humidity": 29.1,
-    "gas": { "ppm": 0 },
+    "gas": { "ppm": 10.5 },
     "fall_detected": 0,
-    "device_battery": 0,
-    "heart_rate": 0,
-    "strap_battery": 0,
+    "device_battery": 95,
+    "heart_rate": 65,
+    "strap_battery": 100,
     "noise_level": 0
   }
-}'
+}' | jq .
