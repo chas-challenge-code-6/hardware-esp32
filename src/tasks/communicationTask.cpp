@@ -16,7 +16,6 @@
 #include "network/network.h"
 #include "utils/threadsafe_serial.h"
 #include <Arduino.h>
-#include <CustomJWT.h>
 #include <HTTPClient.h>
 #include <TinyGSM.h>
 #include <TinyGsmClient.h>
@@ -49,8 +48,7 @@ enum class NetworkType
 enum class AuthType
 {
     NONE,
-    BACKEND_JWT,
-    SELF_SIGNED_JWT
+    BACKEND_JWT
 };
 
 bool parseAuthResponse(const String& response, String& token);
@@ -60,10 +58,9 @@ HttpResponse performLTERequest(const char* url, const String& payload, const Str
 String createBearerHeader(const String& token);
 bool authenticateWithBackend(String& token);
 void sendJsonWithBackendJWT(const char* url, const char* jsonPayload, const String& token);
-void sendJsonJWT(const char* url, const char* jsonPayload, CustomJWT& jwt);
 void sendJsonPlain(const char* url, const char* jsonPayload);
 
-void sendDataWithAuth(const char* jsonPayload, CustomJWT& jwt);
+void sendDataWithAuth(const char* jsonPayload);
 
 String createBearerHeader(const String& token)
 {
@@ -298,7 +295,7 @@ HttpResponse performLTERequest(const char* url, const String& payload, const Str
     return response;
 }
 
-void sendDataWithAuth(const char* jsonPayload, CustomJWT& jwt)
+void sendDataWithAuth(const char* jsonPayload)
 {
     String dataUrl = String(BACKEND_URL) + API_ENDPOINT;
 
@@ -309,8 +306,6 @@ void sendDataWithAuth(const char* jsonPayload, CustomJWT& jwt)
         authenticateWithBackend(currentJWTToken);
     }
     sendJsonWithBackendJWT(dataUrl.c_str(), jsonPayload, currentJWTToken);
-#elif defined(USE_JWT_AUTH)
-    sendJsonJWT(dataUrl.c_str(), jsonPayload, jwt);
 #else
     sendJsonPlain(dataUrl.c_str(), jsonPayload);
 #endif
@@ -458,49 +453,6 @@ void sendJsonPlain(const char* url, const char* jsonPayload)
     }
 }
 
-void sendJsonJWT(const char* url, const char* jsonPayload, CustomJWT& jwt)
-{
-    Network network;
-
-    char jwtClaims[256];
-    snprintf(jwtClaims, sizeof(jwtClaims),
-        "{\"iss\":\"esp32-sensor\",\"sub\":\"sensor-data\",\"device_id\":\"%s\"}", DEVICE_ID);
-
-    if (!jwt.encodeJWT(jwtClaims))
-    {
-        safePrintln("[CommTask] Failed to encode JWT");
-#if DEBUG
-        safePrint("[CommTask] JWT Claims: ");
-        safePrintln(jwtClaims);
-#endif
-        return;
-    }
-
-    String token = String(jwt.out);
-    String authHeader = createBearerHeader(token);
-    HttpResponse response;
-
-#if DEBUG
-    safePrint("[CommTask] JWT Token: ");
-    safePrintln(token.substring(0, 20) + "...");
-#endif
-
-    if (network.isWiFiConnected())
-    {
-        response = performWiFiRequest(url, String(jsonPayload), authHeader);
-        handleHttpResponse(response, "WiFi (JWT)", AuthType::SELF_SIGNED_JWT);
-    }
-    else if (network.isLTEConnected())
-    {
-        response = performLTERequest(url, String(jsonPayload), authHeader);
-        handleHttpResponse(response, "LTE (JWT)", AuthType::SELF_SIGNED_JWT);
-    }
-    else
-    {
-        safePrintln("[CommTask] No network available for JWT communication");
-    }
-}
-
 /**
  * @brief communicationTask function
  *
@@ -517,13 +469,7 @@ void communicationTask(void* pvParameters)
     memset(&outgoingData, 0, sizeof(outgoingData));
 
     Network network;
-
     network.begin();
-
-    char key[] = JWT_TOKEN;
-    CustomJWT jwt(key, 256);
-
-    jwt.allocateJWTMemory();
 
     while (true)
     {
@@ -536,14 +482,14 @@ void communicationTask(void* pvParameters)
 #if DEBUG
                 safePrintln("[CommTask] Sending via WiFi...");
 #endif
-                sendDataWithAuth(outgoingData.json, jwt);
+                sendDataWithAuth(outgoingData.json);
             }
             else if (network.isLTEConnected())
             {
 #if DEBUG
                 safePrintln("[CommTask] Sending via LTE...");
 #endif
-                sendDataWithAuth(outgoingData.json, jwt);
+                sendDataWithAuth(outgoingData.json);
             }
             else
             {
