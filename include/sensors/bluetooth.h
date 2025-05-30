@@ -18,7 +18,17 @@
 class BluetoothClient : public NimBLEClientCallbacks
 {
 public:
+    enum ConnectionState {
+        STATE_SCANNING,
+        STATE_CONNECTING,
+        STATE_DISCOVERING_SERVICES,
+        STATE_SUBSCRIBING,
+        STATE_CONNECTED,
+        STATE_DISCONNECTED
+    };
+
     BluetoothClient();
+    ~BluetoothClient();
     void begin();
     void loop();
 
@@ -30,10 +40,36 @@ public:
 
 private:
     void onHeartRateNotify(NimBLERemoteCharacteristic *, uint8_t *, size_t, bool);
+    void cleanupClient();
+    void checkWatchdog();
+    bool isConnected() const;
+    bool isScanning() const;
+    void restartScanning();
+    
+    void setConnectionState(ConnectionState newState);
+    void startConnectionAttempt();
+    void handleConnectionFailure();
+    void discoverServices();
+    void subscribeToCharacteristic(NimBLERemoteCharacteristic* characteristic);
 
-    uint8_t heartRate = -1;
+    uint8_t heartRate = 255;
     bool doConnect = false;
-    const NimBLEAdvertisedDevice *advDevice = nullptr;
+    NimBLEAddress targetDeviceAddress;
+    bool hasTargetDevice = false;
+    
+    NimBLEClient* pClient = nullptr;
+    
+    uint32_t lastHeartRateUpdate = 0;
+    uint32_t lastConnectionAttempt = 0;
+    uint8_t connectionAttempts = 0;
+
+    // configuration
+    static const uint8_t MAX_CONNECTION_ATTEMPTS = 3;
+    static const uint32_t CONNECTION_DELAY_MS = 3000;
+    static const uint32_t HEARTRATE_TIMEOUT_MS = 30000;  // 30 seconds is enough
+    
+    ConnectionState connectionState = STATE_SCANNING;
+    uint32_t stateStartTime = 0;
 };
 
 /**

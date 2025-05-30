@@ -43,6 +43,8 @@ void setup()
     Serial.begin(115200);
     Wire.begin(SDA_PIN, SCL_PIN, 100000);
 
+    esp_log_level_set("*", ESP_LOG_NONE);
+
     WiFi.mode(WIFI_STA);
     WiFi.disconnect(true);
 
@@ -63,7 +65,7 @@ void setup()
     httpQueue = xQueueCreate(10, sizeof(processed_data_t));
 
     xTaskCreatePinnedToCore(accelTask, "AccelTask", 8192, NULL, 1, NULL, 1);
-    xTaskCreate(bluetoothTask, "Bluetooth Task", 4096, NULL, 1, NULL);
+    xTaskCreate(bluetoothTask, "Bluetooth Task", 8192, NULL, 1, NULL);
     xTaskCreate(dhtTask, "DHT Task", 4096, NULL, 1, NULL);
     xTaskCreate(gasTask, "Gas Task", 4096, NULL, 1, NULL);
     xTaskCreatePinnedToCore(communicationTask, "CommTask", 8192, NULL, 1, NULL, 1);
