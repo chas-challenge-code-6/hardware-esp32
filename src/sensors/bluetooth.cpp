@@ -11,7 +11,6 @@
 #include "utils/threadsafe_serial.h"
 #include <Arduino.h>
 #include <NimBLEDevice.h>
-#include <NimBLELog.h>
 
 static BluetoothClient* g_btClient = nullptr;
 
