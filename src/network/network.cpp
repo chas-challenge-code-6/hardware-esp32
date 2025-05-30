@@ -21,7 +21,7 @@ void Network::begin()
     safePrintln("[Network] Network hardware initialized (WiFi ready, LTE modem on-demand)");
 }
 
-bool Network::connectWiFi(const char *ssid, const char *password)
+bool Network::connectWiFi(const char* ssid, const char* password)
 {
 #if DEBUG
     safePrintln("NETWORK: Connecting to WiFi...");
@@ -54,16 +54,20 @@ bool Network::enableModem()
 {
     if (modemEnabled)
     {
+#if DEBUG
         safePrintln("[Network] Modem already enabled");
+#endif
         return true;
     }
 
-    safePrintln("[Network] Initializing modem hardware...");
+    safePrintln("[Network] Initializing modem...");
 
 #ifdef BOARD_POWERON_PIN
     pinMode(BOARD_POWERON_PIN, OUTPUT);
     digitalWrite(BOARD_POWERON_PIN, HIGH);
+#if DEBUG
     safePrintln("[Network] Modem power enabled");
+#endif
 #endif
 
 #ifdef MODEM_RESET_PIN
@@ -71,7 +75,9 @@ bool Network::enableModem()
     digitalWrite(MODEM_RESET_PIN, LOW);
     vTaskDelay(pdMS_TO_TICKS(10));
     digitalWrite(MODEM_RESET_PIN, HIGH);
+#if DEBUG
     safePrintln("[Network] Modem reset sequence completed");
+#endif
 #endif
 
     pinMode(BOARD_PWRKEY_PIN, OUTPUT);
@@ -80,19 +86,27 @@ bool Network::enableModem()
     digitalWrite(BOARD_PWRKEY_PIN, HIGH);
     vTaskDelay(pdMS_TO_TICKS(1000));
     digitalWrite(BOARD_PWRKEY_PIN, LOW);
+#if DEBUG
     safePrintln("[Network] Modem power key sequence completed");
+#endif
 
     SerialAT.begin(115200, SERIAL_8N1, MODEM_RX_PIN, MODEM_TX_PIN);
+#if DEBUG
     safePrintln("[Network] Modem serial initialized at 115200 baud");
+#endif
 
     vTaskDelay(pdMS_TO_TICKS(3000));
 
+#if DEBUG
     safePrintln("[Network] Testing modem responsiveness...");
+#endif
     int attempts = 0;
     while (attempts < 3 && !modem.testAT(1000))
     {
+#if DEBUG
         safePrint("[Network] Modem not responding, attempt ");
         safePrintln(String(attempts + 1));
+#endif
         attempts++;
         vTaskDelay(pdMS_TO_TICKS(1000));
     }
@@ -102,29 +116,34 @@ bool Network::enableModem()
         safePrintln("[Network] Modem failed to respond to AT commands");
         return false;
     }
+#if DEBUG
     safePrintln("[Network] Modem is responding to AT commands");
+#endif
 
-    safePrintln("[Network] Initializing modem...");
     if (!modem.init())
     {
         safePrintln("[Network] Failed to initialize modem");
         return false;
     }
 
+#if DEBUG
     String name = modem.getModemName();
     String info = modem.getModemInfo();
     safePrint("[Network] Modem Name: ");
     safePrintln(name);
     safePrint("[Network] Modem Info: ");
     safePrintln(info);
+#endif
 
-#ifndef TINY_GSM_MODEM_SIM7672 // if using sentinel-fredrik
+#ifndef TINY_GSM_MODEM_SIM7672
     if (!modem.setNetworkMode(MODEM_NETWORK_AUTO))
     {
         safePrintln("[Network] setNetworkMode failed");
         return false;
     }
+#if DEBUG
     safePrintln("[Network] Network mode set to AUTO");
+#endif
 #endif
 
     safePrintln("[Network] Modem initialization completed successfully");
@@ -156,7 +175,7 @@ bool Network::disableModem()
     return true;
 }
 
-bool Network::connectLTE(const char *apn)
+bool Network::connectLTE(const char* apn)
 {
     safePrintln("[Network] Attempting LTE connection...");
 
@@ -170,8 +189,10 @@ bool Network::connectLTE(const char *apn)
     int simRetries = 0;
     while (simRetries < 10 && modem.getSimStatus() != SIM_READY)
     {
+#if DEBUG
         safePrint("[Network] SIM not ready, waiting... attempt ");
         safePrintln(String(simRetries + 1));
+#endif
         vTaskDelay(pdMS_TO_TICKS(1000));
         simRetries++;
     }
@@ -199,36 +220,38 @@ bool Network::connectLTE(const char *apn)
     int16_t sq;
 
     auto getRegStatusString = [](RegStatus status) -> String
-    {
-        switch (status)
         {
-        case REG_NO_RESULT:
-            return "REG_NO_RESULT (0)";
-        case REG_UNREGISTERED:
-            return "REG_UNREGISTERED (1)";
-        case REG_SEARCHING:
-            return "REG_SEARCHING (2)";
-        case REG_DENIED:
-            return "REG_DENIED (3)";
-        case REG_OK_HOME:
-            return "REG_OK_HOME (1)";
-        case REG_OK_ROAMING:
-            return "REG_OK_ROAMING (5)";
+            switch (status)
+            {
+                case REG_NO_RESULT:
+                    return "REG_NO_RESULT (0)";
+                case REG_UNREGISTERED:
+                    return "REG_UNREGISTERED (1)";
+                case REG_SEARCHING:
+                    return "REG_SEARCHING (2)";
+                case REG_DENIED:
+                    return "REG_DENIED (3)";
+                case REG_OK_HOME:
+                    return "REG_OK_HOME (1)";
+                case REG_OK_ROAMING:
+                    return "REG_OK_ROAMING (5)";
 #ifdef TINY_GSM_MODEM_SIM7672
-        case REG_SMS_ONLY:
-            return "REG_SMS_ONLY (6)";
+                case REG_SMS_ONLY:
+                    return "REG_SMS_ONLY (6)";
 #endif
-        default:
-            return "UNKNOWN (" + String(status) + ")";
-        }
-    };
+                default:
+                    return "UNKNOWN (" + String(status) + ")";
+            }
+        };
 
     while (regRetries < 60 && (regStatus != REG_OK_HOME && regStatus != REG_OK_ROAMING))
     {
         regStatus = modem.getRegistrationStatus();
 
+#if DEBUG
         safePrint("[Network] Registration status: ");
         safePrintln(getRegStatusString(regStatus));
+#endif
 
         if (regStatus == REG_OK_HOME || regStatus == REG_OK_ROAMING)
         {
@@ -295,13 +318,15 @@ bool Network::connectLTE(const char *apn)
         safePrintln("[Network] Enable network failed!");
     }
 
+#if DEBUG
     String ipAddress = modem.getLocalIP();
     safePrint("Network IP: ");
     safePrintln(ipAddress);
+#endif
 
     // if (modem.isNetworkConnected() && modem.isGprsConnected())
     if (modem.isGprsConnected())
-    // if (modem.isNetworkConnected())
+        // if (modem.isNetworkConnected())
     {
         safePrintln("[Network] LTE connection established successfully");
         lteConnected = true;
@@ -343,7 +368,7 @@ bool Network::isConnected()
     return isWiFiConnected() || isLTEConnected();
 }
 
-void Network::maintainConnection(const char *ssid, const char *password, const char *apn)
+void Network::maintainConnection(const char* ssid, const char* password, const char* apn)
 {
     static int16_t wifiScanAttempts = 0;
     static const int8_t MIN_WIFI_ATTEMPTS = 3;
@@ -374,13 +399,17 @@ void Network::maintainConnection(const char *ssid, const char *password, const c
     }
     else
     {
+#if DEBUG
         safePrintln("[Network] WiFi not connected, scanning for networks...");
+#endif
         int found = WiFi.scanNetworks(false, false, false, 300, 0, ssid);
         bool ssidFound = (found > 0);
 
         if (ssidFound)
         {
+#if DEBUG
             safePrintln("[Network] Target WiFi network found, attempting connection...");
+#endif
             bool wifiConnected = connectWiFi(ssid, password);
 
             if (wifiConnected)
@@ -398,19 +427,23 @@ void Network::maintainConnection(const char *ssid, const char *password, const c
             else
             {
                 wifiScanAttempts++;
+#if DEBUG
                 safePrint("[Network] WiFi connection failed, attempt ");
                 safePrint(String(wifiScanAttempts));
                 safePrint(" of ");
                 safePrintln(String(MIN_WIFI_ATTEMPTS));
+#endif
             }
         }
         else
         {
             wifiScanAttempts++;
+#if DEBUG
             safePrint("[Network] WiFi network not found, scan attempt ");
             safePrint(String(wifiScanAttempts));
             safePrint(" of ");
             safePrintln(String(MIN_WIFI_ATTEMPTS));
+#endif
         }
 
         if (wifiScanAttempts >= MIN_WIFI_ATTEMPTS)
@@ -434,16 +467,20 @@ void Network::maintainConnection(const char *ssid, const char *password, const c
                 }
                 else
                 {
+#if DEBUG
                     uint32_t timeRemaining = LTE_RETRY_COOLDOWN - (currentTime - lastLteAttempt);
                     safePrint("[Network] LTE cooldown active, ");
                     safePrint(String(timeRemaining / 1000));
                     safePrintln(" seconds remaining");
+#endif
                 }
             }
         }
         else
         {
+#if DEBUG
             safePrintln("[Network] Waiting for more WiFi attempts before trying LTE...");
+#endif
         }
     }
 
