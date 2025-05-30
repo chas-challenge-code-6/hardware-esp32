@@ -43,8 +43,6 @@ void setup()
     Serial.begin(115200);
     Wire.begin(SDA_PIN, SCL_PIN, 100000);
 
-    esp_log_level_set("*", ESP_LOG_NONE);
-
     WiFi.mode(WIFI_STA);
     WiFi.disconnect(true);
 

@@ -57,7 +57,8 @@ void sendBluetoothData(const sensor_message_t& msg)
 void bluetoothTask(void* pvParameters)
 {
     sensor_message_t msg;
-    memset(&msg, 0, sizeof(msg));    BluetoothClient bClient;
+    memset(&msg, 0, sizeof(msg));
+    BluetoothClient bClient;
     int oldHeartRate = -1;
     int newHeartRate = 0;
     uint32_t lastDataSend = 0;
