@@ -36,7 +36,6 @@ See [LilyGO T-A76XX repo](https://github.com/Xinyuan-LilyGO/LilyGO-T-A76XX) and 
   - DHT sensor library
   - MQUnifiedsensor
   - NimBLE-Arduino
-  - CustomJWT
   - MPU9250_WE
   - TinyGSM (in `lib/`)
   - TinyGPSPlus (in `lib/`)
