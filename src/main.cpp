@@ -63,7 +63,7 @@ void setup()
     httpQueue = xQueueCreate(10, sizeof(processed_data_t));
 
     xTaskCreatePinnedToCore(accelTask, "AccelTask", 8192, NULL, 1, NULL, 1);
-    xTaskCreate(bluetoothTask, "Bluetooth Task", 4096, NULL, 1, NULL);
+    xTaskCreate(bluetoothTask, "Bluetooth Task", 8192, NULL, 1, NULL);
     xTaskCreate(dhtTask, "DHT Task", 4096, NULL, 1, NULL);
     xTaskCreate(gasTask, "Gas Task", 4096, NULL, 1, NULL);
     xTaskCreatePinnedToCore(communicationTask, "CommTask", 8192, NULL, 1, NULL, 1);
