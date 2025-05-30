@@ -15,80 +15,150 @@ GPS::GPS() : lastGPSUpdate(0) {
 }
 
 void GPS::begin() {
-    safePrintln("[Network] GPS hardware initialized");
+    safePrintln("[GPS] GPS hardware initialized");
 }
 
 bool GPS::enableGPS() {
-    safePrintln("[Network] Enabling GPS...");
+    safePrintln("[GPS] Enabling GPS...");
+    
+    // Check if GPS is already enabled
     if (modem.isEnableGPS()) {
-        safePrintln("[Network] GPS is already enabled");
+        safePrintln("[GPS] GPS is already enabled");
         return true;
     }
-    else {
-        safePrintln("[Network] GPS is not enabled, attempting to enable...");
-        modem.enableGPS(MODEM_GPS_ENABLE_GPIO, MODEM_GPS_ENABLE_LEVEL);
+    
+    safePrintln("[GPS] GPS is not enabled, attempting to enable...");
+    
+    // Try to enable GPS
+    if (modem.enableGPS(MODEM_GPS_ENABLE_GPIO, MODEM_GPS_ENABLE_LEVEL)) {
+        safePrintln("[GPS] GPS enabled successfully");
+        
+        // Wait a bit for GPS to initialize
+        vTaskDelay(pdMS_TO_TICKS(2000));
+        
+        // Verify GPS is now enabled
+        if (modem.isEnableGPS()) {
+            safePrintln("[GPS] GPS enable confirmed");
+            return true;
+        } else {
+            safePrintln("[GPS] GPS enable failed - not responding");
+            return false;
+        }
+    } else {
+        safePrintln("[GPS] Failed to enable GPS");
+        return false;
     }
-    return true;
 }
 
 bool GPS::disableGPS() {
-    safePrintln("[Network] Disabling GPS...");
+    safePrintln("[GPS] Disabling GPS...");
     
-    if (!modem.disableGPS()) {
-        safePrintln("[Network] Failed to disable GPS");
+    if (modem.disableGPS()) {
+        safePrintln("[GPS] GPS disabled successfully");
+        return true;
+    } else {
+        safePrintln("[GPS] Failed to disable GPS");
         return false;
     }
-    
-    safePrintln("[Network] GPS disabled successfully");
-    return true;
 }
 
 bool GPS::isGPSEnabled() {
-    return modem.isEnableGPS();  // This should work now
+    return modem.isEnableGPS();
 }
 
-
 bool GPS::getGPSLocation(gps_location_t& location) {
+    // Check if GPS is enabled first
+    if (!isGPSEnabled()) {
+        safePrintln("[GPS] GPS not enabled");
+        return false;
+    }
+    
     float lat, lon, speed, alt, accuracy;
     int vsat, usat;
     int year, month, day, hour, minute, second;
     uint8_t status;
     
+    // Get GPS data from modem
     if (modem.getGPS(&status, &lat, &lon, &speed, &alt, &vsat, &usat, &accuracy,
                      &year, &month, &day, &hour, &minute, &second)) {
         
+        // Fill location structure
         location.latitude = lat;
         location.longitude = lon;
         location.speed = speed;
         location.altitude = alt;
         location.accuracy = accuracy;
         location.satellites = vsat;
-        location.valid = (lat != 0.0 && lon != 0.0);
+        
+        // Validate GPS fix - check both coordinates and status
+        location.valid = (lat != 0.0 && lon != 0.0 && status > 0);
         location.timestamp = millis();
         
+        // Cache the location
         lastGPSLocation = location;
         lastGPSUpdate = millis();
         
+        // Debug output
+        if (location.valid) {
+            safePrintf("[GPS] Valid fix: %.6f, %.6f (status: %d, sats: %d)\n", 
+                      lat, lon, status, vsat);
+        } else {
+            safePrintf("[GPS] Invalid fix: %.6f, %.6f (status: %d, sats: %d)\n", 
+                      lat, lon, status, vsat);
+        }
+        
         return location.valid;
+    } else {
+        safePrintln("[GPS] Failed to get GPS data from modem");
+        return false;
     }
-    
+}
+
+bool GPS::getLastLocation(gps_location_t& location) {
+    if (lastGPSUpdate > 0 && lastGPSLocation.valid) {
+        location = lastGPSLocation;
+        return true;
+    }
     return false;
 }
 
 bool GPS::waitForGPSFix(unsigned long timeoutMs) {
-    safePrintln("[Network] Waiting for GPS fix...");
+    safePrintln("[GPS] Waiting for GPS fix...");
     unsigned long startTime = millis();
     gps_location_t location;
     
     while ((millis() - startTime) < timeoutMs) {
         if (getGPSLocation(location) && location.valid) {
-            safePrintf("[Network] GPS fix obtained in %lu ms\n", millis() - startTime);
+            safePrintf("[GPS] GPS fix obtained in %lu ms\n", millis() - startTime);
             return true;
+        }
+        
+        // Print progress every 10 seconds
+        unsigned long elapsed = millis() - startTime;
+        if (elapsed % 10000 == 0 && elapsed > 0) {
+            safePrintf("[GPS] Still waiting for fix... %lu/%lu ms\n", elapsed, timeoutMs);
         }
         
         vTaskDelay(pdMS_TO_TICKS(2000)); // Check every 2 seconds
     }
     
-    safePrintln("[Network] Timeout waiting for GPS fix");
+    safePrintln("[GPS] Timeout waiting for GPS fix");
     return false;
+}
+
+// Helper function to print GPS status
+void GPS::printStatus() {
+    safePrintln("=== GPS Status ===");
+    safePrintf("GPS Enabled: %s\n", isGPSEnabled() ? "Yes" : "No");
+    
+    if (lastGPSUpdate > 0) {
+        safePrintf("Last update: %lu ms ago\n", millis() - lastGPSUpdate);
+        safePrintf("Last position: %.6f, %.6f\n", 
+                  lastGPSLocation.latitude, lastGPSLocation.longitude);
+        safePrintf("Valid: %s, Satellites: %d\n", 
+                  lastGPSLocation.valid ? "Yes" : "No", lastGPSLocation.satellites);
+    } else {
+        safePrintln("No GPS data available");
+    }
+    safePrintln("==================");
 }

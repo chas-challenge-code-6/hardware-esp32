@@ -28,6 +28,8 @@ public:
     bool isGPSEnabled();
     bool getGPSLocation(gps_location_t& location);
     bool waitForGPSFix(unsigned long timeoutMs = 120000);
+    bool getLastLocation(gps_location_t& location);
+    void printStatus();
 
 private:
 
