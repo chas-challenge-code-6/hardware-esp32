@@ -69,6 +69,7 @@ See [LilyGO T-A76XX repo](https://github.com/Xinyuan-LilyGO/LilyGO-T-A76XX) and 
 - `lib/` - External libraries (TinyGSM, TinyGPSPlus)
 - `Prototype-design/Case-design/Format-for-3D-printing/` - 3D-printable case files (STL)
 - `docs/` - Documentation, diagrams, and pinouts
+- `scripts/` - API developing scripts
 
 ## Documentation & Resources
 
