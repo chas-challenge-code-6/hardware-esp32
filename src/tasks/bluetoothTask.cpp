@@ -22,7 +22,7 @@ extern EventGroupHandle_t networkEventGroup;
 extern SemaphoreHandle_t networkEventMutex;
 #define NETWORK_CONNECTED_BIT BIT0
 
-void sendBluetoothData(const sensor_message_t &msg)
+void sendBluetoothData(const sensor_message_t& msg)
 {
     EventBits_t bits;
 
@@ -54,14 +54,14 @@ void sendBluetoothData(const sensor_message_t &msg)
  *
  * @param pvParameters
  */
-void bluetoothTask(void *pvParameters)
+void bluetoothTask(void* pvParameters)
 {
     sensor_message_t msg;
     memset(&msg, 0, sizeof(msg));
-
     BluetoothClient bClient;
     int oldHeartRate = -1;
     int newHeartRate = 0;
+    uint32_t lastDataSend = 0;
 
     bClient.begin();
 
@@ -70,15 +70,31 @@ void bluetoothTask(void *pvParameters)
         bClient.loop();
 
         newHeartRate = bClient.getHeartRate();
-        if (oldHeartRate == -1 || newHeartRate != oldHeartRate)
+        uint32_t currentTime = millis();
+
+        // Check if we should send data (first reading, any change or periodic update)
+        bool shouldSendData = (oldHeartRate == -1) ||
+            (newHeartRate != oldHeartRate) ||
+            (currentTime - lastDataSend > 30000 && newHeartRate > 0);
+
+        if (shouldSendData)
         {
             msg.data.heartRate = newHeartRate;
             msg.valid.heartRate = 1;
             sendBluetoothData(msg);
-            safePrint("[BT Task] HR: ");
-            safePrintln(newHeartRate);
-            oldHeartRate = newHeartRate;
+            lastDataSend = currentTime;
+
+#if DEBUG
+            if (oldHeartRate == -1 || abs(newHeartRate - oldHeartRate) > 3)
+            {
+                safePrint("[BT Task] HR: ");
+                safePrint(newHeartRate);
+                safePrintln(" BPM");
+            }
+#endif
         }
-        vTaskDelay(pdMS_TO_TICKS(10000));
+
+        oldHeartRate = newHeartRate;
+        vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }

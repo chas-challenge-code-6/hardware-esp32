@@ -126,4 +126,7 @@ extern SemaphoreHandle_t networkEventMutex;
 #define Y_OFFSET -0.6132
 #define Z_OFFSET -0.9986
 
+// Bluetooth (meh, can't find the correct flag to turn off verbose log)
+#define CONFIG_NIMBLE_CPP_LOG_LEVEL 0
+
 #endif
