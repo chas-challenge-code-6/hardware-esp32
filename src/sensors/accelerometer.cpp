@@ -56,17 +56,27 @@ void SensorAccelerometer::update()
 {
     values = accel.getGValues();
 
-    this->accelZ = values.z;
     this->accelTotal = sqrt((values.x * values.x) + (values.y * values.y) + (values.z * values.z));
     this->accelPitch =
         atan2(values.y, sqrt(values.x * values.x + values.z * values.z)) * 180.0 / PI;
     this->accelRoll = atan2(-values.x, values.z) * 180.0 / PI;
 }
 
+float SensorAccelerometer::getX() const
+{
+    return this->values.x;
+}
+
+float SensorAccelerometer::getY() const
+{
+    return this->values.y;
+}
+
 float SensorAccelerometer::getZ() const
 {
-    return this->accelZ;
+    return this->values.z;
 }
+
 float SensorAccelerometer::getTotal() const
 {
     return this->accelTotal;

@@ -84,7 +84,7 @@ bool Network::enableModem()
     digitalWrite(BOARD_PWRKEY_PIN, LOW);
     vTaskDelay(pdMS_TO_TICKS(100));
     digitalWrite(BOARD_PWRKEY_PIN, HIGH);
-    vTaskDelay(pdMS_TO_TICKS(1000));
+    vTaskDelay(pdMS_TO_TICKS(100));
     digitalWrite(BOARD_PWRKEY_PIN, LOW);
 #if DEBUG
     safePrintln("[Network] Modem power key sequence completed");
@@ -101,18 +101,31 @@ bool Network::enableModem()
     safePrintln("[Network] Testing modem responsiveness...");
 #endif
     int attempts = 0;
-    while (attempts < 3 && !modem.testAT(1000))
+    while (attempts < 10 && !modem.testAT(1000))
     {
 #if DEBUG
         safePrintf("[Network] Modem not responding, attempt %d\n", attempts + 1);
 #endif
         attempts++;
-        vTaskDelay(pdMS_TO_TICKS(1000));
+        if (attempts > 3)
+        {
+            // Try power cycle if initial attempts fail
+            digitalWrite(BOARD_PWRKEY_PIN, LOW);
+            vTaskDelay(pdMS_TO_TICKS(100));
+            digitalWrite(BOARD_PWRKEY_PIN, HIGH);
+            vTaskDelay(pdMS_TO_TICKS(1000));
+            digitalWrite(BOARD_PWRKEY_PIN, LOW);
+            vTaskDelay(pdMS_TO_TICKS(1000));
+        }
+        else
+        {
+            vTaskDelay(pdMS_TO_TICKS(1000));
+        }
     }
 
-    if (attempts >= 3)
+    if (attempts >= 10)
     {
-        safePrintln("[Network] Modem failed to respond to AT commands");
+        safePrintln("[Network] Modem failed to respond to AT commands after 10 attempts");
         return false;
     }
 #if DEBUG
@@ -240,12 +253,15 @@ bool Network::connectLTE(const char* apn)
             }
         };
 
+    // Ok, check network like in lilygo examples
     while (regRetries < 60 && (regStatus != REG_OK_HOME && regStatus != REG_OK_ROAMING))
     {
         regStatus = modem.getRegistrationStatus();
+        sq = modem.getSignalQuality();
 
 #if DEBUG
-        safePrintf("[Network] Registration status: %s\n", getRegStatusString(regStatus).c_str());
+        safePrintf("[Network] Registration status: %s, Signal Quality: %d\n",
+            getRegStatusString(regStatus).c_str(), sq);
 #endif
 
         if (regStatus == REG_OK_HOME || regStatus == REG_OK_ROAMING)
@@ -296,7 +312,6 @@ bool Network::connectLTE(const char* apn)
 
     safePrintf("[Network] Connecting to APN: %s\n", apn);
 
-    /*
     if (!modem.gprsConnect(apn, "", ""))
     {
         safePrintln("[Network] GPRS connection failed, disabling modem");
@@ -304,7 +319,6 @@ bool Network::connectLTE(const char* apn)
         return false;
     }
     safePrintln("[Network] GPRS connection successful");
-    */
 
     if (!modem.setNetworkActive())
     {
@@ -317,9 +331,9 @@ bool Network::connectLTE(const char* apn)
     safePrintln(ipAddress);
 #endif
 
-    // if (modem.isNetworkConnected() && modem.isGprsConnected())
-    if (modem.isGprsConnected())
-        // if (modem.isNetworkConnected())
+    bool gprsConnected = modem.isGprsConnected();
+
+    if (gprsConnected)
     {
         safePrintln("[Network] LTE connection established successfully");
         lteConnected = true;
@@ -327,7 +341,7 @@ bool Network::connectLTE(const char* apn)
     }
     else
     {
-        safePrintln("[Network] LTE connection verification failed, disabling modem");
+        safePrintln("[Network] LTE connection verification failed - GPRS not connected");
         disableModem();
         return false;
     }
@@ -349,9 +363,9 @@ bool Network::isLTEConnected()
         return false;
     }
 
-    // bool result = modem.isNetworkConnected() && modem.isGprsConnected();
+    // Only check gprsconnected, nothing else works, good enough?
     bool result = modem.isGprsConnected();
-    // bool result = modem.isNetworkConnected();
+
     lteConnected = result;
     return result;
 }

@@ -19,6 +19,7 @@
 #include "tasks/gasTask.h"
 #include "tasks/networkStatusTask.h"
 #include "tasks/processingTask.h"
+#include "utils/threadsafe_serial.h"
 #include "utilities.h"
 #include <TinyGsmClient.h>
 #include <WiFi.h>
@@ -85,12 +86,12 @@ void setup()
     }
     else
     {
-        Serial.println("Failed to initialize system ready bit!");
+        safePrintln("Failed to initialize system ready bit!");
         while (1)
             ;
     }
 
-    Serial.println("Sentinel started.");
+    ("Sentinel started.");
 }
 
 /**

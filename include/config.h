@@ -68,8 +68,8 @@ extern SemaphoreHandle_t networkEventMutex;
 #elif LILYGO_T_SIM7670G_S3
 #define DHT_PIN 7
 #endif
-#define TEMP_DELTA_THRESHOLD 0.1
-#define HUM_DELTA_THRESHOLD 1.0
+#define TEMP_DELTA_THRESHOLD 0.1f
+#define HUM_DELTA_THRESHOLD 1.0f
 
 // Macros for Polar H9
 #define STRAP_NAME "POLAR H9 EC351E2B"
@@ -87,8 +87,8 @@ extern SemaphoreHandle_t networkEventMutex;
 // #define GAS_TYPE                "MQ-2"
 // #define GAS_VOLTAGE_RESOLUTION  12
 // #define GAS_ADC_BIT_RESOLUTION  12
-#define GAS_RATIO_CLEANAIR 9.83
-#define GAS_DELTA_THRESHOLD 5.0
+#define GAS_RATIO_CLEANAIR 9.83f
+#define GAS_DELTA_THRESHOLD 5.0f
 /*
     Exponential regression:
     Gas    | a      | b
@@ -98,8 +98,8 @@ extern SemaphoreHandle_t networkEventMutex;
     Alcohol| 3616.1 | -2.675
     Propane| 658.71 | -2.168
 */
-#define GAS_SETA 658.71
-#define GAS_SETB -2.168
+#define GAS_SETA 658.71f
+#define GAS_SETB -2.168f
 
 // Accelerometer macros
 
@@ -115,16 +115,18 @@ extern SemaphoreHandle_t networkEventMutex;
 #define MPU6500_ADDR 0x68
 
 // Accelerometer fall thresholds
-#define ACC_THRESHOLD 2.0
-#define ANGLE_THRESHOLD 60.0
+#define ACC_THRESHOLD 2.0f
+#define ANGLE_THRESHOLD 60.0f
 #define MAX_TIME_BETWEEN 2000
-#define STEP_THRESHOLD 1.2
-#define STEP_DEBOUNCE_MS 300
+
+// Simple step detection
+#define STEP_THRESHOLD 1.5f
+#define STEP_MIN_TIME_MS 400
 
 // Kalibrering
-#define X_OFFSET 0.0737
-#define Y_OFFSET -0.6132
-#define Z_OFFSET -0.9986
+#define X_OFFSET 0.0737f
+#define Y_OFFSET -0.6132f
+#define Z_OFFSET -0.9986f
 
 // Bluetooth (meh, can't find the correct flag to turn off verbose log)
 #define CONFIG_NIMBLE_CPP_LOG_LEVEL 0

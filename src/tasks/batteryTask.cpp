@@ -82,7 +82,7 @@ void batteryTask(void* parameter)
         uint32_t voltage_mv = voltage * 1000;
 
         //voltage can't be read when USB is connected, just hack around it for now
-        if (voltage_mv > 20)
+        if (voltage_mv > 100)
         {
             if (voltage_mv < LOW_VOLTAGE_LEVEL)
             {
