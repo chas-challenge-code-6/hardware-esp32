@@ -13,12 +13,14 @@
 #include <cstdint>
 #include <TinyGsmClient.h>
 
- /**
-  * @brief Network management class for WiFi and LTE connectivity
-  *
-  * @details Provides automatic connection management with WiFi priority and LTE fallback.
-  * Includes power management features to disable LTE when WiFi is available.
-  */
+extern Network network;
+
+/**
+ * @brief Network management class for WiFi and LTE connectivity
+ *
+ * @details Provides automatic connection management with WiFi priority and LTE fallback.
+ * Includes power management features to disable LTE when WiFi is available.
+ */
 class Network
 {
 public:

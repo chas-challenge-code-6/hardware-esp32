@@ -26,6 +26,7 @@
 extern QueueHandle_t httpQueue;
 extern SemaphoreHandle_t modemMutex;
 extern TinyGsm modem;
+extern Network network;
 
 String currentJWTToken = "";
 unsigned long tokenExpiryTime = 0;
@@ -257,7 +258,6 @@ void sendDataWithAuth(const char* jsonPayload)
 
 bool authenticateWithBackend(String& token)
 {
-    Network network;
     bool success = false;
     int attempts = 0;
 
@@ -342,7 +342,6 @@ bool authenticateWithBackend(String& token)
 
 void sendJson(const char* url, const char* jsonPayload, const String& token)
 {
-    Network network;
     String authHeader = createBearerHeader(token);
     HttpResponse response;
 
@@ -382,13 +381,8 @@ void communicationTask(void* pvParameters)
     processed_data_t outgoingData;
     memset(&outgoingData, 0, sizeof(outgoingData));
 
-    Network network;
-    network.begin();
-
     while (true)
     {
-        network.maintainConnection(WIFI_SSID, PASSWORD, NETWORK_APN);
-
         if (xQueueReceive(httpQueue, &outgoingData, pdMS_TO_TICKS(1000)))
         {
             if (network.isWiFiConnected())
