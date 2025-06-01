@@ -13,8 +13,6 @@
 #include <cstdint>
 #include <TinyGsmClient.h>
 
-extern Network network;
-
 /**
  * @brief Network management class for WiFi and LTE connectivity
  *
@@ -46,5 +44,7 @@ private:
     bool lteConnected;
     bool modemEnabled;
 };
+
+extern Network network;
 
 #endif
