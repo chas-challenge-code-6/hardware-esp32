@@ -39,24 +39,6 @@ struct HttpResponse
 };
 
 /**
- * @brief Network connection type enumeration
- */
-enum class NetworkType
-{
-  WIFI,
-  LTE
-};
-
-/**
- * @brief Authentication type enumeration
- */
-enum class AuthType
-{
-  NONE,
-  BACKEND_JWT
-};
-
-/**
  * @brief Parse authentication response and extract JWT token
  * @param response JSON response string from authentication endpoint
  * @param token Output string to store the extracted JWT token
@@ -70,7 +52,7 @@ bool parseAuthResponse(const String& response, String& token);
  * @param context Description of the request context for logging
  * @param authType Type of authentication used for the request
  */
-void handleHttpResponse(const HttpResponse& response, const char* context, AuthType authType = AuthType::NONE);
+void handleHttpResponse(const HttpResponse& response, const char* context);
 
 /**
  * @brief Perform HTTP request via WiFi
@@ -107,16 +89,6 @@ String createBearerHeader(const String& token);
 void sendDataWithAuth(const char* jsonPayload);
 
 /**
- * @brief Send JSON data via HTTP POST without authentication
- * @param url Target URL for the request
- * @param jsonPayload JSON string containing data to send
- * 
- * @details Sends data as plain HTTP POST request without any authentication headers.
- * Used when authentication is disabled or as fallback method.
- */
-void sendJsonPlain(const char* url, const char* jsonPayload);
-
-/**
  * @brief Authenticate with backend server and retrieve JWT token
  * @param token Output string to store the retrieved JWT token
  * @return true if authentication successful, false otherwise
@@ -137,7 +109,7 @@ bool authenticateWithBackend(String& token);
  * header. Automatically selects WiFi or LTE based on availability and handles
  * authentication errors including token expiry.
  */
-void sendJsonWithBackendJWT(const char* url, const char* jsonPayload, const String& token);
+void sendJson(const char* url, const char* jsonPayload, const String& token);
 
 /**
  * @brief Main communication task function for FreeRTOS

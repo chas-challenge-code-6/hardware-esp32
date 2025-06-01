@@ -5,11 +5,13 @@ This repository contains the firmware and hardware documentation for the Sentine
 ## Features
 
 - **Multi-sensor support:**
-  - Accelerometer (MPU9250/MPU6500)
+  - Accelerometer (MPU9250/MPU6500) - Fall detection, steps counting
   - Temperature & Humidity (DHT22)
   - Gas detection (MQ2)
   - Battery monitoring
+  - Heart rate monitoring (Polar H9 via Bluetooth)
 - **Wireless communication:**
+  - WiFi with automatic LTE fallback - Seamlessly switches to LTE when WiFi is unavailable
   - LTE/4G (TinyGSM)
   - Bluetooth Low Energy (NimBLE)
   - GPS (TinyGPSPlus)
