@@ -11,6 +11,7 @@ This repository contains the firmware and hardware documentation for the Sentine
   - Battery monitoring
   - Heart rate monitoring (Polar H9 via Bluetooth)
 - **Wireless communication:**
+  - WiFi with automatic LTE fallback - Seamlessly switches to LTE when WiFi is unavailable
   - LTE/4G (TinyGSM)
   - Bluetooth Low Energy (NimBLE)
   - GPS (TinyGPSPlus)
