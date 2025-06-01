@@ -24,7 +24,7 @@ extern EventGroupHandle_t networkEventGroup;
 extern SemaphoreHandle_t networkEventMutex;
 #define NETWORK_CONNECTED_BIT BIT0
 
-void sendBatteryData(const sensor_message_t &msg)
+void sendBatteryData(const sensor_message_t& msg)
 {
     EventBits_t bits;
 
@@ -58,7 +58,7 @@ void sendBatteryData(const sensor_message_t &msg)
  *
  * @param parameter Task parameter (unused)
  */
-void batteryTask(void *parameter)
+void batteryTask(void* parameter)
 {
     sensor_message_t msg;
     memset(&msg, 0, sizeof(msg));
@@ -78,21 +78,22 @@ void batteryTask(void *parameter)
 
         voltage = battery.readVoltage();
         newBatteryPercent = battery.percent();
-        // battery.setRGB(newBatteryPercent);
 
         uint32_t voltage_mv = voltage * 1000;
-        if (voltage_mv < LOW_VOLTAGE_LEVEL)
+
+        //voltage can't be read when USB is connected, just hack around it for now
+        if (voltage_mv > 20)
         {
-            safePrint("[Battery Task] CRITICAL: Low battery voltage detected: ");
-            safePrint(voltage_mv);
-            safePrintln(" mV - System should enter deep sleep");
+            if (voltage_mv < LOW_VOLTAGE_LEVEL)
+            {
+                safePrintf("[Battery Task] CRITICAL: Low battery voltage detected: %lu mV - System should enter deep sleep\n", voltage_mv);
+            }
+            else if (voltage_mv < WARN_VOLTAGE_LEVEL)
+            {
+                safePrintf("[Battery Task] WARNING: Low battery voltage: %lu mV\n", voltage_mv);
+            }
         }
-        else if (voltage_mv < WARN_VOLTAGE_LEVEL)
-        {
-            safePrint("[Battery Task] WARNING: Low battery voltage: ");
-            safePrint(voltage_mv);
-            safePrintln(" mV");
-        }
+
 
         // Send data when battery percentage changes by 1% or more
         if (oldBatteryPercent == -1 || abs(newBatteryPercent - oldBatteryPercent) >= 1)
@@ -102,13 +103,7 @@ void batteryTask(void *parameter)
 
             sendBatteryData(msg);
 
-            safePrint("[Battery Task] Voltage: ");
-            safePrint(voltage);
-            safePrint(" V (");
-            safePrint(voltage_mv);
-            safePrint(" mV), Percent: ");
-            safePrint(newBatteryPercent);
-            safePrintln(" %");
+            safePrintf("[Battery Task] Voltage: %.2f V (%lu mV), Percent: %d %%\n", voltage, voltage_mv, newBatteryPercent);
 
             oldBatteryPercent = newBatteryPercent;
             battery.setRGB(newBatteryPercent);
