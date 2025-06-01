@@ -25,7 +25,6 @@ private:
     MPU6500_WE accel = MPU6500_WE();
     xyzFloat values;
     int steps;
-    float accelZ;
     float accelTotal;
     float accelPitch;
     float accelRoll;
@@ -34,6 +33,8 @@ public:
     bool begin();
     void setup();
     void update();
+    float getX() const;
+    float getY() const;
     float getZ() const;
     float getTotal() const;
     float getPitch() const;
