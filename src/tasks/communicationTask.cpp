@@ -91,12 +91,9 @@ bool parseAuthResponse(const String& response, String& token)
     }
 }
 
-void handleHttpResponse(const HttpResponse& response, const char* context, AuthType authType)
+void handleHttpResponse(const HttpResponse& response, const char* context)
 {
-    safePrint("[CommTask] HTTP ");
-    safePrint(context);
-    safePrint(": ");
-    safePrintln(response.code);
+    safePrintf("[CommTask] HTTP %s: %d\n", context, response.code);
 
     if (response.success)
     {
@@ -106,12 +103,8 @@ void handleHttpResponse(const HttpResponse& response, const char* context, AuthT
 #if DEBUG
             safePrintf("[CommTask] Full response: %s\n", response.body.c_str());
 #endif
-
-            if (authType == AuthType::BACKEND_JWT)
-            {
-                currentJWTToken = "";
-                tokenExpiryTime = 0;
-            }
+            currentJWTToken = "";
+            tokenExpiryTime = 0;
         }
         else if (response.body.length() > 50)
         {
@@ -254,16 +247,12 @@ void sendDataWithAuth(const char* jsonPayload)
 {
     String dataUrl = String(BACKEND_URL) + API_ENDPOINT;
 
-#ifdef USE_BACKEND_AUTH
     if (currentJWTToken.isEmpty() || millis() > tokenExpiryTime - TOKEN_REFRESH_MARGIN_MS)
     {
         safePrintln("[CommTask] Refreshing backend JWT token...");
         authenticateWithBackend(currentJWTToken);
     }
-    sendJsonWithBackendJWT(dataUrl.c_str(), jsonPayload, currentJWTToken);
-#else
-    sendJsonPlain(dataUrl.c_str(), jsonPayload);
-#endif
+    sendJson(dataUrl.c_str(), jsonPayload, currentJWTToken);
 }
 
 bool authenticateWithBackend(String& token)
@@ -351,7 +340,7 @@ bool authenticateWithBackend(String& token)
     return success;
 }
 
-void sendJsonWithBackendJWT(const char* url, const char* jsonPayload, const String& token)
+void sendJson(const char* url, const char* jsonPayload, const String& token)
 {
     Network network;
     String authHeader = createBearerHeader(token);
@@ -365,37 +354,16 @@ void sendJsonWithBackendJWT(const char* url, const char* jsonPayload, const Stri
     if (network.isWiFiConnected())
     {
         response = performWiFiRequest(url, jsonPayload, authHeader.c_str());
-        handleHttpResponse(response, "WiFi (Backend JWT)", AuthType::BACKEND_JWT);
+        handleHttpResponse(response, "WiFi (Backend)");
     }
     else if (network.isLTEConnected())
     {
         response = performLTERequest(url, jsonPayload, authHeader.c_str());
-        handleHttpResponse(response, "LTE (Backend JWT)", AuthType::BACKEND_JWT);
+        handleHttpResponse(response, "LTE (Backend)");
     }
     else
     {
-        safePrintln("[CommTask] No network available for backend JWT communication");
-    }
-}
-
-void sendJsonPlain(const char* url, const char* jsonPayload)
-{
-    Network network;
-    HttpResponse response;
-
-    if (network.isWiFiConnected())
-    {
-        response = performWiFiRequest(url, jsonPayload);
-        handleHttpResponse(response, "WiFi (Plain)");
-    }
-    else if (network.isLTEConnected())
-    {
-        response = performLTERequest(url, jsonPayload);
-        handleHttpResponse(response, "LTE (Plain)");
-    }
-    else
-    {
-        safePrintln("[CommTask] No network available for communication");
+        safePrintln("[CommTask] No network available for backend communication");
     }
 }
 
