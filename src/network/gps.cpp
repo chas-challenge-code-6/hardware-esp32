@@ -7,7 +7,10 @@
 #include <TinyGSM.h>
 #include <WiFi.h>
 
+
+
 extern TinyGsm modem;
+
 
 GPS::GPS() : lastGPSUpdate(0) {
     // Constructor initializes GPS location to default values
@@ -28,7 +31,7 @@ bool GPS::enableGPS() {
     }
     
     safePrintln("[GPS] GPS is not enabled, attempting to enable...");
-#ifdef BOARD_POWERON_PIN
+/* #ifdef BOARD_POWERON_PIN
     pinMode(BOARD_POWERON_PIN, OUTPUT);
     digitalWrite(BOARD_POWERON_PIN, HIGH);
     safePrintln("[Network] Modem power enabled");
@@ -40,7 +43,7 @@ bool GPS::enableGPS() {
     digitalWrite(BOARD_PWRKEY_PIN, HIGH);
     vTaskDelay(pdMS_TO_TICKS(1000));
     digitalWrite(BOARD_PWRKEY_PIN, LOW);
-    safePrintln("[Network] Modem power key sequence completed");
+    safePrintln("[Network] Modem power key sequence completed"); */
     
     // Try to enable GPS
     if (modem.enableGPS(MODEM_GPS_ENABLE_GPIO, MODEM_GPS_ENABLE_LEVEL)) {

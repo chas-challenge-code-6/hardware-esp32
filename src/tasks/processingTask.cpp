@@ -44,32 +44,6 @@ extern QueueHandle_t httpQueue;
  */
 bool createJson(const sensor_data_t &data, char *buffer, size_t bufferSize)
 {
-<<<<<<< HEAD
-    int len =
-        snprintf(buffer, bufferSize,
-                 "{\"device_id\": \"%s\", \"sensors\": { "
-                 "\"steps\": %d, "
-                 "\"temperature\": %.2f, "
-                 "\"humidity\": %d, "
-                 "\"gas\": { \"ppm\": %d }, "
-                 "\"fall_detected\": %d, "
-                 "\"device_battery\": %d, "
-                 "\"watch_battery\": \"0\", "
-                 "\"heart_rate\": %d, "
-                 "\"noise_level\": %d, "
-                 "\"gps\": { "
-                 "\"latitude\": %.6f, "
-                 "\"longitude\": %.6f, "
-                 "\"speed\": %.2f, "
-                 "\"altitude\": %.2f, "
-                 "\"accuracy\": %.2f, "
-                 "\"satellites\": %d "
-                 "} } }",
-                 DEVICE_ID, data.steps, data.temperature, (int)data.humidity, (int)data.gasLevel,
-                 data.fall_detected, data.device_battery, data.heartRate, data.noise_level,
-                 data.latitude, data.longitude, data.gps_speed, data.gps_altitude, 
-                 data.gps_accuracy, data.gps_satellites);
-=======
     int len = snprintf(buffer, bufferSize,
                        "{\"device_id\": \"%s\", \"sensors\": { "
                        "\"steps\": %d, "
@@ -80,10 +54,13 @@ bool createJson(const sensor_data_t &data, char *buffer, size_t bufferSize)
                        "\"device_battery\": %d, "
                        "\"strap_battery\": \"0\", "
                        "\"heart_rate\": %d, "
+                       "\"latitude\": %.6f, "
+                       "\"longitude\": %.6f, "
+                       "\"altitude\": %.2f, "
+                       "\"accuracy\": %.2f, "
                        "\"noise_level\": %d } }",
                        DEVICE_ID, data.steps, data.temperature, data.humidity, data.gasLevel,
-                       data.fall_detected, data.device_battery, data.heartRate, data.noise_level);
->>>>>>> origin
+                       data.fall_detected, data.device_battery, data.heartRate, data.latitude, data.longitude, data.gps_altitude, data.gps_accuracy, data.noise_level);
     if (len < 0 || len >= (int)bufferSize)
     {
         safePrintln("[Proc Task] JSON creation failed or truncated.");
@@ -129,8 +106,6 @@ static void updateLatestData(sensor_data_t &latest, const sensor_message_t &inco
         latest.gps_altitude = incoming.data.gps_altitude;
     if (incoming.valid.gps_accuracy)
         latest.gps_accuracy = incoming.data.gps_accuracy;
-    if (incoming.valid.gps_satellites)
-        latest.gps_satellites = incoming.data.gps_satellites;
 }
 
 /**

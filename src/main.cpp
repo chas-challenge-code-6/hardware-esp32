@@ -70,7 +70,7 @@ void setup()
     // High priority tasks
     xTaskCreatePinnedToCore(processingTask, "ProcessTask", 8192, NULL, 3, NULL, 1);
     xTaskCreatePinnedToCore(communicationTask, "CommTask", 8192, NULL, 3, NULL, 1);
-    xTaskCreate(bluetoothTask, "Bluetooth Task", 8192, NULL, 3, NULL);
+    //xTaskCreate(bluetoothTask, "Bluetooth Task", 8192, NULL, 3, NULL);
 
     // Medium priority tasks
     xTaskCreate(gasTask, "Gas Task", 4096, NULL, 2, NULL);
