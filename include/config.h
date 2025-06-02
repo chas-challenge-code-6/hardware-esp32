@@ -8,21 +8,22 @@
 
 // fallback to secrets.h.default
 #ifdef __has_include
-    #if __has_include("secrets.h")
-        #include "secrets.h"
-        #define USING_SECRETS_H
-    #elif __has_include("secrets.h.default")
-        #include "secrets.h.default"
-        #warning "secrets.h not found, using secrets.h.default. Please copy secrets.h.default to secrets.h and configure your settings."
-        #define USING_SECRETS_DEFAULT
-    #else
-        #error "Neither secrets.h nor secrets.h.default found. Please ensure secrets.h.default exists."
-    #endif
+#if __has_include("secrets.h")
+#include "secrets.h"
+#define USING_SECRETS_H
+#elif __has_include("secrets.h.default")
+#include "secrets.h.default"
+#warning                                                                                           \
+    "secrets.h not found, using secrets.h.default. Please copy secrets.h.default to secrets.h and configure your settings."
+#define USING_SECRETS_DEFAULT
 #else
-    // Fallback for compilers that don't support __has_include
-    #include "secrets.h.default"
-    #warning "Compiler doesn't support __has_include, using secrets.h.default as fallback."
-    #define USING_SECRETS_DEFAULT
+#error "Neither secrets.h nor secrets.h.default found. Please ensure secrets.h.default exists."
+#endif
+#else
+// Fallback for compilers that don't support __has_include
+#include "secrets.h.default"
+#warning "Compiler doesn't support __has_include, using secrets.h.default as fallback."
+#define USING_SECRETS_DEFAULT
 #endif
 
 // DEVICE_ID for API
@@ -33,9 +34,9 @@
 #define USE_BACKEND_AUTH
 
 // Authentication settings
-#define AUTH_TIMEOUT_MS 15000
+#define AUTH_TIMEOUT_MS 15000 // backend kan ibland ta upp till 50 sek men catchas på retry
 #define AUTH_RETRY_ATTEMPTS 3
-#define TOKEN_REFRESH_MARGIN_MS 300000 // 5 minuter
+#define TOKEN_REFRESH_MARGIN_MS 300000  // 5 minuter
 #define DEFAULT_TOKEN_EXPIRY_MS 3600000 // 1 timme
 
 // Mutex declarations
@@ -67,8 +68,8 @@ extern SemaphoreHandle_t networkEventMutex;
 #elif LILYGO_T_SIM7670G_S3
 #define DHT_PIN 7
 #endif
-#define TEMP_DELTA_THRESHOLD 0.1
-#define HUM_DELTA_THRESHOLD 1.0
+#define TEMP_DELTA_THRESHOLD 0.1f
+#define HUM_DELTA_THRESHOLD 1.0f
 
 // Macros for Polar H9
 #define STRAP_NAME "POLAR H9 EC351E2B"
@@ -86,8 +87,8 @@ extern SemaphoreHandle_t networkEventMutex;
 // #define GAS_TYPE                "MQ-2"
 // #define GAS_VOLTAGE_RESOLUTION  12
 // #define GAS_ADC_BIT_RESOLUTION  12
-#define GAS_RATIO_CLEANAIR 9.83
-#define GAS_DELTA_THRESHOLD 5.0
+#define GAS_RATIO_CLEANAIR 9.83f
+#define GAS_DELTA_THRESHOLD 5.0f
 /*
     Exponential regression:
     Gas    | a      | b
@@ -97,8 +98,8 @@ extern SemaphoreHandle_t networkEventMutex;
     Alcohol| 3616.1 | -2.675
     Propane| 658.71 | -2.168
 */
-#define GAS_SETA 658.71
-#define GAS_SETB -2.168
+#define GAS_SETA 658.71f
+#define GAS_SETB -2.168f
 
 // Accelerometer macros
 
@@ -114,15 +115,20 @@ extern SemaphoreHandle_t networkEventMutex;
 #define MPU6500_ADDR 0x68
 
 // Accelerometer fall thresholds
-#define ACC_THRESHOLD 2.0
-#define ANGLE_THRESHOLD 60.0
+#define ACC_THRESHOLD 2.0f
+#define ANGLE_THRESHOLD 60.0f
 #define MAX_TIME_BETWEEN 2000
-#define STEP_THRESHOLD 1.2
-#define STEP_DEBOUNCE_MS 300
+
+// Simple step detection
+#define STEP_THRESHOLD 1.5f
+#define STEP_MIN_TIME_MS 400
 
 // Kalibrering
-#define X_OFFSET 0.0737
-#define Y_OFFSET -0.6132
-#define Z_OFFSET -0.9986
+#define X_OFFSET 0.0737f
+#define Y_OFFSET -0.6132f
+#define Z_OFFSET -0.9986f
+
+// Bluetooth (meh, can't find the correct flag to turn off verbose log)
+#define CONFIG_NIMBLE_CPP_LOG_LEVEL 0
 
 #endif

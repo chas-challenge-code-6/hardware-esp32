@@ -24,6 +24,7 @@ extern EventGroupHandle_t networkEventGroup;
 extern SemaphoreHandle_t networkEventMutex;
 #define NETWORK_CONNECTED_BIT BIT0
 
+// This is what the sensor can handle, anything outside this is invalid
 #define DHT_MIN_TEMP -40.0f
 #define DHT_MAX_TEMP 80.0f
 #define DHT_MIN_HUM 0.0f
@@ -32,10 +33,10 @@ extern SemaphoreHandle_t networkEventMutex;
 bool isValidDHTReading(float temp, float hum)
 {
     return (temp >= DHT_MIN_TEMP && temp <= DHT_MAX_TEMP && hum >= DHT_MIN_HUM &&
-            hum <= DHT_MAX_HUM && !isnan(temp) && !isnan(hum));
+        hum <= DHT_MAX_HUM && !isnan(temp) && !isnan(hum));
 }
 
-void sendDHTData(const sensor_message_t &msg)
+void sendDHTData(const sensor_message_t& msg)
 {
     EventBits_t bits;
 
@@ -68,7 +69,7 @@ void sendDHTData(const sensor_message_t &msg)
  * to the network for processing.
  *
  */
-void dhtTask(void *parameter)
+void dhtTask(void* parameter)
 {
     SensorDHT dhtSensor(DHT_PIN);
     sensor_message_t msg;
@@ -91,18 +92,9 @@ void dhtTask(void *parameter)
         newTemp = dhtSensor.getTemperature();
         newHum = dhtSensor.getHumdity();
 
-        bool shouldLog =
-            (isnan(oldTemp) || isnan(oldHum) || fabs(newTemp - oldTemp) > TEMP_DELTA_THRESHOLD ||
-             fabs(newHum - oldHum) > HUM_DELTA_THRESHOLD);
-
-        if (shouldLog)
-        {
-            safePrint("[DHT Task] T: ");
-            safePrint(newTemp);
-            safePrint("°C, H: ");
-            safePrint(newHum);
-            safePrintln("%");
-        }
+#if DEBUG
+        safePrintf("[DHT Task] T: %.2f°C, H: %.2f%%\n", newTemp, newHum);
+#endif
 
         if (!isValidDHTReading(newTemp, newHum))
         {
@@ -117,19 +109,19 @@ void dhtTask(void *parameter)
 
         bool isFirstReading = (isnan(oldTemp) || isnan(oldHum));
         bool shouldSend = isFirstReading || (fabs(newTemp - oldTemp) > TEMP_DELTA_THRESHOLD ||
-                                             fabs(newHum - oldHum) > HUM_DELTA_THRESHOLD);
+            fabs(newHum - oldHum) > HUM_DELTA_THRESHOLD);
 
         if (!skipZeroReading && shouldSend)
         {
             if (isFirstReading)
             {
                 safePrintf("[DHT Task] Sending first reading: T=%.2f°C, H=%.2f%%\n", newTemp,
-                           newHum);
+                    newHum);
             }
             else
             {
                 safePrintf("[DHT Task] Sending: T=%.2f°C (Δ%.2f), H=%.2f%% (Δ%.2f)\n", newTemp,
-                           fabs(newTemp - oldTemp), newHum, fabs(newHum - oldHum));
+                    fabs(newTemp - oldTemp), newHum, fabs(newHum - oldHum));
             }
 
             msg.data.temperature = newTemp;

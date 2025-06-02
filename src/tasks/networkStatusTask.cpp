@@ -11,7 +11,7 @@ extern SemaphoreHandle_t networkEventMutex;
 
 Network network;
 
-void networkStatusTask(void *pvParameters)
+void networkStatusTask(void* pvParameters)
 {
     bool systemReady = false;
     bool startupLogged = false;
@@ -21,7 +21,7 @@ void networkStatusTask(void *pvParameters)
         if (xSemaphoreTake(networkEventMutex, pdMS_TO_TICKS(1000)) == pdTRUE)
         {
             EventBits_t bits = xEventGroupWaitBits(networkEventGroup, SYSTEM_READY_BIT, pdFALSE,
-                                                   pdTRUE, pdMS_TO_TICKS(100));
+                pdTRUE, pdMS_TO_TICKS(100));
             xSemaphoreGive(networkEventMutex);
 
             if (bits & SYSTEM_READY_BIT)

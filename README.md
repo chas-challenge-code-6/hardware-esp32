@@ -5,11 +5,13 @@ This repository contains the firmware and hardware documentation for the Sentine
 ## Features
 
 - **Multi-sensor support:**
-  - Accelerometer (MPU9250/MPU6500)
+  - Accelerometer (MPU9250/MPU6500) - Fall detection, steps counting
   - Temperature & Humidity (DHT22)
   - Gas detection (MQ2)
   - Battery monitoring
+  - Heart rate monitoring (Polar H9 via Bluetooth)
 - **Wireless communication:**
+  - WiFi with automatic LTE fallback - Seamlessly switches to LTE when WiFi is unavailable
   - LTE/4G (TinyGSM)
   - Bluetooth Low Energy (NimBLE)
   - GPS (TinyGPSPlus)
@@ -36,7 +38,6 @@ See [LilyGO T-A76XX repo](https://github.com/Xinyuan-LilyGO/LilyGO-T-A76XX) and 
   - DHT sensor library
   - MQUnifiedsensor
   - NimBLE-Arduino
-  - CustomJWT
   - MPU9250_WE
   - TinyGSM (in `lib/`)
   - TinyGPSPlus (in `lib/`)
@@ -69,6 +70,7 @@ See [LilyGO T-A76XX repo](https://github.com/Xinyuan-LilyGO/LilyGO-T-A76XX) and 
 - `lib/` - External libraries (TinyGSM, TinyGPSPlus)
 - `Prototype-design/Case-design/Format-for-3D-printing/` - 3D-printable case files (STL)
 - `docs/` - Documentation, diagrams, and pinouts
+- `scripts/` - API developing scripts
 
 ## Documentation & Resources
 

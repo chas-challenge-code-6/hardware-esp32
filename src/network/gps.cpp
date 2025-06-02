@@ -28,6 +28,19 @@ bool GPS::enableGPS() {
     }
     
     safePrintln("[GPS] GPS is not enabled, attempting to enable...");
+#ifdef BOARD_POWERON_PIN
+    pinMode(BOARD_POWERON_PIN, OUTPUT);
+    digitalWrite(BOARD_POWERON_PIN, HIGH);
+    safePrintln("[Network] Modem power enabled");
+#endif
+
+    pinMode(BOARD_PWRKEY_PIN, OUTPUT);
+    digitalWrite(BOARD_PWRKEY_PIN, LOW);
+    vTaskDelay(pdMS_TO_TICKS(100));
+    digitalWrite(BOARD_PWRKEY_PIN, HIGH);
+    vTaskDelay(pdMS_TO_TICKS(1000));
+    digitalWrite(BOARD_PWRKEY_PIN, LOW);
+    safePrintln("[Network] Modem power key sequence completed");
     
     // Try to enable GPS
     if (modem.enableGPS(MODEM_GPS_ENABLE_GPIO, MODEM_GPS_ENABLE_LEVEL)) {

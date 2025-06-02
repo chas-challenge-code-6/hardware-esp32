@@ -20,6 +20,7 @@
 #include "tasks/networkStatusTask.h"
 #include "tasks/processingTask.h"
 #include "tasks/gpsTask.h"
+#include "utils/threadsafe_serial.h"
 #include "utilities.h"
 #include <TinyGsmClient.h>
 #include <WiFi.h>
@@ -63,13 +64,20 @@ void setup()
     dataQueue = xQueueCreate(10, sizeof(sensor_message_t));
     httpQueue = xQueueCreate(10, sizeof(processed_data_t));
 
-    xTaskCreatePinnedToCore(accelTask, "AccelTask", 8192, NULL, 1, NULL, 1);
-    xTaskCreate(bluetoothTask, "Bluetooth Task", 4096, NULL, 1, NULL);
+    // Critical priority tasks (fall detection)
+    xTaskCreatePinnedToCore(accelTask, "AccelTask", 8192, NULL, 4, NULL, 1);
+
+    // High priority tasks
+    xTaskCreatePinnedToCore(processingTask, "ProcessTask", 8192, NULL, 3, NULL, 1);
+    xTaskCreatePinnedToCore(communicationTask, "CommTask", 8192, NULL, 3, NULL, 1);
+    xTaskCreate(bluetoothTask, "Bluetooth Task", 8192, NULL, 3, NULL);
+
+    // Medium priority tasks
+    xTaskCreate(gasTask, "Gas Task", 4096, NULL, 2, NULL);
+    xTaskCreatePinnedToCore(networkStatusTask, "networkStatusTask", 8192, NULL, 2, NULL, 1);
+
+    // Low priority tasks
     xTaskCreate(dhtTask, "DHT Task", 4096, NULL, 1, NULL);
-    xTaskCreate(gasTask, "Gas Task", 4096, NULL, 1, NULL);
-    xTaskCreatePinnedToCore(communicationTask, "CommTask", 8192, NULL, 1, NULL, 1);
-    xTaskCreatePinnedToCore(networkStatusTask, "networkStatusTask", 8192, NULL, 1, NULL, 1);
-    xTaskCreate(processingTask, "Process", 4096, NULL, 1, NULL);
     xTaskCreate(batteryTask, "Battery Task", 4096, NULL, 1, NULL);
     xTaskCreate(gpsTask, "GPSTask", 8192, NULL, 1, NULL);
 
@@ -80,12 +88,12 @@ void setup()
     }
     else
     {
-        Serial.println("Failed to initialize system ready bit!");
+        safePrintln("Failed to initialize system ready bit!");
         while (1)
             ;
     }
 
-    Serial.println("Sentinel started.");
+    ("Sentinel started.");
 }
 
 /**

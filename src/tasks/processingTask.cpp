@@ -32,6 +32,7 @@ extern QueueHandle_t httpQueue;
  * - gas
  * - fall_detected
  * - device_battery
+ * - strap_battery
  * - heart_rate
  * - noise_level
  *
@@ -43,6 +44,7 @@ extern QueueHandle_t httpQueue;
  */
 bool createJson(const sensor_data_t &data, char *buffer, size_t bufferSize)
 {
+<<<<<<< HEAD
     int len =
         snprintf(buffer, bufferSize,
                  "{\"device_id\": \"%s\", \"sensors\": { "
@@ -67,6 +69,21 @@ bool createJson(const sensor_data_t &data, char *buffer, size_t bufferSize)
                  data.fall_detected, data.device_battery, data.heartRate, data.noise_level,
                  data.latitude, data.longitude, data.gps_speed, data.gps_altitude, 
                  data.gps_accuracy, data.gps_satellites);
+=======
+    int len = snprintf(buffer, bufferSize,
+                       "{\"device_id\": \"%s\", \"sensors\": { "
+                       "\"steps\": %d, "
+                       "\"temperature\": %.2f, "
+                       "\"humidity\": %.2f, "
+                       "\"gas\": { \"ppm\": %.2f }, "
+                       "\"fall_detected\": %d, "
+                       "\"device_battery\": %d, "
+                       "\"strap_battery\": \"0\", "
+                       "\"heart_rate\": %d, "
+                       "\"noise_level\": %d } }",
+                       DEVICE_ID, data.steps, data.temperature, data.humidity, data.gasLevel,
+                       data.fall_detected, data.device_battery, data.heartRate, data.noise_level);
+>>>>>>> origin
     if (len < 0 || len >= (int)bufferSize)
     {
         safePrintln("[Proc Task] JSON creation failed or truncated.");
@@ -75,6 +92,7 @@ bool createJson(const sensor_data_t &data, char *buffer, size_t bufferSize)
     return true;
 }
 
+// we send empty data in struct so validation is needed to not overwite with null
 static void updateLatestData(sensor_data_t &latest, const sensor_message_t &incoming)
 {
     if (incoming.valid.accelPitch)

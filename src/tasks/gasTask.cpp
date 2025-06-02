@@ -23,7 +23,7 @@ extern EventGroupHandle_t networkEventGroup;
 extern SemaphoreHandle_t networkEventMutex;
 #define NETWORK_CONNECTED_BIT BIT0
 
-void sendGasData(const sensor_message_t &msg)
+void sendGasData(const sensor_message_t& msg)
 {
     EventBits_t bits;
 
@@ -58,14 +58,16 @@ void sendGasData(const sensor_message_t &msg)
  *
  * @param parameter
  */
-void gasTask(void *parameter)
+void gasTask(void* parameter)
 {
     sensor_message_t msg;
     memset(&msg, 0, sizeof(msg));
 
     MQ2Sensor gasSensor(GAS_PIN);
-    float oldGasPPM = -1;
+    float oldGasPPM = NAN;
     float newGasLevel = 0;
+    uint32_t lastSentTime = 0;
+    const uint32_t SEND_INTERVAL_MS = 60000;
 
     gasSensor.begin();
     gasSensor.calibrate();
@@ -84,12 +86,16 @@ void gasTask(void *parameter)
             continue;
         }
 
+#if DEBUG
         safePrintf("[Gas Task] Gas: %.2f PPM\n", newGasLevel);
+#endif
 
-        bool isFirstReading = (oldGasPPM == -1);
-        bool deltaExceeded = (abs(newGasLevel - oldGasPPM) >= GAS_DELTA_THRESHOLD);
+        uint32_t currentTime = millis();
+        bool isFirstReading = isnan(oldGasPPM); // probably no network available anyways
+        bool deltaExceeded = (!isnan(oldGasPPM) && fabs(newGasLevel - oldGasPPM) >= GAS_DELTA_THRESHOLD);
         bool highGasAlert = (newGasLevel > 200);
-        bool shouldSend = isFirstReading || deltaExceeded || highGasAlert;
+        bool timeToSend = (currentTime - lastSentTime >= SEND_INTERVAL_MS);
+        bool shouldSend = isFirstReading || deltaExceeded || highGasAlert || timeToSend;
 
         if (shouldSend)
         {
@@ -101,15 +107,20 @@ void gasTask(void *parameter)
             {
                 safePrintf("[Gas Task] HIGH GAS ALERT! Sending immediately: %.2f PPM\n", newGasLevel);
             }
+            else if (timeToSend)
+            {
+                safePrintf("[Gas Task] Sending periodic update: %.2f PPM (1min interval)\n", newGasLevel);
+            }
             else
             {
                 safePrintf("[Gas Task] Sending: %.2f PPM (Δ%.2f)\n", newGasLevel,
-                           abs(newGasLevel - oldGasPPM));
+                    fabs(newGasLevel - oldGasPPM));
             }
             msg.data.gasLevel = newGasLevel;
             msg.valid.gasLevel = 1;
             sendGasData(msg);
             oldGasPPM = newGasLevel;
+            lastSentTime = currentTime;
         }
 
         vTaskDelay(pdMS_TO_TICKS(10000));

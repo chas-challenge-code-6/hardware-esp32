@@ -14,9 +14,9 @@
 #include "WiFi.h"
 #include "config.h"
 #include "network/network.h"
+#include "tasks/communicationTask.h"
 #include "utils/threadsafe_serial.h"
 #include <Arduino.h>
-#include <CustomJWT.h>
 #include <HTTPClient.h>
 #include <TinyGSM.h>
 #include <TinyGsmClient.h>
@@ -26,44 +26,10 @@
 extern QueueHandle_t httpQueue;
 extern SemaphoreHandle_t modemMutex;
 extern TinyGsm modem;
+extern Network network;
 
 String currentJWTToken = "";
 unsigned long tokenExpiryTime = 0;
-
-struct HttpResponse
-{
-    int code;
-    String body;
-    bool success;
-
-    HttpResponse() : code(-1), success(false) {}
-    HttpResponse(int c, const String& b) : code(c), body(b), success(c > 0) {}
-};
-
-enum class NetworkType
-{
-    WIFI,
-    LTE
-};
-
-enum class AuthType
-{
-    NONE,
-    BACKEND_JWT,
-    SELF_SIGNED_JWT
-};
-
-bool parseAuthResponse(const String& response, String& token);
-void handleHttpResponse(const HttpResponse& response, const String& context, AuthType authType = AuthType::NONE);
-HttpResponse performWiFiRequest(const char* url, const String& payload, const String& authHeader = "");
-HttpResponse performLTERequest(const char* url, const String& payload, const String& authHeader = "");
-String createBearerHeader(const String& token);
-bool authenticateWithBackend(String& token);
-void sendJsonWithBackendJWT(const char* url, const char* jsonPayload, const String& token);
-void sendJsonJWT(const char* url, const char* jsonPayload, CustomJWT& jwt);
-void sendJsonPlain(const char* url, const char* jsonPayload);
-
-void sendDataWithAuth(const char* jsonPayload, CustomJWT& jwt);
 
 String createBearerHeader(const String& token)
 {
@@ -78,10 +44,10 @@ bool parseAuthResponse(const String& response, String& token)
     if (error)
     {
         safePrintln("[CommTask] Failed to parse authentication response");
-        safePrint("[CommTask] JSON Error: ");
-        safePrintln(error.c_str());
-        safePrint("[CommTask] Response: ");
-        safePrintln(response);
+#if DEBUG
+        safePrintf("[CommTask] JSON Error: %s\n", error.c_str());
+        safePrintf("[CommTask] Response: %s\n", response.c_str());
+#endif
         return false;
     }
 
@@ -102,10 +68,6 @@ bool parseAuthResponse(const String& response, String& token)
         tokenExpiryTime = expiresIn > 0 ? millis() + (expiresIn * 1000) : millis() + DEFAULT_TOKEN_EXPIRY_MS;
 
         safePrintln("[CommTask] Authentication successful");
-        safePrint("[CommTask] Token preview: ");
-        safePrintln(token.substring(0, 30) + "...");
-        safePrint("[CommTask] Token expires in: ");
-        safePrintln(String((tokenExpiryTime - millis()) / 1000) + " seconds");
         return true;
     }
     else if (responseDoc["token"].is<String>())
@@ -120,80 +82,51 @@ bool parseAuthResponse(const String& response, String& token)
 
         tokenExpiryTime = expiresIn > 0 ? millis() + (expiresIn * 1000) : millis() + DEFAULT_TOKEN_EXPIRY_MS;
 
-        safePrintln("[CommTask] Authentication successful (root level token)");
-        safePrint("[CommTask] Token preview: ");
-        safePrintln(token.substring(0, 30) + "...");
-        safePrint("[CommTask] Token expires in: ");
-        safePrintln(String((tokenExpiryTime - millis()) / 1000) + " seconds");
+        safePrintln("[CommTask] Authentication successful");
         return true;
     }
     else
     {
         safePrintln("[CommTask] No token in authentication response");
-        safePrint("[CommTask] Available fields: ");
-        for (JsonPair kv : responseDoc.as<JsonObject>())
-        {
-            safePrint(kv.key().c_str());
-            safePrint(" ");
-        }
-        safePrintln("");
-        if (responseDoc["data"].is<JsonObject>())
-        {
-            safePrint("[CommTask] Data fields: ");
-            for (JsonPair kv : responseDoc["data"].as<JsonObject>())
-            {
-                safePrint(kv.key().c_str());
-                safePrint(" ");
-            }
-            safePrintln("");
-        }
         return false;
     }
 }
 
-void handleHttpResponse(const HttpResponse& response, const String& context, AuthType authType)
+void handleHttpResponse(const HttpResponse& response, const char* context)
 {
-    safePrint("[CommTask] HTTP ");
-    safePrint(context);
-    safePrint(": ");
-    safePrintln(response.code);
+    safePrintf("[CommTask] HTTP %s: %d\n", context, response.code);
 
     if (response.success)
     {
         if (response.code == 401)
         {
-            safePrint("[CommTask] AUTHENTICATION ERROR 401 (");
-            safePrint(context);
-            safePrintln(")! Token may be expired or invalid.");
-            safePrint("[CommTask] Full response: ");
-            safePrintln(response.body);
-
-            if (authType == AuthType::BACKEND_JWT)
-            {
-                currentJWTToken = "";
-                tokenExpiryTime = 0;
-            }
+            safePrintf("[CommTask] AUTHENTICATION ERROR 401 (%s)! Token may be expired or invalid.\n", context);
+#if DEBUG
+            safePrintf("[CommTask] Full response: %s\n", response.body.c_str());
+#endif
+            currentJWTToken = "";
+            tokenExpiryTime = 0;
         }
         else if (response.body.length() > 50)
         {
-            safePrint("[CommTask] Response: ");
-            safePrintln(response.body.substring(0, 50) + "...");
+#if DEBUG
+            safePrintf("[CommTask] Response: %.50s...\n", response.body.c_str());
+#endif
         }
         else
         {
-            safePrint("[CommTask] Response: ");
-            safePrintln(response.body);
+#if DEBUG
+            safePrintf("[CommTask] Response: %s\n", response.body.c_str());
+#endif
         }
     }
     else
     {
-        safePrint("[CommTask] Error sending HTTP POST (");
-        safePrint(context);
-        safePrintln(")");
+        safePrintf("[CommTask] Error sending HTTP POST (%s)\n", context);
     }
 }
 
-HttpResponse performWiFiRequest(const char* url, const String& payload, const String& authHeader)
+HttpResponse performWiFiRequest(const char* url, const char* payload, const char* authHeader)
 {
     HTTPClient http;
     WiFiClientSecure* secureClient = nullptr;
@@ -201,10 +134,10 @@ HttpResponse performWiFiRequest(const char* url, const String& payload, const St
     bool httpStarted = false;
     HttpResponse response;
 
-    safePrint("[CommTask] WiFi request to: ");
-    safePrintln(url);
-    safePrint("[CommTask] Payload size: ");
-    safePrintln(payload.length());
+#if DEBUG
+    safePrintf("[CommTask] WiFi request to: %s\n", url);
+    safePrintf("[CommTask] Payload size: %d\n", strlen(payload));
+#endif
 
     if (strncmp(url, "https://", 8) == 0)
     {
@@ -213,14 +146,18 @@ HttpResponse performWiFiRequest(const char* url, const String& payload, const St
         secureClient->setTimeout(AUTH_TIMEOUT_MS / 1000);
         secureClient->setHandshakeTimeout(30);
         httpStarted = http.begin(*secureClient, url);
+#if DEBUG
         safePrintln("[CommTask] Using HTTPS client");
+#endif
     }
     else if (strncmp(url, "http://", 7) == 0)
     {
         insecureClient = new WiFiClient();
         insecureClient->setTimeout(AUTH_TIMEOUT_MS / 1000);
         httpStarted = http.begin(*insecureClient, url);
+#if DEBUG
         safePrintln("[CommTask] Using HTTP client");
+#endif
     }
     else
     {
@@ -232,7 +169,7 @@ HttpResponse performWiFiRequest(const char* url, const String& payload, const St
     {
         http.addHeader("Content-Type", "application/json");
         http.addHeader("User-Agent", "ESP32-Sentinel/1.0");
-        if (!authHeader.isEmpty())
+        if (authHeader && strlen(authHeader) > 0)
         {
             http.addHeader("Authorization", authHeader);
         }
@@ -259,7 +196,7 @@ HttpResponse performWiFiRequest(const char* url, const String& payload, const St
     return response;
 }
 
-HttpResponse performLTERequest(const char* url, const String& payload, const String& authHeader)
+HttpResponse performLTERequest(const char* url, const char* payload, const char* authHeader)
 {
     HttpResponse response;
 
@@ -269,10 +206,10 @@ HttpResponse performLTERequest(const char* url, const String& payload, const Str
         return response;
     }
 
-    safePrint("[CommTask] LTE request to: ");
-    safePrintln(url);
-    safePrint("[CommTask] Payload size: ");
-    safePrintln(payload.length());
+#if DEBUG
+    safePrintf("[CommTask] LTE request to: %s\n", url);
+    safePrintf("[CommTask] Payload size: %d\n", strlen(payload));
+#endif
 
     if (!modem.https_begin())
     {
@@ -292,7 +229,7 @@ HttpResponse performLTERequest(const char* url, const String& payload, const Str
     modem.https_set_accept_type("application/json");
     modem.https_add_header("Content-Type", "application/json");
     modem.https_set_user_agent("ESP32-Sentinel/1.0");
-    if (!authHeader.isEmpty())
+    if (authHeader && strlen(authHeader) > 0)
     {
         modem.https_add_header("Authorization", authHeader);
     }
@@ -307,27 +244,20 @@ HttpResponse performLTERequest(const char* url, const String& payload, const Str
     return response;
 }
 
-void sendDataWithAuth(const char* jsonPayload, CustomJWT& jwt)
+void sendDataWithAuth(const char* jsonPayload)
 {
     String dataUrl = String(BACKEND_URL) + API_ENDPOINT;
 
-#ifdef USE_BACKEND_AUTH
     if (currentJWTToken.isEmpty() || millis() > tokenExpiryTime - TOKEN_REFRESH_MARGIN_MS)
     {
         safePrintln("[CommTask] Refreshing backend JWT token...");
         authenticateWithBackend(currentJWTToken);
     }
-    sendJsonWithBackendJWT(dataUrl.c_str(), jsonPayload, currentJWTToken);
-#elif defined(USE_JWT_AUTH)
-    sendJsonJWT(dataUrl.c_str(), jsonPayload, jwt);
-#else
-    sendJsonPlain(dataUrl.c_str(), jsonPayload);
-#endif
+    sendJson(dataUrl.c_str(), jsonPayload, currentJWTToken);
 }
 
 bool authenticateWithBackend(String& token)
 {
-    Network network;
     bool success = false;
     int attempts = 0;
 
@@ -340,31 +270,30 @@ bool authenticateWithBackend(String& token)
     String loginPayload;
     serializeJson(loginDoc, loginPayload);
 
-    safePrint("[CommTask] Authenticating with backend at: ");
-    safePrintln(authUrl);
-    safePrint("[CommTask] Auth payload: ");
-    safePrintln(loginPayload);
+#if DEBUG
+    safePrintf("[CommTask] Authenticating with backend at: %s\n", authUrl.c_str());
+    safePrintf("[CommTask] Auth payload: %s\n", loginPayload.c_str());
+#endif
 
     while (attempts < AUTH_RETRY_ATTEMPTS && !success)
     {
         attempts++;
         if (attempts > 1)
         {
-            safePrint("[CommTask] Authentication attempt ");
-            safePrint(attempts);
-            safePrint(" of ");
-            safePrintln(AUTH_RETRY_ATTEMPTS);
+#if DEBUG
+            safePrintf("[CommTask] Authentication attempt %d of %d\n", attempts, AUTH_RETRY_ATTEMPTS);
+#endif
         }
 
         HttpResponse response;
 
         if (network.isWiFiConnected())
         {
-            response = performWiFiRequest(authUrl.c_str(), loginPayload);
+            response = performWiFiRequest(authUrl.c_str(), loginPayload.c_str());
         }
         else if (network.isLTEConnected())
         {
-            response = performLTERequest(authUrl.c_str(), loginPayload);
+            response = performLTERequest(authUrl.c_str(), loginPayload.c_str());
         }
         else
         {
@@ -378,23 +307,25 @@ bool authenticateWithBackend(String& token)
         }
         else if (response.code == 401)
         {
-            safePrint("[CommTask] Authentication failed with code: ");
-            safePrintln(response.code);
-            safePrint("[CommTask] Error response: ");
-            safePrintln(response.body);
+            safePrintf("[CommTask] Authentication failed with code: %d\n", response.code);
+#if DEBUG
+            safePrintf("[CommTask] Error response: %s\n", response.body.c_str());
+#endif
             break;
         }
         else
         {
-            safePrint("[CommTask] Authentication failed with code: ");
-            safePrintln(response.code);
-            safePrint("[CommTask] Error response: ");
-            safePrintln(response.body);
+            safePrintf("[CommTask] Authentication failed with code: %d\n", response.code);
+#if DEBUG
+            safePrintf("[CommTask] Error response: %s\n", response.body.c_str());
+#endif
         }
 
         if (attempts < AUTH_RETRY_ATTEMPTS && !success)
         {
+#if DEBUG
             safePrintln("[CommTask] Retrying authentication in 2 seconds...");
+#endif
             vTaskDelay(pdMS_TO_TICKS(2000));
         }
     }
@@ -409,88 +340,29 @@ bool authenticateWithBackend(String& token)
     return success;
 }
 
-void sendJsonWithBackendJWT(const char* url, const char* jsonPayload, const String& token)
+void sendJson(const char* url, const char* jsonPayload, const String& token)
 {
-    Network network;
     String authHeader = createBearerHeader(token);
     HttpResponse response;
 
+#if DEBUG
     safePrint("[CommTask] Using backend JWT token: ");
     safePrintln(token.substring(0, 20) + "...");
+#endif
 
     if (network.isWiFiConnected())
     {
-        response = performWiFiRequest(url, String(jsonPayload), authHeader);
-        handleHttpResponse(response, "WiFi (Backend JWT)", AuthType::BACKEND_JWT);
+        response = performWiFiRequest(url, jsonPayload, authHeader.c_str());
+        handleHttpResponse(response, "WiFi (Backend)");
     }
     else if (network.isLTEConnected())
     {
-        response = performLTERequest(url, String(jsonPayload), authHeader);
-        handleHttpResponse(response, "LTE (Backend JWT)", AuthType::BACKEND_JWT);
+        response = performLTERequest(url, jsonPayload, authHeader.c_str());
+        handleHttpResponse(response, "LTE (Backend)");
     }
     else
     {
-        safePrintln("[CommTask] No network available for backend JWT communication");
-    }
-}
-
-void sendJsonPlain(const char* url, const char* jsonPayload)
-{
-    Network network;
-    HttpResponse response;
-
-    if (network.isWiFiConnected())
-    {
-        response = performWiFiRequest(url, String(jsonPayload));
-        handleHttpResponse(response, "WiFi (Plain)");
-    }
-    else if (network.isLTEConnected())
-    {
-        response = performLTERequest(url, String(jsonPayload));
-        handleHttpResponse(response, "LTE (Plain)");
-    }
-    else
-    {
-        safePrintln("[CommTask] No network available for communication");
-    }
-}
-
-void sendJsonJWT(const char* url, const char* jsonPayload, CustomJWT& jwt)
-{
-    Network network;
-
-    char jwtClaims[256];
-    snprintf(jwtClaims, sizeof(jwtClaims),
-        "{\"iss\":\"esp32-sensor\",\"sub\":\"sensor-data\",\"device_id\":\"%s\"}", DEVICE_ID);
-
-    if (!jwt.encodeJWT(jwtClaims))
-    {
-        safePrintln("[CommTask] Failed to encode JWT");
-        safePrint("[CommTask] JWT Claims: ");
-        safePrintln(jwtClaims);
-        return;
-    }
-
-    String token = String(jwt.out);
-    String authHeader = createBearerHeader(token);
-    HttpResponse response;
-
-    safePrint("[CommTask] JWT Token: ");
-    safePrintln(token.substring(0, 20) + "...");
-
-    if (network.isWiFiConnected())
-    {
-        response = performWiFiRequest(url, String(jsonPayload), authHeader);
-        handleHttpResponse(response, "WiFi (JWT)", AuthType::SELF_SIGNED_JWT);
-    }
-    else if (network.isLTEConnected())
-    {
-        response = performLTERequest(url, String(jsonPayload), authHeader);
-        handleHttpResponse(response, "LTE (JWT)", AuthType::SELF_SIGNED_JWT);
-    }
-    else
-    {
-        safePrintln("[CommTask] No network available for JWT communication");
+        safePrintln("[CommTask] No network available for backend communication");
     }
 }
 
@@ -509,30 +381,23 @@ void communicationTask(void* pvParameters)
     processed_data_t outgoingData;
     memset(&outgoingData, 0, sizeof(outgoingData));
 
-    Network network;
-
-    network.begin();
-
-    char key[] = JWT_TOKEN;
-    CustomJWT jwt(key, 256);
-
-    jwt.allocateJWTMemory();
-
     while (true)
     {
-        network.maintainConnection(WIFI_SSID, PASSWORD, NETWORK_APN);
-
         if (xQueueReceive(httpQueue, &outgoingData, pdMS_TO_TICKS(1000)))
         {
             if (network.isWiFiConnected())
             {
+#if DEBUG
                 safePrintln("[CommTask] Sending via WiFi...");
-                sendDataWithAuth(outgoingData.json, jwt);
+#endif
+                sendDataWithAuth(outgoingData.json);
             }
             else if (network.isLTEConnected())
             {
+#if DEBUG
                 safePrintln("[CommTask] Sending via LTE...");
-                sendDataWithAuth(outgoingData.json, jwt);
+#endif
+                sendDataWithAuth(outgoingData.json);
             }
             else
             {
