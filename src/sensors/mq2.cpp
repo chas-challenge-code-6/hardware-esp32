@@ -71,7 +71,7 @@ void MQ2Sensor::update()
  * @details Returns the value from the MQ2 sensor.
  *
  */
-int MQ2Sensor::getValue()
+float MQ2Sensor::getValue()
 {
     float rawValue = mq2.readSensor();
 
@@ -80,6 +80,6 @@ int MQ2Sensor::getValue()
         return -1;
     }
 
-    int intValue = (int)round(rawValue);
-    return intValue;
+    float floatValue = round(rawValue);
+    return floatValue;
 }

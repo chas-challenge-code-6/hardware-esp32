@@ -10,8 +10,8 @@ class Network
 public:
     Network();
     void begin();
-    bool enableModem() const;
-    bool disableModem() const;
+    bool enableModem();
+    bool disableModem();
     bool connectWiFi(const char *ssid, const char *password);
     bool connectLTE(const char *apn);
     bool isWiFiConnected() const;
@@ -24,6 +24,7 @@ public:
 private:
     bool wifiConnected;
     bool lteConnected;
+    bool modemEnabled;
 };
 
 #endif

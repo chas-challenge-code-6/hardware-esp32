@@ -64,8 +64,8 @@ void gasTask(void *parameter)
     memset(&msg, 0, sizeof(msg));
 
     MQ2Sensor gasSensor(GAS_PIN);
-    int oldGasPPM = -1;
-    int newGasLevel = 0;
+    float oldGasPPM = -1;
+    float newGasLevel = 0;
 
     gasSensor.begin();
     gasSensor.calibrate();
@@ -84,10 +84,10 @@ void gasTask(void *parameter)
             continue;
         }
 
-        safePrintf("[Gas Task] Gas: %d PPM\n", newGasLevel);
+        safePrintf("[Gas Task] Gas: %.2f PPM\n", newGasLevel);
 
         bool isFirstReading = (oldGasPPM == -1);
-        bool deltaExceeded = (abs(newGasLevel - oldGasPPM) >= (int)GAS_DELTA_THRESHOLD);
+        bool deltaExceeded = (abs(newGasLevel - oldGasPPM) >= GAS_DELTA_THRESHOLD);
         bool highGasAlert = (newGasLevel > 200);
         bool shouldSend = isFirstReading || deltaExceeded || highGasAlert;
 
@@ -95,15 +95,15 @@ void gasTask(void *parameter)
         {
             if (isFirstReading)
             {
-                safePrintf("[Gas Task] Sending first reading: %d PPM\n", newGasLevel);
+                safePrintf("[Gas Task] Sending first reading: %.2f PPM\n", newGasLevel);
             }
             else if (highGasAlert)
             {
-                safePrintf("[Gas Task] HIGH GAS ALERT! Sending immediately: %d PPM\n", newGasLevel);
+                safePrintf("[Gas Task] HIGH GAS ALERT! Sending immediately: %.2f PPM\n", newGasLevel);
             }
             else
             {
-                safePrintf("[Gas Task] Sending: %d PPM (Δ%d)\n", newGasLevel,
+                safePrintf("[Gas Task] Sending: %.2f PPM (Δ%.2f)\n", newGasLevel,
                            abs(newGasLevel - oldGasPPM));
             }
             msg.data.gasLevel = newGasLevel;

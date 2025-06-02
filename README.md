@@ -51,10 +51,13 @@ See [LilyGO T-A76XX repo](https://github.com/Xinyuan-LilyGO/LilyGO-T-A76XX) and 
    - Copy `include/secrets.h.default` to `include/secrets.h` and configure your network credentials
    - Review `include/config.h` for additional system configuration options
 5. **Build and upload:**
+
    ```sh
    pio run -t upload
    ```
+
 6. **Monitor serial output:**
+
    ```sh
    pio device monitor
    ```
@@ -73,8 +76,8 @@ See [LilyGO T-A76XX repo](https://github.com/Xinyuan-LilyGO/LilyGO-T-A76XX) and 
 - [TinyGSM library](https://github.com/vshymanskyy/TinyGSM)
 - [TinyGPSPlus library](http://arduiniana.org/libraries/tinygpsplus/)
 - 3D case: `Prototype-design/Case-design/Format-for-3D-printing/Base-prototype-v1/Project_Sentinel_Base_Prototype v.1.stl`
-- Class diagram: `docs/classes.plantuml`
-- Pinout: `docs/esp32-S3-DevKitC-1-original-pinout-low.jpg`
+- [Class diagram](docs/classes.svg)
+- Pinout: [T-SIM7670G-S3](docs/T-SIM7670G-S3-LILYGO_1.jpg), [T-A7670](docs/T-A7670-LILYGO_1.jpg)
 
 ## License
 

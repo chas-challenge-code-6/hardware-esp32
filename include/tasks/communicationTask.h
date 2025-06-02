@@ -10,6 +10,41 @@
 #ifndef WIFI_TASK_H
 #define WIFI_TASK_H
 
+#include <cstring>
+#include <CustomJWT.h>
+#include <Arduino.h>
+
+ /**
+  * @brief Send JSON data via HTTP POST
+  * @param url The target URL
+  * @param jsonPayload The JSON data to send
+  */
+void sendJsonPlain(const char* url, const char* jsonPayload);
+
+/**
+ * @brief Send JSON data via HTTP POST with JWT authentication
+ * @param url The target URL
+ * @param jsonPayload The JSON data to send
+ * @param jwt JWT instance for authentication
+ */
+void sendJsonJWT(const char* url, const char* jsonPayload, CustomJWT& jwt);
+
+/**
+ * @brief Authenticate with backend and retrieve JWT token
+ * @param token Output string to store the retrieved JWT token
+ * @param tokenSize Maximum size of the token buffer
+ * @return true if authentication successful, false otherwise
+ */
+bool authenticateWithBackend(String& token);
+
+/**
+ * @brief Send JSON data via HTTP POST with backend-issued JWT token
+ * @param url The target URL
+ * @param jsonPayload The JSON data to send
+ * @param token The JWT token from backend authentication
+ */
+void sendJsonWithBackendJWT(const char* url, const char* jsonPayload, const String& token);
+
 /**
  * @brief communicationTask function
  *
@@ -20,6 +55,6 @@
  *
  * @param pvParameters
  */
-void communicationTask(void *pvParameters);
+void communicationTask(void* pvParameters);
 
 #endif

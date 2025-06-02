@@ -1,58 +1,56 @@
+/**
+ * @file battery.h
+ * @brief Battery monitoring system for LILYGO ESP32-based boards
+ *
+ * Supports:
+ * - LILYGO T-SIM7670G-S3 (ESP32-S3 based)
+ * - LILYGO T-A7670 (ESP32 based)
+ *
+ * Features:
+ * - High-accuracy voltage readings with 30-sample averaging
+ * - Outlier removal for stable measurements
+ * - Safety voltage thresholds and automatic shutdown
+ * - Power management with light/deep sleep modes
+ * - Battery percentage calculation for lithium batteries
+ */
+
 #ifndef BATTERY_H
 #define BATTERY_H
 
-#include "utilities.h"
 #include "config.h"
+#include "utilities.h"
 #include <Arduino.h>
 #include <TinyGsmClient.h>
-#include <esp32-hal-adc.h> /// Include the ESP32 ADC library for analogReadMilliVolts
+#include <algorithm>
+#include <esp32-hal-adc.h>
+#include <numeric>
+#include <vector>
 
-class BatteryMonitor
-{
-public:
-    BatteryMonitor(int adcPin, float vMax = 4.2, float vMin = 3.3, float divider = 2.0);
-
-    // Returns battery voltage in volts
-    float readVoltage();
-
-    // Returns battery percent (0-100)
-    int percent();
-
-    void setRGB(int percent);
-
-private:
-    int _adcPin;
-    float _vMax, _vMin, _divider;
-
-    int RED_PIN = RGB_RED_PIN; // GPIO pin for red LED
-    int GREEN_PIN = RGB_GREEN_PIN; // GPIO pin for green LED   
-};
+// Voltage thresholds
+#define LOW_VOLTAGE_LEVEL 3600
+#define WARN_VOLTAGE_LEVEL 3700
+#define SLEEP_MINUTE 60
 
 class Battery
 {
 private:
-    int batteryPin;
-    float ADCbatteryVoltage;
-    float rawBatteryVoltage;
-    float batteryVoltageLimit;
-    float batteryPercentage;
-    int voltageDivider;
+    static uint32_t getBatteryVoltageAverage();
 
 public:
-    // Functions for monitoring battery status
     void begin();
-    void loop();
     float getBatteryStatus();
-    float getBatteryVoltage();
+    int percent();
+    uint32_t getBatteryVoltage();
+    float readVoltage();
     void getUpdate();
-    void sendData(); // For sending battery status to the server
 
-    // Functions for power managment
     void powerSaveMode();
+    void deepSleep(uint32_t ms);
     bool isPowerOn(int pin);
     void turnOnPower(int pin);
     void turnOffPower(int pin);
-    void safetyShutdown(float pin, float VoltLimit);
+    void safetyShutdown();
+    void setRGB(int percent);
 };
 
 #endif

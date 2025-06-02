@@ -28,6 +28,16 @@
 // DEVICE_ID for API
 #define DEVICE_ID "SENTINEL-001"
 
+// JWT
+// #define USE_JWT_AUTH // create token in code
+#define USE_BACKEND_AUTH
+
+// Authentication settings
+#define AUTH_TIMEOUT_MS 15000
+#define AUTH_RETRY_ATTEMPTS 3
+#define TOKEN_REFRESH_MARGIN_MS 300000 // 5 minuter
+#define DEFAULT_TOKEN_EXPIRY_MS 3600000 // 1 timme
+
 // Mutex declarations
 extern SemaphoreHandle_t serialMutex;
 extern SemaphoreHandle_t modemMutex;
