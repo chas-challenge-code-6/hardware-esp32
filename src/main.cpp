@@ -19,7 +19,7 @@
 #include "tasks/gasTask.h"
 #include "tasks/networkStatusTask.h"
 #include "tasks/processingTask.h"
-#include "tasks/GPSTask.h"
+#include "tasks/GPStask.h"
 #include "utils/threadsafe_serial.h"
 #include "utilities.h"
 #include <TinyGsmClient.h>
@@ -75,7 +75,7 @@ void setup()
     // Medium priority tasks
     xTaskCreate(gasTask, "Gas Task", 4096, NULL, 2, NULL);
     xTaskCreatePinnedToCore(networkStatusTask, "networkStatusTask", 8192, NULL, 2, NULL, 1);
-    xTaskCreate(bluetoothTask, "Bluetooth Task", 8192, NULL, 2, NULL);
+    //xTaskCreate(bluetoothTask, "Bluetooth Task", 8192, NULL, 2, NULL);
     xTaskCreate(dhtTask, "DHT Task", 8192, NULL, 2, NULL);
 
     // Low priority tasks

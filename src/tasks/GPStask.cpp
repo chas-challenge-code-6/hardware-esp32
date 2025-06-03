@@ -45,6 +45,7 @@ void gpsTask(void *pvParameters)
 {    
     vTaskDelay(pdMS_TO_TICKS(120000)); // Allow other tasks to initialize first
 /*      if (!network.isConnected()) {
+        safePrintln("[GPS Task] Network not connected, Retrying in 2 minutes...");
         return;
     } */
 
