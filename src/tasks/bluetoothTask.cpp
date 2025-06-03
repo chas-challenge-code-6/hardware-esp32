@@ -74,8 +74,7 @@ void bluetoothTask(void* pvParameters)
 
         // Check if we should send data (first reading, any change or periodic update)
         bool shouldSendData = (oldHeartRate == -1) ||
-            (newHeartRate != oldHeartRate) ||
-            (currentTime - lastDataSend > 30000 && newHeartRate > 0);
+            (newHeartRate != oldHeartRate) && (currentTime - lastDataSend > 10000 && newHeartRate > 0);
 
         if (shouldSendData)
         {
@@ -95,6 +94,6 @@ void bluetoothTask(void* pvParameters)
         }
 
         oldHeartRate = newHeartRate;
-        vTaskDelay(pdMS_TO_TICKS(1000));
+        vTaskDelay(pdMS_TO_TICKS(5000));
     }
 }
