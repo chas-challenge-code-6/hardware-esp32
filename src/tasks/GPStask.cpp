@@ -41,21 +41,41 @@ void sendGPSData(const sensor_message_t& msg)
     }
 }
 
-void gpsTask(void *pvParameters)
-{    
-    vTaskDelay(pdMS_TO_TICKS(120000)); // Allow other tasks to initialize first
-/*      if (!network.isConnected()) {
-        safePrintln("[GPS Task] Network not connected, Retrying in 2 minutes...");
-        return;
-    } */
+void gpsTask(void* pvParameters)
+{
+    safePrintln("[GPS Task] GPS task started, waiting for network connection...");
 
-    safePrintln("[GPS Task] GPS task started");
+    EventBits_t bits;
+    while (true)
+    {
+        if (xSemaphoreTake(networkEventMutex, pdMS_TO_TICKS(1000)) == pdTRUE)
+        {
+            bits = xEventGroupWaitBits(networkEventGroup, NETWORK_CONNECTED_BIT, pdFALSE, pdTRUE, pdMS_TO_TICKS(5000));
+            xSemaphoreGive(networkEventMutex);
 
-    // Initial GPS setup with mutex protection
+            if (bits & NETWORK_CONNECTED_BIT)
+            {
+                safePrintln("[GPS Task] Network connected, proceeding with GPS initialization");
+                break;
+            }
+            else
+            {
+                safePrintln("[GPS Task] Waiting for network connection...");
+            }
+        }
+        else
+        {
+            safePrintln("[GPS Task] Failed to access network event group, retrying...");
+        }
+        vTaskDelay(pdMS_TO_TICKS(10000));
+    }
+
+    safePrintln("[GPS Task] Network available, initializing GPS...");
+
     if (xSemaphoreTake(modemMutex, pdMS_TO_TICKS(10000)) == pdTRUE)
     {
         gps.begin();
-        
+
         if (!gps.enableGPS())
         {
             safePrintln("[GPS Task] Failed to enable GPS");
@@ -63,7 +83,7 @@ void gpsTask(void *pvParameters)
             vTaskDelete(NULL);
             return;
         }
-        
+
         safePrintln("[GPS Task] GPS enabled, waiting for fix...");
         xSemaphoreGive(modemMutex);
     }
@@ -83,31 +103,31 @@ void gpsTask(void *pvParameters)
                 if (gpsLocation.valid)
                 {
                     safePrintf("[GPS Task] Location: Lat: %.6f, Lon: %.6f, Speed: %.2f m/s, Altitude: %.2f m, Satellites: %d\n",
-                               gpsLocation.latitude, gpsLocation.longitude, gpsLocation.speed,
-                               gpsLocation.altitude, gpsLocation.satellites);
-                    
+                        gpsLocation.latitude, gpsLocation.longitude, gpsLocation.speed,
+                        gpsLocation.altitude, gpsLocation.satellites);
+
                     // Release mutex before queue operations (don't hold it too long)
                     xSemaphoreGive(modemMutex);
-                    
+
                     // Prepare and send sensor message
                     sensor_message_t msg;
                     memset(&msg, 0, sizeof(msg));
-                    
+
                     msg.data.latitude = gpsLocation.latitude;
                     msg.data.longitude = gpsLocation.longitude;
                     msg.data.gps_speed = gpsLocation.speed;
                     msg.data.gps_altitude = gpsLocation.altitude;
                     msg.data.gps_accuracy = gpsLocation.accuracy;
-                    
+
                     // Mark GPS data as valid
                     msg.valid.latitude = 1;
                     msg.valid.longitude = 1;
                     msg.valid.gps_speed = 1;
                     msg.valid.gps_altitude = 1;
                     msg.valid.gps_accuracy = 1;
-                    
+
                     // Send to processing task
-                    if (xQueueSend(dataQueue, &msg, pdMS_TO_TICKS(1000)) != pdPASS) 
+                    if (xQueueSend(dataQueue, &msg, pdMS_TO_TICKS(1000)) != pdPASS)
                     {
                         safePrintln("[GPS Task] Failed to send GPS data to queue");
                     }
