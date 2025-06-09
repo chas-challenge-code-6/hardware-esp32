@@ -81,6 +81,9 @@ See [LilyGO T-A76XX repo](https://github.com/Xinyuan-LilyGO/LilyGO-T-A76XX) and 
 - [Class diagram](docs/classes.svg)
 - Pinout: [T-SIM7670G-S3](docs/T-SIM7670G-S3-LILYGO_1.jpg), [T-A7670](docs/T-A7670-LILYGO_1.jpg)
 
+## Project
+For our [hardware](https://github.com/orgs/chas-challenge-code-6/projects/10)
+
 ## License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
