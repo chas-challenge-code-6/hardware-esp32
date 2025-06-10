@@ -80,6 +80,7 @@ See [LilyGO T-A76XX repo](https://github.com/Xinyuan-LilyGO/LilyGO-T-A76XX) and 
 - 3D case: `Prototype-design/Case-design/Format-for-3D-printing/Base-prototype-v1/Project_Sentinel_Base_Prototype v.1.stl`
 - [Class diagram](docs/classes.svg)
 - Pinout: [T-SIM7670G-S3](docs/T-SIM7670G-S3-LILYGO_1.jpg), [T-A7670](docs/T-A7670-LILYGO_1.jpg)
+- Systemdevelopers [Retrospective](docs/RETROSPEKTIV.md)
 
 ## Project
 For our [hardware](https://github.com/orgs/chas-challenge-code-6/projects/10)
